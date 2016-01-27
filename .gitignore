@@ -1,0 +1,6 @@
+node_modules
+npm-debug.*
+/.env*
+!/.env.dist
+/dev
+/test/coverage

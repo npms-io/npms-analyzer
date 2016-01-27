@@ -1,0 +1,46 @@
+{
+  "name": "npms-analyzer",
+  "version": "0.1.0",
+  "description": "The analyzer behind npms",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --bail",
+    "test-cov": "istanbul cover --dir test/coverage _mocha -- --bail && echo Coverage lies in test/coverage/lcov-report/index.html",
+    "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+  },
+  "bugs": {
+    "url": "https://github.com/npms/npms-analyzer/issues/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/npms/npms-analyzer.git"
+  },
+  "keywords": [
+    "npms",
+    "npmsearch",
+    "npmsearch"
+  ],
+  "author": "IndigoUnited <hello@indigounited.com> (http://indigounited.com)",
+  "license": "MIT",
+  "dependencies": {
+    "amqplib": "^0.4.0",
+    "bluebird": "^3.1.1",
+    "dotenv": "^2.0.0",
+    "err-code": "^1.1.1",
+    "lodash": "^4.0.0",
+    "nano": "^6.2.0",
+    "npmlog": "^2.0.1",
+    "promise-defer": "^1.0.0",
+    "promise-retry": "^1.0.1",
+    "yargs": "^3.32.0"
+  },
+  "devDependencies": {
+    "@satazor/eslint-config": "^1.0.6"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "bin": {
+    "npms-analyzer": "./cli.js"
+  }
+}
