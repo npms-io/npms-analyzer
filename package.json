@@ -16,9 +16,14 @@
     "url": "git://github.com/npms/npms-analyzer.git"
   },
   "keywords": [
+    "npm",
     "npms",
     "npmsearch",
-    "npmsearch"
+    "npmsearch",
+    "search",
+    "node",
+    "module",
+    "package",
   ],
   "author": "IndigoUnited <hello@indigounited.com> (http://indigounited.com)",
   "license": "MIT",
