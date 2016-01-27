@@ -96,7 +96,7 @@ try {
     fs.accessSync(argv.envFile);
 } catch (err) {
     if (err.code === 'ENOENT') {
-        log.error(path.resolve(argv.envFile) + ' does not exist');
+        log.error('', path.resolve(argv.envFile) + ' does not exist');
         process.exit(1);
     }
 
