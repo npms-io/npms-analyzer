@@ -19,12 +19,42 @@
 This project is composed of two important facets. One is the process of observing changes within the `npm` registry as well as modules that were not analyzed for a while. These modules are pushed into a queue to be analyzed later. The other is the process of consuming the queued modules, analyzing them using a variety of policies and computing a final rank based on the analysis result. Both the analysis and the rank are indexed to power up the npms search!
 
 
+## Usage
+
+This project exposes all its functionality through a CLI.
+
+![Demo](https://i.imgur.com/nz9CzVR.gif)
+
+Keep reading to learn more about the CLI and its commands.
+
+### npms-analyzer observe
+
+The observe command starts observing changes that occur in the `npm` registry as well as modules that were not analyzed for a while. Each reported module will be pushed into a queue to be analyzed by the queue consumers.
+
+Bellow is an example of running the command locally:
+
+`$ npms-analyzer observe --log-level verbose`
+
+For more information about the command, run `$ npms-analyzer observe -h`
+
+### npms-analyzer consume
+
+The consume command starts consuming the queue, running the analysis process for each module.
+
+Bellow is an example of running the command locally:
+
+`$ npms-analyzer consume --log-level verbose --concurrency 5`
+
+For more information about the command, run `$ npms-analyzer consume -h`
+
+
 ## Setup
+
+Bellow you will find a list of tasks that you must setup to get the project working on your machine.
 
 ### .env
 
-Copy `.env.dist` to `.env` and edit accordingly.
-
+Copy `.env.dist` to `.env`.
 
 ### CouchDB
 
@@ -38,7 +68,6 @@ Copy `.env.dist` to `.env` and edit accordingly.
 - Change default maximum replication retries to infinite by executing `curl -X PUT http://admin:admin@localhost:5984/_config/replicator/max_replication_retry_count -d '"infinity"'`
 - Setup npm replication by executing `curl -X PUT http://admin:admin@localhost:5984/_replicator/npm -d '{ "source":  "https://skimdb.npmjs.com/registry", "target": "npm", "continuous": true }'`
 
-
 ### RabbitMQ
 
 **NOTE**: You may put `RabbitMQ standalone` into the gitignored `dev` folder while developing!
@@ -47,39 +76,9 @@ Copy `.env.dist` to `.env` and edit accordingly.
 - Install the [management](https://www.rabbitmq.com/management.html) plugin which is very useful by running `rabbitmq-plugins enable rabbitmq_management`
 - Head to `http://localhost:15672` and login with `guest/guest` and see if everything is ok.
 
-
 ### Elasticsearch
 
 TODO
-
-
-## Overview
-
-TODO
-
-
-## CLI
-
-### npms-analyzer observe
-
-The observe command starts observing changes that occur in the `npm` registry as well as modules that were not analyzed for a while. Each reported module will be pushed into a queue to be analyzed by the queue consumers.
-
-Bellow is an example of running the command locally:
-
-`$ npms-analyzer observe --env-file <your_env> --log-level verbose`
-
-For more information about the command, run `$ npms-analyzer observe -h`
-
-
-### npms-analyzer consume
-
-The consume command starts consuming the queue, running the analysis process for each module.
-
-Bellow is an example of running the command locally:
-
-`$ npms-analyzer consume --env-file <your_env> --log-level verbose --concurrency 5`
-
-For more information about the command, run `$ npms-analyzer consume -h`
 
 
 ## Tests
