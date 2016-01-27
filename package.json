@@ -9,11 +9,11 @@
     "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "bugs": {
-    "url": "https://github.com/npms/npms-analyzer/issues/"
+    "url": "https://github.com/npms-io/npms-analyzer/issues/"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/npms/npms-analyzer.git"
+    "url": "git://github.com/npms-io/npms-analyzer.git"
   },
   "keywords": [
     "npm",

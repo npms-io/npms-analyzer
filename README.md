@@ -5,14 +5,14 @@
 [npm-url]:https://npmjs.org/package/npms-analyzer
 [downloads-image]:http://img.shields.io/npm/dm/npms-analyzer.svg
 [npm-image]:http://img.shields.io/npm/v/npms-analyzer.svg
-[travis-url]:https://travis-ci.org/IndigoUnited/npms-analyzer
-[travis-image]:http://img.shields.io/travis/IndigoUnited/npms-analyzer.svg
-[coveralls-url]:https://coveralls.io/r/IndigoUnited/npms-analyzer
-[coveralls-image]:https://img.shields.io/coveralls/IndigoUnited/npms-analyzer.svg
-[david-dm-url]:https://david-dm.org/IndigoUnited/npms-analyzer
-[david-dm-image]:https://img.shields.io/david/IndigoUnited/npms-analyzer.svg
-[david-dm-dev-url]:https://david-dm.org/IndigoUnited/npms-analyzer#info=devDependencies
-[david-dm-dev-image]:https://img.shields.io/david/dev/IndigoUnited/npms-analyzer.svg
+[travis-url]:https://travis-ci.org/npms-io/npms-analyzer
+[travis-image]:http://img.shields.io/travis/npms-io/npms-analyzer.svg
+[coveralls-url]:https://coveralls.io/r/npms-io/npms-analyzer
+[coveralls-image]:https://img.shields.io/coveralls/npms-io/npms-analyzer.svg
+[david-dm-url]:https://david-dm.org/npms-io/npms-analyzer
+[david-dm-image]:https://img.shields.io/david/npms-io/npms-analyzer.svg
+[david-dm-dev-url]:https://david-dm.org/npms-io/npms-analyzer#info=devDependencies
+[david-dm-dev-image]:https://img.shields.io/david/dev/npms-io/npms-analyzer.svg
 
 > The npms-analyzer is responsible for analyzing all npm modules.
 
@@ -29,7 +29,7 @@ Keep reading to learn more about the CLI and its commands.
 
 ### npms-analyzer observe
 
-The observe command starts observing changes that occur in the `npm` registry as well as modules that were not analyzed for a while. Each reported module will be pushed into a queue to be analyzed by the queue consumers.
+The `observe` command starts observing changes that occur in the `npm` registry as well as modules that were not analyzed for a while. Each reported module will be pushed into a queue to be analyzed by the queue consumers.
 
 Bellow is an example of running the command locally:
 
@@ -39,7 +39,7 @@ For more information about the command, run `$ npms-analyzer observe -h`
 
 ### npms-analyzer consume
 
-The consume command starts consuming the queue, running the analysis process for each module.
+The `consume` command starts consuming the queue, running the analysis process for each module.
 
 Bellow is an example of running the command locally:
 
