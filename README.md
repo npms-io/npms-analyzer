@@ -14,11 +14,9 @@
 [david-dm-dev-url]:https://david-dm.org/IndigoUnited/npms-analyzer#info=devDependencies
 [david-dm-dev-image]:https://img.shields.io/david/dev/IndigoUnited/npms-analyzer.svg
 
-> The npms-analyzer is responsible for analyzing the npm modules and index them to be searchable.
+> The npms-analyzer is responsible for analyzing all npm modules.
 
-Behind the scenes, this project is composed of two important separate facets. One is the process of observing changes
-within the `npm` registry as well as modules that were not analyzed for a while. The modules reported by the observation are pushed into
-a queue. The other is the process of consuming the modules that were previously queued, analyzing and extracting relevant information that culminates with a final score.
+This project is composed of two important facets. One is the process of observing changes within the `npm` registry as well as modules that were not analyzed for a while. These modules are pushed into a queue to be analyzed later. The other is the process of consuming the queued modules, analyzing them using a variety of policies and computing a final rank based on the analysis result. Both the analysis and the rank are indexed to power up the npms search!
 
 
 ## Setup
