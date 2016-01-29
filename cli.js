@@ -28,7 +28,7 @@ function setupYargs(yargs, cmd) {
         parsedCmd = cmd;
 
         yargs
-        .usage('Usage: ./$0 ' + cmd + ' [options]')
+        .usage(`Usage: ./$0 ${cmd} [options]`)
         .option('log-level', {
             type: 'string',
             default: 'warn',
@@ -95,7 +95,7 @@ try {
     fs.accessSync(argv.envFile);
 } catch (err) {
     if (err.code === 'ENOENT') {
-        log.error('', path.resolve(argv.envFile) + ' does not exist');
+        log.error('', `${path.resolve(argv.envFile)} does not exist`);
         process.exit(1);
     }
 
@@ -105,4 +105,4 @@ try {
 dotenv.config({ silent: true, path: argv.envFile });
 
 // Run actual command
-require('./cmds/' + parsedCmd);
+require(`./cmds/${parsedCmd}`);
