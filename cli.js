@@ -35,7 +35,6 @@ function setupYargs(yargs, cmd) {
             alias: 'll',
             describe: 'The log level to use (error, warn, info, verbose, etc.)',
         })
-        .alias('log-level', 'loglevel')  // Same as npm
         .option('env-file', {
             type: 'string',
             default: '.env',
