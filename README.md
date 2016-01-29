@@ -50,7 +50,7 @@ For more information about the command, run `$ npms-analyzer consume -h`
 
 ## Setup
 
-Bellow you will find a list of tasks that you must setup to get the project working on your machine.
+Bellow you will find a list of items that you must do to get the project working on your machine.
 
 ### .env
 
