@@ -33,6 +33,7 @@
     "dotenv": "^2.0.0",
     "err-code": "^1.1.1",
     "got": "^6.1.1",
+    "hosted-git-info": "^2.1.4",
     "lodash": "^4.0.0",
     "nano": "^6.2.0",
     "npmlog": "^2.0.1",
