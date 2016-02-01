@@ -35,6 +35,7 @@
     "got": "^6.1.1",
     "hosted-git-info": "^2.1.4",
     "lodash": "^4.0.0",
+    "moment": "^2.11.1",
     "nano": "^6.2.0",
     "npmlog": "^2.0.1",
     "promise-defer": "^1.0.0",

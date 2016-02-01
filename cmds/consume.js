@@ -6,6 +6,7 @@ const queue = require('../lib/queue');
 const statQueue = require('./util/statQueue');
 
 function onMessage(/* msg */) {
+    // TODO: Control bursts messages of the same module
     return Promise.delay(1000);
 }
 

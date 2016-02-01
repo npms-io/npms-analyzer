@@ -2,6 +2,7 @@
 
 const log = require('npmlog');
 const argv = require('yargs').argv;
+const nano = require('nano');
 const Promise = require('bluebird');
 const promiseRetry = require('promise-retry');
 const realtime = require('../lib/observers/realtime');
@@ -50,8 +51,13 @@ const analyzeQueue = queue(process.env.RABBITMQ_QUEUE, process.env.RABBITMQ_ADDR
 .once('error', () => process.exit(1));
 
 // Start observing..
-stale(process.env.COUCHDB_NPM_ADDR, onModules);
-realtime(process.env.COUCHDB_NPM_ADDR, process.env.COUCHDB_NPMS_ADDR, { defaultSeq: argv.defaultSeq }, onModules);
+const nanos = {
+    npm: Promise.promisifyAll(nano(process.env.COUCHDB_NPM_ADDR, { requestDefaults: { timeout: 5000 } })),
+    npms: Promise.promisifyAll(nano(process.env.COUCHDB_NPMS_ADDR, { requestDefaults: { timeout: 5000 } })),
+};
+
+stale(nanos.npms, onModules);
+realtime(nanos.npm, nanos.npms, { defaultSeq: argv.defaultSeq }, onModules);
 
 // Print queue stat once in a while
 statQueue(analyzeQueue);
