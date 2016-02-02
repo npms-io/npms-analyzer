@@ -88,7 +88,7 @@ if (!parsedCmd) {
 // ----------------------------------------------------------------------------
 
 // Configure logger
-log.level = argv.loglevel;
+log.level = argv.logLevel;
 
 // Process .env file
 try {
