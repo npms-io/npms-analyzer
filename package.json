@@ -32,7 +32,6 @@
     "bluebird": "^3.1.1",
     "deep-compact": "^1.0.2",
     "dotenv": "^2.0.0",
-    "err-code": "^1.1.1",
     "got": "^6.1.1",
     "hosted-git-info": "^2.1.4",
     "lodash": "^4.0.0",
@@ -42,7 +41,10 @@
     "npmlog": "^2.0.1",
     "promise-defer": "^1.0.0",
     "promise-retry": "^1.0.1",
+    "require-directory": "^2.1.1",
+    "semver": "^5.1.0",
     "spdx": "^0.5.0",
+    "spdx-correct": "^1.0.2",
     "yargs": "^3.32.0"
   },
   "devDependencies": {
