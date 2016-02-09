@@ -5,10 +5,7 @@ This document tries to summarize the architecture of the project.
 
 ## Overview
 
-<p align="center">
-  <img src="./diagrams/npms-analyzer-overview.png">
-</p>
-
+![Overview](./diagrams/npms-analyzer-overview.png)
 
 ## Analyzers
 
