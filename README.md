@@ -16,7 +16,7 @@
 
 > The npms-analyzer is responsible for analyzing all npm modules.
 
-This project is composed of two important facets. One is the process of observing changes within the `npm` registry as well as modules that were not analyzed for a while. These modules are pushed into a queue to be analyzed later. The other is the process of consuming the queued modules, analyzing them using a variety of policies and computing a final rank based on the analysis result. Both the analysis and the rank are indexed to power up the npms search!
+This project is composed of two important facets. One is the process of observing changes within the `npm` registry as well as modules that were not analyzed for a while. These modules are pushed into a queue to be analyzed later. The other is the process of consuming the queued modules, analyzing them using a variety of policies and computing a final rank based on the analysis result. Both the analysis and the rank are indexed to power up the `npms` search!
 
 
 ## Usage
@@ -48,39 +48,19 @@ Bellow is an example of running the command locally:
 For more information about the command, run `$ npms-analyzer consume -h`
 
 
+## Architecture
+
+There's a separate document to explain the architecture, you may read it [here](./docs/architecture.md).
+
+
 ## Setup
 
-Bellow you will find a list of items that you must do to get the project working on your machine.
-
-### .env
-
-Copy `.env.dist` to `.env`.
-
-### CouchDB
-
-**NOTE**: You may put the `CouchDB` app into the gitignored `dev` folder while developing!
-
-- Install [CouchDB](http://couchdb.apache.org/) and run it.
-- Add user `admin` with `admin` as password by executing `curl -X PUT http://localhost:5984/_config/admins/admin -d '"admin"'`.
-- After doing this, operations done in the [web interface](http://localhost:5984) require you to login (login is at bottom right corner).
-- Create database named `npms` by executing `curl -X PUT http://admin:admin@localhost:5984/npm`
-- Change default maximum replication retries to infinite by executing `curl -X PUT http://admin:admin@localhost:5984/_config/replicator/max_replication_retry_count -d '"infinity"'`
-- Setup npm replication by executing `curl -X PUT http://admin:admin@localhost:5984/_replicator/npm -d '{ "source":  "https://skimdb.npmjs.com/registry", "target": "http://admin:admin@localhost:5984/npm", "create_target": true, "continuous": true }'`
-
-### RabbitMQ
-
-**NOTE**: You may put `RabbitMQ standalone` into the gitignored `dev` folder while developing!
-
-- Install [RabbitMQ](https://www.rabbitmq.com/download.html) and run it.
-- Install the [management](https://www.rabbitmq.com/management.html) plugin which is very useful by running `rabbitmq-plugins enable rabbitmq_management`
-- Head to `http://localhost:15672` and login with `guest/guest` and see if everything is ok.
-
-### Elasticsearch
-
-TODO
+There's a separate document to explain the setup procedure, you may read it [here](./docs/setup.md).
 
 
 ## Tests
+
+Before running the tests, you must have read through the setup guide.
 
 `$ npm test`   
 `$ npm test-cov` to get coverage report
