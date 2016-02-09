@@ -39,6 +39,7 @@
     "moment-range": "^2.1.0",
     "nano": "^6.2.0",
     "npmlog": "^2.0.1",
+    "prepend-http": "^1.0.3",
     "promise-defer": "^1.0.0",
     "promise-retry": "^1.0.1",
     "require-directory": "^2.1.1",
