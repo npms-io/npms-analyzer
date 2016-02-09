@@ -7,6 +7,7 @@ This document tries to summarize the architecture of the project.
 
 ![Overview](./diagrams/npms-analyzer-overview.png)
 
+
 ## Analyzers
 
 The analyzers are responsible for extracting and gathering useful information about each module. The current analyzers are:
@@ -46,7 +47,7 @@ The source analyzer digs into the source code.
 
 ### github analyzer
 
-The github analyzer uses GitHub and [IssueStats](http://issuestats.com/) to collect useful data and statistics
+The github analyzer uses GitHub and [Issue Stats](http://issuestats.com/) to collect useful data and statistics
 present there.
 
 - Get number of stars, subscribers and forks

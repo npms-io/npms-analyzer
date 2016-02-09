@@ -50,12 +50,12 @@ For more information about the command, run `$ npms-analyzer consume -h`
 
 ## Architecture
 
-There's a separate document to explain the architecture, you may read it [here](./docs/architecture.md).
+There's a separate document that explains the architecture, you may read it [here](./docs/architecture.md).
 
 
 ## Setup
 
-There's a separate document to explain the setup procedure, you may read it [here](./docs/setup.md).
+There's a separate document that explains the setup procedure, you may read it [here](./docs/setup.md).
 
 
 ## Tests
