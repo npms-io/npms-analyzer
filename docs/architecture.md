@@ -28,6 +28,7 @@ The metadata analyzer extracts basic data and attributes of a module.
 - Get releases timing information
 - Extract repository and homepage
 - Extract README
+- Extract the module dependencies
 - Check if the module is deprecated
 - Check if the module has a test script
 
