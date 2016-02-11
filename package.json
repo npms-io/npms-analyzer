@@ -52,6 +52,7 @@
   "devDependencies": {
     "@satazor/eslint-config": "^1.0.6",
     "chai": "^3.5.0",
+    "coveralls": "^2.11.6",
     "istanbul": "^0.4.2",
     "mocha": "^2.4.5"
   },
