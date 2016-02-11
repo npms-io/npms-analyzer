@@ -127,6 +127,6 @@ I will not elaborate on this because this score will NOT be developed nor used i
 
 ## Store & indexing
 
-Both the analysis and scoring is stored is CouchDB and indexed in Elasticsearch. If the scoring algorithm changes in
+Both the analysis and scoring is stored in CouchDB and indexed in Elasticsearch. If the scoring algorithm changes in
 some way, we can iterate over the stored documents in CouchDB and re-run the scoring for all the entries without having
 to re-analyze all the modules which takes some time.
