@@ -1,27 +1,32 @@
-## Architecture
+# Architecture
 
-The `npms-analyzer` runs two continuous and distinct processes. One is the continuous analysis processes where each module gets
-inspected and evaluated. The other one is the continuous process of scoring the modules, using the evaluation results.
+The `npms-analyzer` runs two continuous and distinct processes. One is the `analysis` process where each module gets
+inspected and evaluated. The other one is the `scoring` process where each module gets a score based whole evalution results.
 
 - [Analysis](#analysis)
 - [Scoring](#scoring)
 
 
-### Analysis
+## Analysis
 
-![Overview](./diagrams/npms-analyzer-overview.png)
+![Overview](./diagrams/analysis-overview.png)
 
+By looking at the diagram above, you get an idea of how the analysis process works. Bellow you may find a more detailed description for the most complex pieces.
+
+### Observers
+
+- `realtime` - Continously observes the replicated `npm` registry for changes, pushing new or updated modules into the analyze queue.
+- `stale` - Fetches modules that were not analyzed recently, pushing them to the queue.
 
 ### Collectors
 
-The collectors are responsible for collecting useful information about each module. The collecting phase produces an
+The collectors are responsible for gathering useful information about each module. The collecting phase produces an
 `info` object. The current collectors are:
 
 - metadata
 - source
 - github
 - npm
-
 
 #### metadata
 
@@ -53,7 +58,6 @@ The source collector digs into the source code.
 
 Items signaled with * are not yet done.
 
-
 #### github
 
 The github collector uses GitHub and [Issue Stats](http://issuestats.com/) to collect useful data and statistics
@@ -78,7 +82,6 @@ API to extract useful information present there.
 - Get number of downloads over time
 - Get number of dependents
 
-
 ### Evaluation
 
 The evaluation phased uses the `info` object that was previously collected to evaluate different aspects of the module. These aspects are divide in four categories:
@@ -87,7 +90,6 @@ The evaluation phased uses the `info` object that was previously collected to ev
 - popularity
 - maintenance
 - personalities
-
 
 #### quality
 
@@ -130,7 +132,6 @@ Popularity attributes allows us to understand the module extend and adoption. Th
 If two modules are similar, one tend to choose the one in which the author is well known in the community. Also, there are people that simply prefer to use a module over another because the author is popular. While this doesn't directly translate to quality, it's still a strong factor that we should account.
 
 I will not elaborate on this because this evaluator will NOT be developed nor used in the initial release.
-
 
 ## Scoring
 
