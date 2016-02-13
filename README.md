@@ -14,7 +14,7 @@
 [david-dm-dev-url]:https://david-dm.org/npms-io/npms-analyzer#info=devDependencies
 [david-dm-dev-image]:https://img.shields.io/david/dev/npms-io/npms-analyzer.svg
 
-> The npms-analyzer is responsible for analyzing all npm modules.
+> The npms-analyzer analyzes the npm ecosystem, collecting info, evaluating and scoring each module.
 
 
 ## Usage
@@ -29,8 +29,6 @@ Keep reading to learn more about the CLI and its commands.
 
 The `observe` command starts observing changes that occur in the `npm` registry as well as modules that were not analyzed for a while. Each reported module will be pushed into a queue to be analyzed by the queue consumers.
 
-Bellow is an example of running the command locally:
-
 `$ npms-analyzer observe --log-level verbose`
 
 For more information about the command, run `$ npms-analyzer observe -h`
@@ -39,17 +37,13 @@ For more information about the command, run `$ npms-analyzer observe -h`
 
 The `consume` command starts consuming the queue, running the analysis process for each module.
 
-Bellow is an example of running the command locally:
-
 `$ npms-analyzer consume --log-level verbose --concurrency 5`
 
 For more information about the command, run `$ npms-analyzer consume -h`
 
 ### npms-analyzer analyze
 
-The `analyze` command analyzes a single module and prints the result.
-
-Bellow is an example of running the command locally:
+The `analyze` command analyzes a single module and prints the result. This is mainly useful for debugging purposes.
 
 `$ npms-analyzer analyze cross-spawn`
 
