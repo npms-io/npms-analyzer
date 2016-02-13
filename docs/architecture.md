@@ -15,8 +15,8 @@ By looking at the diagram above, you get an idea of how the analysis process wor
 
 ### Observers
 
-- `realtime` - Continously observes the replicated `npm` registry for changes, pushing new or updated modules into the analyze queue.
-- `stale` - Fetches modules that were not analyzed recently, pushing them to the queue.
+- `realtime` - Continuously observes the replicated `npm` registry for changes, pushing new or updated modules into the analyze queue.
+- `stale` - Continuously fetches modules that were not analyzed recently, pushing them to the queue.
 
 ### Collectors
 
