@@ -1,14 +1,13 @@
 ## Architecture
 
-This document tries to summarize the architecture of the project.
+The `npms-analyzer` runs two continuous and distinct processes. One is the continuous analysis processes where each module gets
+inspected and evaluated. The other one is the continuous process of scoring the modules, using the evaluation results.
 
 - [Analysis](#analysis)
 - [Scoring](#scoring)
 
 
 ### Analysis
-
-The analysis is the continuous process of analyzing the all `npm` modules.
 
 ![Overview](./diagrams/npms-analyzer-overview.png)
 
@@ -134,7 +133,5 @@ I will not elaborate on this because this evaluator will NOT be developed nor us
 
 
 ## Scoring
-
-The scoring is the continuous process of iterating over the analysis result and scoring all `npm` modules.
 
 TODO:

@@ -16,8 +16,6 @@
 
 > The npms-analyzer is responsible for analyzing all npm modules.
 
-This project is composed of two important facets. One is the process of observing changes within the `npm` registry as well as modules that were not analyzed for a while. These modules are pushed into a queue to be analyzed later. The other is the process of consuming the queued modules, analyzing them using a variety of policies and computing a final rank based on the analysis result. Both the analysis and the rank are indexed to power up the `npms` search!
-
 
 ## Usage
 
