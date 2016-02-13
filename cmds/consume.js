@@ -2,15 +2,20 @@
 
 const Promise = require('bluebird');
 const argv = require('yargs').argv;
+const nano = require('nano');
 const queue = require('../lib/queue');
+const analyze = require('../lib/analyze');
 const statQueue = require('./util/statQueue');
 
-function onMessage(/* msg */) {
-    // TODO: Control bursts messages of the same module
-    return Promise.delay(1000);
+function onMessage(msg) {
+    return analyze(msg.data, analyzeConfig);
 }
 
 // ----------------------------------------------------------------------------
+
+// Setup nano instances
+const npmNano = Promise.promisifyAll(nano(process.env.COUCHDB_NPM_ADDR, { requestDefaults: { timeout: 15000 } }));
+const npmsNano = Promise.promisifyAll(nano(process.env.COUCHDB_NPMS_ADDR, { requestDefaults: { timeout: 15000 } }));
 
 // Setup analyzer queue
 const analyzeQueue = queue(process.env.RABBITMQ_QUEUE, process.env.RABBITMQ_ADDR)
@@ -18,6 +23,13 @@ const analyzeQueue = queue(process.env.RABBITMQ_QUEUE, process.env.RABBITMQ_ADDR
 
 // Print queue stat once in a while
 statQueue(analyzeQueue);
+
+// Setup analyze config
+const analyzeConfig = {
+    npmNano,
+    npmsNano,
+    githubToken: process.env.GITHUB_TOKEN,
+};
 
 // Start consuming
 analyzeQueue.consume(onMessage, { concurrency: argv.concurrency })

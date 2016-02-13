@@ -14,21 +14,21 @@ const statQueue = require('./util/statQueue');
  * Pushes modules into the queue, retrying several times on error.
  * If all retries are used, there isn't much we can do, therefore the process will gracefully exit.
  *
- * @param {array} modules The modules
+ * @param {array} moduleNames The modules
  *
  * @return {Promise} The promise that fulfills once done
  */
-function onModules(modules) {
+function onModules(moduleNames) {
     return promiseRetry((retry) => {
         let lastErr;
 
-        return Promise.filter(modules, (module) => {
+        return Promise.filter(moduleNames, (module) => {
             return analyzeQueue.push(module)
             .then(() => false, (err) => { lastErr = err; return true; });
         })
-        .then((failedModules) => {
-            if (failedModules.length) {
-                modules = failedModules;
+        .then((failedModuleNames) => {
+            if (failedModuleNames.length) {
+                moduleNames = failedModuleNames;
                 retry(lastErr);
             }
         });
@@ -36,8 +36,8 @@ function onModules(modules) {
     .catch((err) => {
         log.error('', 'Too much failed attempts while trying to push modules into the queue, exiting..', {
             err,
-            modules: modules.slice(0, 10),
-            total: modules.length,
+            modules: moduleNames.slice(0, 10),
+            total: moduleNames.length,
         });
 
         process.exit(1);
@@ -50,14 +50,13 @@ function onModules(modules) {
 const analyzeQueue = queue(process.env.RABBITMQ_QUEUE, process.env.RABBITMQ_ADDR)
 .once('error', () => process.exit(1));
 
-// Start observing..
-const nanos = {
-    npm: Promise.promisifyAll(nano(process.env.COUCHDB_NPM_ADDR, { requestDefaults: { timeout: 5000 } })),
-    npms: Promise.promisifyAll(nano(process.env.COUCHDB_NPMS_ADDR, { requestDefaults: { timeout: 5000 } })),
-};
+// Setup nano instances
+const npmNano = Promise.promisifyAll(nano(process.env.COUCHDB_NPM_ADDR, { requestDefaults: { timeout: 15000 } }));
+const npmsNano = Promise.promisifyAll(nano(process.env.COUCHDB_NPMS_ADDR, { requestDefaults: { timeout: 15000 } }));
 
-stale(nanos.npms, onModules);
-realtime(nanos.npm, nanos.npms, { defaultSeq: argv.defaultSeq }, onModules);
+// Start observing..
+stale(npmsNano, onModules);
+realtime(npmNano, npmsNano, { defaultSeq: argv.defaultSeq }, onModules);
 
 // Print queue stat once in a while
 statQueue(analyzeQueue);

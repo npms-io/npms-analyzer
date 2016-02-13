@@ -47,6 +47,16 @@ Bellow is an example of running the command locally:
 
 For more information about the command, run `$ npms-analyzer consume -h`
 
+### npms-analyzer analyze
+
+The `analyze` command analyzes a single module and prints the result.
+
+Bellow is an example of running the command locally:
+
+`$ npms-analyzer analyze cross-spawn`
+
+For more information about the command, run `$ npms-analyzer analyze -h`
+
 
 ## Architecture
 

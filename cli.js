@@ -5,6 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
+const Promise = require('bluebird');
 const yargs = require('yargs');
 const dotenv = require('dotenv');
 const log = require('npmlog');
@@ -28,7 +29,6 @@ function setupYargs(yargs, cmd) {
         parsedCmd = cmd;
 
         yargs
-        .usage(`Usage: ./$0 ${cmd} [options]`)
         .option('log-level', {
             type: 'string',
             default: 'warn',
@@ -41,8 +41,6 @@ function setupYargs(yargs, cmd) {
             alias: 'e',
             describe: 'The .env file to use',
         });
-    } else {
-        yargs.usage('Usage: ./$0 <cmd> [options]');
     }
 
     return yargs;
@@ -50,9 +48,11 @@ function setupYargs(yargs, cmd) {
 
 // CLI definition
 const argv = setupYargs(yargs)
+.usage(`Usage: ./$0 <cmd> [options]`)
 .demand(1, 1)
 .command('observe', 'Starts observing module changes and pushes them into a queue', (yargs) => {
     setupYargs(yargs, 'observe')
+    .usage(`Usage: ./$0 observe [options]`)
     .option('default-seq', {
         type: 'number',
         default: 0,
@@ -66,6 +66,7 @@ const argv = setupYargs(yargs)
 })
 .command('consume', 'Consumes modules from the queue, analyzing them', (yargs) => {
     setupYargs(yargs, 'consume')
+    .usage(`Usage: ./$0 consume [options]`)
     .option('concurrency', {
         type: 'number',
         default: 2,
@@ -77,6 +78,11 @@ const argv = setupYargs(yargs)
         return true;
     });
 })
+.command('analyze', 'Analyzes a single module', (yargs) => {
+    setupYargs(yargs, 'analyze')
+    .usage(`Usage: ./$0 analyze <module> [options]`)
+    .demand(2, 2);
+})
 .argv;
 
 if (!parsedCmd) {
@@ -86,6 +92,9 @@ if (!parsedCmd) {
 }
 
 // ----------------------------------------------------------------------------
+
+// Configure long stack traces
+Promise.config({ longStackTraces: process.env.NODE_ENV !== 'production' });
 
 // Configure logger
 log.level = argv.logLevel;
