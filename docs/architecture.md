@@ -83,7 +83,7 @@ API to extract useful information present there.
 
 ### Evaluation
 
-The evaluation phased uses the `info` object that was previously collected to evaluate different aspects of the module. These aspects are divide in four categories:
+The evaluation phase uses the `info` object that was previously collected to evaluate different aspects of the module. These aspects are divide in four categories:
 
 - quality
 - popularity
