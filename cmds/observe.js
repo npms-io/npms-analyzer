@@ -5,9 +5,9 @@ const argv = require('yargs').argv;
 const nano = require('nano');
 const Promise = require('bluebird');
 const promiseRetry = require('promise-retry');
-const realtime = require('../lib/observers/realtime');
-const stale = require('../lib/observers/stale');
-const queue = require('../lib/queue');
+const realtime = require('../lib/analysis/observers/realtime');
+const stale = require('../lib/analysis/observers/stale');
+const queue = require('../lib/analysis/queue');
 const statQueue = require('./util/statQueue');
 
 /**

@@ -3,8 +3,8 @@
 const Promise = require('bluebird');
 const argv = require('yargs').argv;
 const nano = require('nano');
-const queue = require('../lib/queue');
-const analyze = require('../lib/analyze');
+const analyze = require('../lib/analysis/analyze');
+const queue = require('../lib/analysis/queue');
 const statQueue = require('./util/statQueue');
 
 function onMessage(msg) {

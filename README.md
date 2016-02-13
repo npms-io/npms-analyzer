@@ -49,6 +49,14 @@ The `analyze` command analyzes a single module and prints the result. This is ma
 
 For more information about the command, run `$ npms-analyzer analyze -h`
 
+### npms-analyzer score
+
+The `score` command, continuously iterates over the analysis results and calculates a score for all the `npm` modules.
+
+`$ npms-analyzer score`
+
+For more information about the command, run `$ npms-analyzer score -h`
+
 
 ## Architecture
 
