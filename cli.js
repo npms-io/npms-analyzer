@@ -114,4 +114,4 @@ try {
 dotenv.config({ silent: true, path: argv.envFile });
 
 // Run actual command
-require(`./cmds/${parsedCmd}`);
+require(`./lib/cmds/${parsedCmd}`);
