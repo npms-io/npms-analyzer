@@ -1,7 +1,7 @@
 # Architecture
 
 The `npms-analyzer` runs two continuous and distinct processes. One is the `analysis` process where each module gets
-inspected and evaluated. The other one is the `scoring` process where each module gets a score based whole evalution results.
+inspected and evaluated. The other one is the `scoring` process where each module gets a score based whole evaluation results.
 
 - [Analysis](#analysis)
 - [Scoring](#scoring)
@@ -20,8 +20,7 @@ By looking at the diagram above, you get an idea of how the analysis process wor
 
 ### Collectors
 
-The collectors are responsible for gathering useful information about each module. The collecting phase produces an
-`info` object. The current collectors are:
+The collectors are responsible for gathering useful information about each module from a variety of sources:
 
 - metadata
 - source
@@ -132,6 +131,7 @@ Popularity attributes allows us to understand the module extend and adoption. Th
 If two modules are similar, one tend to choose the one in which the author is well known in the community. Also, there are people that simply prefer to use a module over another because the author is popular. While this doesn't directly translate to quality, it's still a strong factor that we should account.
 
 I will not elaborate on this because this evaluator will NOT be developed nor used in the initial release.
+
 
 ## Scoring
 
