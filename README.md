@@ -23,6 +23,7 @@ This project exposes all its functionality through a CLI.
 
 ![Demo](https://i.imgur.com/nz9CzVR.gif)
 
+Note that you must it [setup](./docs/setup.md) the project before using the CLI.
 Keep reading to learn more about the CLI and its commands.
 
 ### npms-analyzer observe
