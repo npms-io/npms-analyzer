@@ -17,8 +17,8 @@ By looking at the diagram above, you get an idea of how the analysis process wor
 
 Observers continuously push modules to the queue whenever they see fit.
 
-- `realtime` - Observes the replicated `npm` registry for changes, pushing new or updated modules into the analyze queue.
-- `stale` - Fetches modules that were not analyzed recently, pushing them to the queue.
+- realtime - Observes the replicated `npm` registry for changes, pushing new or updated modules into the analyze queue.
+- stale - Fetches modules that were not analyzed recently, pushing them to the queue.
 
 ### Queue
 
@@ -105,25 +105,26 @@ API to extract useful information present there.
 
 #### Evaluators
 
-The evaluators take the `info` object that was previously collected and evaluate different aspects of the module. These aspects are divide in four categories:
+The evaluators take the information that was previously collected and evaluate different aspects of the module. These aspects are divide in four categories:
 
 - quality
 - popularity
 - maintenance
 - personalities
 
+Evaluators may divide each of these aspects into more granular ones, but their values are always scalars.
+
 ##### quality
 
 Quality attributes are easy to calculate because they are self contained. These are the kind of attributes that a person looks first when looking at the module.
 
-- Has README?
-- Has tests? has coverage? whats the coverage %?
-- Is the version stable? (> 1.x.x)
-- Is the module deprecated?
-- Has continuous integration? is build passing?
-- Has outdated dependencies?
-- Has security vulnerabilities?
-- Has custom website? has good branding? has badges?
+Below are some of the points taken into consideration:
+
+- Has README? Has license? Has .gitignore and friends?
+- Is the version stable (> 1.x.x)? Is it deprecated?
+- Has tests? Whats their coverage %? Is build passing?
+- Has outdated dependencies? Do they have vulnerabilities?
+- Has custom website? Has badges?
 - Does the project have linters configured?
 - What's the code complexity score?
 
@@ -131,14 +132,18 @@ Quality attributes are easy to calculate because they are self contained. These 
 
 Maintenance attributes allows us to understand if the module is active & healthy or if it is abandoned. These are typically the second kind of attributes that a person looks when looking at the module.
 
-- Percentage of open issues among the total issues
-- The time it takes to close the issues
+Below follows some of the points taken into consideration:
+
+- Ratio of open issues vs the total issues
+- The time it takes to close issues
 - Most recent commit
 - Commit frequency
 
 ##### popularity
 
 Popularity attributes allows us to understand the module extend and adoption. These are the kind of attributes that a person looks when they are undecided on the module choice.
+
+Bellow follows some of the points taken into consideration:
 
 - Number of stars
 - Number of forks
