@@ -11,14 +11,36 @@ inspected and evaluated. The other one is the `scoring` process where each modul
 
 ![Overview](./diagrams/analysis-overview.png)
 
-By looking at the diagram above, you get an idea of how the analysis process works. Bellow you may find a more detailed description for the most complex pieces.
+By looking at the diagram above, you get an idea of how the analysis process works. Bellow you may find a more detailed description for the most complex pieces. The `grey` components are present in `lib/analysis`.
 
 ### Observers
 
-- `realtime` - Continuously observes the replicated `npm` registry for changes, pushing new or updated modules into the analyze queue.
-- `stale` - Continuously fetches modules that were not analyzed recently, pushing them to the queue.
+Observers continuously push modules to the queue whenever they see fit.
 
-### Collectors
+- `realtime` - Observes the replicated `npm` registry for changes, pushing new or updated modules into the analyze queue.
+- `stale` - Fetches modules that were not analyzed recently, pushing them to the queue.
+
+### Queue
+
+The queue holds all modules that are waiting to be analyzed. This component gives us:
+
+- Burst protection
+- No loss of modules on crashes or failures
+- Automatic retries
+
+### Analyze
+
+The analyze is a simple pipeline that produces an analysis result:
+
+1. Fetches the module data
+2. Downloads the source code
+3. Runs the Collectors
+4. Runs the evaluators
+5. Stores the result in CouchDB and Elasticsearch
+
+Bellow you may find additional information on the collectors and evaluators.
+
+#### Collectors
 
 The collectors are responsible for gathering useful information about each module from a variety of sources:
 
@@ -27,7 +49,7 @@ The collectors are responsible for gathering useful information about each modul
 - github
 - npm
 
-#### metadata
+##### metadata
 
 The metadata collector extracts basic data and attributes of a module.
 
@@ -41,7 +63,7 @@ The metadata collector extracts basic data and attributes of a module.
 - Check if the module is deprecated
 - Check if the module has a test script
 
-#### source
+##### source
 
 The source collector digs into the source code.
 
@@ -57,7 +79,7 @@ The source collector digs into the source code.
 
 Items signaled with * are not yet done.
 
-#### github
+##### github
 
 The github collector uses GitHub and [Issue Stats](http://issuestats.com/) to collect useful data and statistics
 present there.
@@ -72,7 +94,7 @@ present there.
 This collector is susceptible to the GitHub [rate limit](https://developer.github.com/v3/rate_limit/) policy. To fight
 against this limit, you may define several GitHub keys to be used in a round-robin fashion.
 
-#### npm
+##### npm
 
 The npm collector uses the replicated CouchDB views and the npm [download-counts](https://github.com/npm/download-counts)
 API to extract useful information present there.
@@ -81,16 +103,16 @@ API to extract useful information present there.
 - Get number of downloads over time
 - Get number of dependents
 
-### Evaluation
+#### Evaluators
 
-The evaluation phase uses the `info` object that was previously collected to evaluate different aspects of the module. These aspects are divide in four categories:
+The evaluators take the `info` object that was previously collected and evaluate different aspects of the module. These aspects are divide in four categories:
 
 - quality
 - popularity
 - maintenance
 - personalities
 
-#### quality
+##### quality
 
 Quality attributes are easy to calculate because they are self contained. These are the kind of attributes that a person looks first when looking at the module.
 
@@ -105,7 +127,7 @@ Quality attributes are easy to calculate because they are self contained. These 
 - Does the project have linters configured?
 - What's the code complexity score?
 
-#### maintenance
+##### maintenance
 
 Maintenance attributes allows us to understand if the module is active & healthy or if it is abandoned. These are typically the second kind of attributes that a person looks when looking at the module.
 
@@ -114,7 +136,7 @@ Maintenance attributes allows us to understand if the module is active & healthy
 - Most recent commit
 - Commit frequency
 
-#### popularity
+##### popularity
 
 Popularity attributes allows us to understand the module extend and adoption. These are the kind of attributes that a person looks when they are undecided on the module choice.
 
@@ -126,7 +148,7 @@ Popularity attributes allows us to understand the module extend and adoption. Th
 - Number of downloads
 - Downloads acceleration
 
-#### personalities
+##### personalities
 
 If two modules are similar, one tend to choose the one in which the author is well known in the community. Also, there are people that simply prefer to use a module over another because the author is popular. While this doesn't directly translate to quality, it's still a strong factor that we should account.
 
