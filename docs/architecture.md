@@ -112,7 +112,7 @@ The evaluators take the information that was previously collected and evaluate d
 - maintenance
 - personalities
 
-Evaluators may divide each of these aspects into more granular ones, but their values are always scalars.
+Evaluators may further divide each of these aspects into more granular ones, but their values are always scalars.
 
 ##### quality
 
