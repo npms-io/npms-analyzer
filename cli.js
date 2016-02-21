@@ -80,8 +80,8 @@ const argv = setupYargs(yargs)
 })
 .command('analyze', 'Analyzes a single module', (yargs) => {
     setupYargs(yargs, 'analyze')
-    .usage(`Usage: ./$0 analyze <module> [options]`)
-    .demand(2, 2);
+    .usage(`Usage: ./$0 analyze <module> [<module>] [options]`)
+    .demand(2);
 })
 .argv;
 
