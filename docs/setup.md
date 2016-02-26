@@ -17,8 +17,8 @@ Copy `.env.dist` to `.env`.
 
 - Install [CouchDB](http://couchdb.apache.org/) and run it.
 - Add user `admin` with `admin` as password by executing `curl -X PUT http://localhost:5984/_config/admins/admin -d '"admin"'`.
-- After doing this, operations done in the [web interface](http://localhost:5984) require you to login (login is at bottom right corner).
-- Create database named `npms` by executing `curl -X PUT http://admin:admin@localhost:5984/npm`
+- After doing this, operations done in the [web interface](http://localhost:5984/_utils/) require you to login (login is at bottom right corner).
+- Create database named `npms` by executing `curl -X PUT http://admin:admin@localhost:5984/npms`
 - Change default maximum replication retries to infinite by executing `curl -X PUT http://admin:admin@localhost:5984/_config/replicator/max_replication_retry_count -d '"infinity"'`
 - Setup npm replication by executing `curl -X PUT http://admin:admin@localhost:5984/_replicator/npm -d '{ "source":  "https://skimdb.npmjs.com/registry", "target": "http://admin:admin@localhost:5984/npm", "create_target": true, "continuous": true }'`
 
