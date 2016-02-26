@@ -6,6 +6,11 @@ Bellow you will find a list of items that you must do to get the project working
 
 Copy `.env.dist` to `.env`.
 
+### General utilities
+
+- `git` must be installed in the system and available in the PATH.
+- `tar` must be installed in the system and available in the PATH.
+
 ### CouchDB
 
 **NOTE**: You may put the `CouchDB` app into the gitignored `dev` folder while developing!

@@ -48,11 +48,11 @@ function setupYargs(yargs, cmd) {
 
 // CLI definition
 const argv = setupYargs(yargs)
-.usage(`Usage: ./$0 <cmd> [options]`)
+.usage('Usage: ./$0 <cmd> [options]')
 .demand(1, 1)
 .command('observe', 'Starts observing module changes and pushes them into a queue', (yargs) => {
     setupYargs(yargs, 'observe')
-    .usage(`Usage: ./$0 observe [options]`)
+    .usage('Usage: ./$0 observe [options]')
     .option('default-seq', {
         type: 'number',
         default: 0,
@@ -66,7 +66,7 @@ const argv = setupYargs(yargs)
 })
 .command('consume', 'Consumes modules from the queue, analyzing them', (yargs) => {
     setupYargs(yargs, 'consume')
-    .usage(`Usage: ./$0 consume [options]`)
+    .usage('Usage: ./$0 consume [options]')
     .option('concurrency', {
         type: 'number',
         default: 2,
@@ -80,7 +80,7 @@ const argv = setupYargs(yargs)
 })
 .command('analyze', 'Analyzes a single module', (yargs) => {
     setupYargs(yargs, 'analyze')
-    .usage(`Usage: ./$0 analyze <module> [<module>] [options]`)
+    .usage('Usage: ./$0 analyze <module> [<module>] [options]')
     .demand(2);
 })
 .argv;
@@ -93,11 +93,23 @@ if (!parsedCmd) {
 
 // ----------------------------------------------------------------------------
 
-// Configure long stack traces
-Promise.config({ longStackTraces: process.env.NODE_ENV !== 'production' });
+// Configure bluebird
+global.Promise = Promise;
+Promise.config({ longStackTraces: process.env.NODE_ENV !== 'production', warnings: false });
 
 // Configure logger
+log.addLevel('stat', log.levels.warn + 100, { fg: 'green', bg: 'black' });
 log.level = argv.logLevel;
+log.on('log', (entry) => {
+    const err = entry.messageRaw[1] && entry.messageRaw[1].err;
+
+    if (err && err.stack) {
+        const stack = err.stack.replace(err.toString(), '').trim();
+
+        entry.messageRaw.push(err);
+        entry.message += `\nStack:\n${stack}\n`;
+    }
+});
 
 // Process .env file
 try {

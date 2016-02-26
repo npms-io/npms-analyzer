@@ -4,6 +4,7 @@
   "description": "The analyzer behind npms",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint '{*.js,lib/**/*.js,test/**/*.js}' --ignore-pattern=test/coverage",
     "test": "mocha --bail",
     "test-cov": "istanbul cover --dir test/coverage _mocha -- --bail && echo Coverage lies in test/coverage/lcov-report/index.html",
     "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
@@ -36,17 +37,22 @@
     "detect-repo-linters": "^1.0.1",
     "dotenv": "^2.0.0",
     "get-folder-size": "^1.0.0",
+    "glob": "^7.0.0",
     "got": "^6.1.1",
     "hosted-git-info": "^2.1.4",
+    "load-json-file": "^1.1.0",
     "lodash": "^4.0.0",
+    "mkdirp": "^0.5.1",
     "moment": "^2.11.1",
     "moment-range": "^2.1.0",
     "nano": "^6.2.0",
+    "normalize-package-data": "^2.3.5",
     "npmlog": "^2.0.1",
     "nsp": "^2.2.0",
-    "prepend-http": "^1.0.3",
+    "prettyjson": "^1.1.3",
     "promise-retry": "^1.0.1",
     "require-directory": "^2.1.1",
+    "rimraf": "^2.5.2",
     "semver": "^5.1.0",
     "spdx": "^0.5.0",
     "spdx-correct": "^1.0.2",
@@ -54,9 +60,10 @@
     "yargs": "^3.32.0"
   },
   "devDependencies": {
-    "@satazor/eslint-config": "^1.0.6",
+    "@satazor/eslint-config": "^2.0.0",
     "chai": "^3.5.0",
     "coveralls": "^2.11.6",
+    "eslint": "^2.2.0",
     "istanbul": "^0.4.2",
     "mocha": "^2.4.5"
   },
