@@ -101,6 +101,10 @@ Promise.config({ longStackTraces: process.env.NODE_ENV !== 'production', warning
 log.addLevel('stat', log.levels.warn + 100, { fg: 'green', bg: 'black' });
 log.level = argv.logLevel;
 log.on('log', (entry) => {
+    if (log.levels[entry.level] < log.levels.error) {
+        return;
+    }
+
     const err = entry.messageRaw[1] && entry.messageRaw[1].err;
 
     if (err && err.stack) {
