@@ -2,12 +2,9 @@
 
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
 const assert = require('assert');
 const Promise = require('bluebird');
 const yargs = require('yargs');
-const dotenv = require('dotenv');
 const log = require('npmlog');
 
 let parsedCmd;
@@ -34,12 +31,6 @@ function setupYargs(yargs, cmd) {
             default: 'warn',
             alias: 'll',
             describe: 'The log level to use (error, warn, info, verbose, etc.)',
-        })
-        .option('env-file', {
-            type: 'string',
-            default: '.env',
-            alias: 'e',
-            describe: 'The .env file to use',
         });
     }
 
@@ -99,7 +90,7 @@ Promise.config({ longStackTraces: process.env.NODE_ENV !== 'production', warning
 
 // Configure logger
 log.addLevel('stat', log.levels.warn + 100, { fg: 'green', bg: 'black' });
-log.level = argv.logLevel;
+log.level = argv.logLevel || 'info';
 log.on('log', (entry) => {
     if (log.levels[entry.level] < log.levels.error) {
         return;
@@ -114,20 +105,6 @@ log.on('log', (entry) => {
         entry.message += `\nStack:\n${stack}\n`;
     }
 });
-
-// Process .env file
-try {
-    fs.accessSync(argv.envFile);
-} catch (err) {
-    if (err.code === 'ENOENT') {
-        log.error('', `${path.resolve(argv.envFile)} does not exist`);
-        process.exit(1);
-    }
-
-    throw err;
-}
-
-dotenv.config({ silent: true, path: argv.envFile });
 
 // Run actual command
 require(`./lib/cmds/${parsedCmd}`);

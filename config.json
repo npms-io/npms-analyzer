@@ -1,0 +1,18 @@
+{
+    "couchdbNpmAddr": "http://admin:admin@localhost:5984/npm",
+    "couchdbNpmsAddr": "http://admin:admin@localhost:5984/npms",
+    "rabbitmqAddr": "amqp://guest:guest@localhost",
+    "rabbitmqQueue": "npms-analysis",
+    "githubTokens": [
+        "64879cd3d5a868fe3af68eedbaa87c5c33ad57d0",
+        "e8c3ee4e2aca17fa557f81416bbd1b82ab274bf2",
+        "709ce49b87fa6ae755f3a2c7f60c0357db909f45",
+        "7f05ed9a2e339624c58cf78d76828d3b60c1aa08",
+        "de78008427e085ca4c9d0a39a289e805ae9207d4",
+        "585a671bae7dbe963bba2c7700c24878d1b00594",
+        "a5230f8c2772be22222fd14ee99e54f4fcd452f2",
+        "11d57769cc709d6bcc43dd9e3733cd507dae54ff",
+        "5a721da8ec8da68b15f67ef4c4e3e1b4e3ca1d40",
+        "43d816009dc405da67a65a190a93026f94a3abf2"
+    ]
+}

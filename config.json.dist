@@ -1,0 +1,7 @@
+{
+    "couchdbNpmAddr": "http://admin:admin@localhost:5984/npm",
+    "couchdbNpmsAddr": "http://admin:admin@localhost:5984/npms",
+    "rabbitmqAddr": "amqp://guest:guest@localhost",
+    "rabbitmqQueue": "npms-analysis",
+    "githubTokens": []
+}

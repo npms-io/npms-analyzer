@@ -2,9 +2,9 @@
 
 Bellow you will find a list of items that you must do to get the project working on your machine.
 
-### .env
+### Config file
 
-Copy `.env.dist` to `.env`.
+Copy `config.json.dist` to `config.json` and edit parameters if necessary.
 
 ### General utilities
 
