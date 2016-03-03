@@ -1,15 +1,15 @@
-"use strict";
+'use strict';
 
-const fs = require("fs");
+const fs = require('fs');
 
-let walk = (dir) => fs.readdirSync(dir).forEach((file) => {
-    let filePath = [dir, file].join('/');
+const walk = (dir) => fs.readdirSync(dir).forEach((file) => {
+    const filePath = [dir, file].join('/');
 
     if (fs.statSync(filePath).isDirectory()) {
-        return describe(file, _ => walk(filePath))
+        describe(file, () => walk(filePath));
     } else {
-        require(filePath)
+        require(filePath);
     }
 });
 
-walk(__dirname + '/spec');
+walk(`${__dirname}/spec`);
