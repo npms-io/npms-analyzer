@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint '{*.js,lib/**/*.js,test/**/*.js}' --ignore-pattern=test/coverage",
-    "test": "mocha --bail",
+    "test": "mocha",
     "test-cov": "istanbul cover --dir test/coverage _mocha -- --bail && echo Coverage lies in test/coverage/lcov-report/index.html",
     "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },

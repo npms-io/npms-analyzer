@@ -12,8 +12,4 @@ let walk = (dir) => fs.readdirSync(dir).forEach((file) => {
     }
 });
 
-// Inject
-global.expect = require('chai').expect;
-global.Promise = require('bluebird');
-
 walk(__dirname + '/spec');
