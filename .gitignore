@@ -3,6 +3,5 @@ npm-debug.*
 /config*
 !/config.dist
 /test/coverage
-
 /log*
 /dev

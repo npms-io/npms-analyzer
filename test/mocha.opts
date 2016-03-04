@@ -1,0 +1,2 @@
+--bail
+--require ./test/util/inject.js
