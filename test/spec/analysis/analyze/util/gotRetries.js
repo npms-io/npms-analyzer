@@ -10,7 +10,7 @@ describe('gotRetries', () => {
         expect(gotRetries(Number.MAX_VALUE, new Error())).to.equal(0);
     });
 
-    it('should not stop when an transient error occurs', () => {
+    it('should not stop when a transient error occurs', () => {
         const error = new Error();
 
         error.code = 'ECONNRESET';
