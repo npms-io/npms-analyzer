@@ -1,4 +1,4 @@
 'use strict';
 
+require('../../lib/setup');
 global.expect = require('chai').expect;
-global.Promise = require('bluebird');
