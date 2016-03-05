@@ -1,0 +1,21 @@
+{
+    // Databases related stuff
+    couchdbNpmAddr: 'http://admin:admin@localhost:5984/npm',
+    couchdbNpmsAddr: 'http://admin:admin@localhost:5984/npms',
+    rabbitmqAddr: 'amqp://guest:guest@localhost',
+    rabbitmqQueue: 'npms-analysis',
+
+    // Github tokens to be used by token-dealer
+    githubTokens: [],
+
+    // List of modules that will be ignored by the continuous analysis process
+    blacklist: {
+        'yourmom': 'Huge tar bomb',
+        'tone-police': 'Registry crashes while downloding',
+        'isit322-swu': 'Registry crashes while downloading',
+        'zachtestproject1': 'Registry returns 500 internal',
+        'zachtestproject2': 'Registry returns 500 internal',
+        'zachtestproject3': 'Registry returns 500 internal',
+        'zachtestproject4': 'Registry returns 500 internal',
+    }
+}

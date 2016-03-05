@@ -1,7 +1,6 @@
 node_modules
 npm-debug.*
-/config*
-!/config.dist
+/config/local.*
 /test/coverage
 /log*
 /dev
