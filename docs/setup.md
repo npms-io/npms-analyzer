@@ -4,7 +4,8 @@ Bellow you will find a list of items that you must do to get the project working
 
 ### Config file
 
-Copy `config.json.dist` to `config.json` and edit parameters if necessary.
+This project uses the [config][https://www.npmjs.com/package/config] for configuration.
+You may create `config/local.json5` file to override the configuration as necessary.
 
 ### General utilities
 
