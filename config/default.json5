@@ -11,7 +11,7 @@
     // List of modules that will be ignored by the continuous analysis process
     blacklist: {
         'yourmom': 'Huge tar bomb',
-        'tone-police': 'Registry crashes while downloding',
+        'tone-police': 'Registry crashes while downloading',
         'isit322-swu': 'Registry crashes while downloading',
         'zachtestproject1': 'Registry returns 500 internal',
         'zachtestproject2': 'Registry returns 500 internal',
