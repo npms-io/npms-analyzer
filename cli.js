@@ -62,5 +62,5 @@ yargs
 
 function handleCommand(cmd) {
     require('./lib/setup');   // Setup
-    require(`./cli/${cmd}`);  // Run actual command
+    require(`./lib/cli/${cmd}`);  // Run actual command
 }
