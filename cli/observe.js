@@ -5,10 +5,10 @@ const log = require('npmlog');
 const argv = require('yargs').argv;
 const nano = require('nano');
 const promiseRetry = require('promise-retry');
-const realtime = require('../analysis/observers/realtime');
-const stale = require('../analysis/observers/stale');
-const queue = require('../analysis/queue');
-const statQueue = require('./util/statQueue');
+const realtime = require('../lib/analysis/observers/realtime');
+const stale = require('../lib/analysis/observers/stale');
+const queue = require('../lib/analysis/queue');
+const statQueue = require('./stat/queue');
 
 /**
  * Pushes modules into the queue, retrying several times on error.

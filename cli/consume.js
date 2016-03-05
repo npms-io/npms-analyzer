@@ -4,11 +4,11 @@ const config = require('config');
 const argv = require('yargs').argv;
 const nano = require('nano');
 const log = require('npmlog');
-const analyze = require('../analysis/analyze');
-const queue = require('../analysis/queue');
-const statQueue = require('./util/statQueue');
-const statTokens = require('./util/statTokens');
-const statProgress = require('./util/statProgress');
+const analyze = require('../lib/analysis/analyze');
+const queue = require('../lib/analysis/queue');
+const statQueue = require('./stat/queue');
+const statTokens = require('./stat/tokens');
+const statProgress = require('./stat/progress');
 
 function onMessage(msg) {
     const moduleName = msg.data;
