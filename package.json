@@ -40,7 +40,6 @@
     "gh-issues-stats": "^0.1.0",
     "glob": "^7.0.0",
     "got": "^6.2.0",
-    "heapdump": "^0.3.7",
     "hosted-git-info": "^2.1.4",
     "humanize-duration": "^3.6.1",
     "load-json-file": "^1.1.0",
@@ -59,6 +58,9 @@
     "spdx-correct": "^1.0.2",
     "token-dealer": "^1.2.0",
     "yargs": "^4.0.0"
+  },
+  "optionalDependencies": {
+    "heapdump": "^0.3.7"
   },
   "devDependencies": {
     "@satazor/eslint-config": "^2.0.0",
