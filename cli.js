@@ -4,8 +4,6 @@
 
 'use strict';
 
-process.title = 'npms-analyzer';
-
 const assert = require('assert');
 const yargs = require('yargs');
 
@@ -61,6 +59,8 @@ yargs
 .argv;
 
 // ----------------------------------------------------------------------------
+
+require('heapdump');
 
 function handleCommand(cmd) {
     require('./lib/setup');   // Setup
