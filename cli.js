@@ -4,6 +4,8 @@
 
 'use strict';
 
+process.title = 'npms-analyzer';
+
 const assert = require('assert');
 const yargs = require('yargs');
 
