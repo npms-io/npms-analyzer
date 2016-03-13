@@ -10,6 +10,13 @@ const score = require('../lib/scoring/score');
 const aggregate = require('../lib/scoring/aggregate');
 const stats = require('./stats');
 
+/**
+ * Runs a scoring cycle.
+ * When it finishes, another cycle will be automatically run after a certain delay.
+ *
+ * @param {Nano}          npmsNano The npm nano instance
+ * @param {Elasticsearch} esClient The elasticsearch client instance
+ */
 function cycle(npmsNano, esClient) {
     const startedAt = Date.now();
 

@@ -9,6 +9,14 @@ const queue = require('../../lib/analysis/queue');
 
 const blacklisted = config.get('blacklist');
 
+/**
+ * Fetches modules of a view.
+ *
+ * @param {string} view    The view in the form of design-doc/view-name
+ * @param {Nano}   npmNano The npm nano instance
+ *
+ * @return {Promise} The promise that fulfills when done
+ */
 function fetchView(view, npmNano) {
     const split = view.split('/');
 

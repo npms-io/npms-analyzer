@@ -1,4 +1,4 @@
 'use strict';
 
-require('../../lib/setup');
+require('../../lib/configure');
 global.expect = require('chai').expect;

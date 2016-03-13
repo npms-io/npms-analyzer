@@ -9,6 +9,13 @@ const queue = require('../../lib/analysis/queue');
 
 const blacklisted = config.get('blacklist');
 
+/**
+ * Fetches the npm modules.
+ *
+ * @param {Nano} npmNano The npm nano instance
+ *
+ * @return {Promise} The promise that fulfills when done
+ */
 function fetchNpmModules(npmNano) {
     return npmNano.listAsync()
     .then((response) => {
@@ -18,6 +25,13 @@ function fetchNpmModules(npmNano) {
     });
 }
 
+/**
+ * Fetches the npms modules.
+ *
+ * @param {Nano} npmsNano The npms nano instance
+ *
+ * @return {Promise} The promise that fulfills when done
+ */
 function fetchNpmsModules(npmsNano) {
     return npmsNano.listAsync({ startkey: 'module!', endkey: 'module!\ufff0' })
     .then((response) => {
