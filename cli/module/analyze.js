@@ -21,7 +21,7 @@ module.exports.handler = (argv) => {
     const npmsNano = Promise.promisifyAll(nano(config.get('couchdbNpmsAddr'), { requestDefaults: { timeout: 15000 } }));
 
     // Analyze module
-    const name = argv._[2];
+    const name = argv._[2].toString();  // module 0 evaluates to number so we must cast to a string
 
     return analyze(name, npmNano, npmsNano, { githubTokens: config.get('githubTokens') })
     .then((result) => {
