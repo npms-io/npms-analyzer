@@ -49,10 +49,5 @@
                 }
             }
         }
-    },
-
-    "aliases": {
-        "npms_read": {},
-        "npms_write": {}
     }
 }

@@ -5,7 +5,7 @@ Bellow you will find a list of items that you must do to get the project working
 ### Config file
 
 This project uses the [config][https://www.npmjs.com/package/config] for configuration.
-You may create `config/local.json5` file to override the configuration as necessary.
+You may create `config/local.json5` file to override the configuration as necessary, specially to define some `githubTokens`.
 
 ### General utilities
 
