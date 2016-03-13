@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint '{*.js,lib/**/*.js,test/**/*.js}' --ignore-pattern=test/coverage",
-    "test": "mocha",
-    "test-cov": "istanbul cover --dir test/coverage _mocha -- --bail && echo Coverage lies in test/coverage/lcov-report/index.html",
-    "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "test": "NODE_ENV=test mocha",
+    "test-cov": "NODE_ENV=test istanbul cover --dir test/coverage _mocha -- --bail && echo Coverage lies in test/coverage/lcov-report/index.html",
+    "test-travis": "NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "bugs": {
     "url": "https://github.com/npms-io/npms-analyzer/issues/"
@@ -32,10 +32,12 @@
     "amqplib": "^0.4.0",
     "bluebird": "^3.1.1",
     "config": "^1.19.0",
+    "couchdb-iterator": "^1.0.0",
     "david": "^7.0.1",
     "deep-compact": "^1.0.2",
     "detect-readme-badges": "^1.0.0",
     "detect-repo-linters": "^1.0.1",
+    "elasticsearch": "^10.1.3",
     "get-folder-size": "^1.0.0",
     "gh-issues-stats": "^0.1.0",
     "glob": "^7.0.0",

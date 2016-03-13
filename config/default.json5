@@ -1,9 +1,11 @@
 {
     // Databases related stuff
-    couchdbNpmAddr: 'http://admin:admin@localhost:5984/npm',
-    couchdbNpmsAddr: 'http://admin:admin@localhost:5984/npms',
-    rabbitmqAddr: 'amqp://guest:guest@localhost',
-    rabbitmqQueue: 'npms-analysis',
+    couchdbNpmAddr: 'http://admin:admin@127.0.0.1:5984/npm',
+    couchdbNpmsAddr: 'http://admin:admin@127.0.0.1:5984/npms',
+    rabbitmqAddr: 'amqp://guest:guest@127.0.0.1',
+    rabbitmqQueue: 'npms',
+    elasticsearchHost: '127.0.0.1:9200',
+    elasticsearchIndex: 'npms',
 
     // Github tokens to be used by token-dealer
     githubTokens: [],

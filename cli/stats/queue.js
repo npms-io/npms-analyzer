@@ -30,7 +30,7 @@ function statQueue(queue) {
         }, (err) => {
             log.error('queue', 'Queue stat failed', { err });
         })
-        .catch((err) => log.error('progress', 'Failed to stat queue', { err }));
+        .done();
     }, 15000)
     .unref();
 }

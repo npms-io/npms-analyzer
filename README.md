@@ -26,6 +26,8 @@ This project exposes all its functionality through a CLI.
 Note that you must it [setup](./docs/setup.md) the project before using the CLI.
 Keep reading to learn more about the CLI and its commands.
 
+The most important commands will be describe below. To discover the other ones run `$ npms-analyzer -h`.
+
 ### npms-analyzer observe
 
 The `observe` command starts observing changes that occur in the `npm` registry as well as modules that were not analyzed for a while. Each reported module will be pushed into a queue to be analyzed by the queue consumers.
@@ -42,21 +44,13 @@ The `consume` command starts consuming the queue, running the analysis process f
 
 For more information about the command, run `$ npms-analyzer consume -h`
 
-### npms-analyzer analyze
+### npms-analyzer scoring
 
-The `analyze` command analyzes a single module and prints the result. This is mainly useful for debugging purposes.
+The `scoring` command, continuously iterates over the analysis results and calculates a score for all the `npm` modules, storing the result in `elasticsearch`.
 
-`$ npms-analyzer analyze cross-spawn`
+`$ npms-analyzer scoring`
 
-For more information about the command, run `$ npms-analyzer analyze -h`
-
-### npms-analyzer score
-
-The `score` command, continuously iterates over the analysis results and calculates a score for all the `npm` modules.
-
-`$ npms-analyzer score`
-
-For more information about the command, run `$ npms-analyzer score -h`
+For more information about the command, run `$ npms-analyzer scoring -h`
 
 
 ## Architecture

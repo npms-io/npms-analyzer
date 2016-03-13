@@ -1,0 +1,58 @@
+{
+    "settings" : {
+        "number_of_shards" : 1,
+        "number_of_replicas": 1,
+
+        "index.query.default_field": "name"
+    },
+
+    "mappings" : {
+        "module" : {
+            "dynamic": "strict",
+            "_all": {
+                "enabled": false
+            },
+
+            "properties" : {
+                "name": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "keywords": {
+                    "type": "string"
+                },
+                "publisher": {
+                    "type": "string"
+                },
+                "maintainers": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "object",
+                    "properties": {
+                        "final": { "type": "double" },
+                        "detail": {
+                            "type": "object",
+                            "properties": {
+                                "quality": { "type": "double" },
+                                "popularity": { "type": "double" },
+                                "maintenance": { "type": "double" }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+    "aliases": {
+        "npms_read": {},
+        "npms_write": {}
+    }
+}

@@ -52,7 +52,7 @@ function statProgress(npmNano, npmsNano) {
         }, (err) => {
             log.error('progress', 'Progress stat failed', { err });
         })
-        .catch((err) => log.error('progress', 'Failed to stat progress', { err }));
+        .done();
     }, 15000)
     .unref();
 }

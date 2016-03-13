@@ -21,7 +21,8 @@ function statTokens(tokens, group) {
         const usableTokensUsage = tokensUsage.filter((entry) => !entry.exhausted);
 
         if (usableTokensUsage.length) {
-            return log.stat('tokens', `${usableTokensUsage.length} out of ${tokensUsage.length} tokens are usable (${group})`);
+            log.stat('tokens', `${usableTokensUsage.length} out of ${tokensUsage.length} tokens are usable (${group})`);
+            return;
         }
 
         const closerTokenUsage = tokensUsage.reduce((closer, entry) => entry.reset < closer.reset ? entry : closer);

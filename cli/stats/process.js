@@ -16,7 +16,7 @@ function statProcess() {
 
     setInterval(() => {
         const memoryUsage = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
-        const uptime = humanizeDuration(process.uptime() * 1000, { largest: 1 });
+        const uptime = humanizeDuration(Math.round(process.uptime()) * 1000, { largest: 1 });
 
         log.stat('process', `pid: ${pid}; memory: ${memoryUsage} MB; uptime: ${uptime}`);
     }, 15000)

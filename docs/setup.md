@@ -10,13 +10,13 @@ You may create `config/local.json5` file to override the configuration as necess
 ### General utilities
 
 - `git` must be installed in the system and available in the PATH.
-- `tar` must be installed in the system and available in the PATH.
+- `rm`, `mkdir`, `chmod` and `tar` utilities must be available.
 
 ### CouchDB
 
 **NOTE**: You may put the `CouchDB` app into the gitignored `dev` folder while developing!
 
-- Install [CouchDB](http://couchdb.apache.org/) and run it.
+- Install [CouchDB](http://couchdb.apache.org/) and run it (tested with `v1.6.1`).
 - Add user `admin` with `admin` as password by executing `curl -X PUT http://localhost:5984/_config/admins/admin -d '"admin"'`.
 - After doing this, operations done in the [web interface](http://localhost:5984/_utils/) require you to login (login is at bottom right corner).
 - Create database named `npms` by executing `curl -X PUT http://admin:admin@localhost:5984/npms`
