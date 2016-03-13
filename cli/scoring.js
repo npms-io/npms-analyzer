@@ -16,7 +16,7 @@ const stats = require('./stats');
  * Collects information about the current indices and aliases, creates a new index for the
  * scores to be written and updates the `npms-write` alias to point to it.
  *
- * @param {Elasticsearch} esClient The elasticsearch client instance
+ * @param {Elastic} esClient The elasticsearch client instance
  *
  * @return {Promise} A promise that resolves with the elasticsearch information
  */
@@ -54,7 +54,7 @@ function prepareElasticsearch(esClient) {
             });
         });
     })
-    // Create a new index in which the scoring will be written
+    // Create a new index in which the scores will be written
     .then(() => {
         esInfo.newIndex = `npms-${Date.now()}`;
 
@@ -81,8 +81,8 @@ function prepareElasticsearch(esClient) {
  * Finalizes the elasticsearch to end the scoring cycle.
  * Updates the `npms-read` alias to point to the new index and removes all the old indices.
  *
- * @param {object}        esInfo The object with the elasticsearch information
- * @param {Elasticsearch} esClient The elasticsearch client instance
+ * @param {object}  esInfo   The object with the elasticsearch information
+ * @param {Elastic} esClient The elasticsearch client instance
  *
  * @return {Promise} A promise that fulfills when done
  */
@@ -105,15 +105,15 @@ function finalizeElasticsearch(esInfo, esClient) {
     .then(() => {
         log.verbose('', 'Removing old indices..', { indices: esInfo.indices });
 
-        esClient.indices.delete({ index: esInfo.indices });
+        return esClient.indices.delete({ index: esInfo.indices });
     });
 }
 
 /**
  * Scores all modules.
  *
- * @param {Nano}          npmsNano The npm nano instance
- * @param {Elasticsearch} esClient The elasticsearch client instance
+ * @param {Nano}    npmsNano The npm nano instance
+ * @param {Elastic} esClient The elasticsearch client instance
  *
  * @return {Promise} A promise that fulfills when done
  */
@@ -142,8 +142,8 @@ function scoreModules(npmsNano, esClient) {
  * Runs a scoring cycle.
  * When it finishes, another cycle will be automatically run after a certain delay.
  *
- * @param {Nano}          npmsNano The npm nano instance
- * @param {Elasticsearch} esClient The elasticsearch client instance
+ * @param {Nano}    npmsNano The npm nano instance
+ * @param {Elastic} esClient The elasticsearch client instance
  */
 function cycle(npmsNano, esClient) {
     const startedAt = Date.now();
