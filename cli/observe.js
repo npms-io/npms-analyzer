@@ -10,6 +10,8 @@ const stale = require('../lib/analysis/observers/stale');
 const queue = require('../lib/analysis/queue');
 const stats = require('./stats');
 
+const logPrefix = 'cli';
+
 /**
  * Pushes modules into the queue, retrying several times on error.
  * If all retries are used, there isn't much we can do, therefore the process will gracefully exit.
@@ -35,7 +37,7 @@ function onModules(names, analysisQueue) {
         });
     })
     .catch((err) => {
-        log.error('', 'Too much failed attempts while trying to push modules into the queue, exiting..', {
+        log.error(logPrefix, 'Too much failed attempts while trying to push modules into the queue, exiting..', {
             err,
             modules: names.slice(0, 10),
             total: names.length,

@@ -5,13 +5,15 @@ const nano = require('nano');
 const log = require('npmlog');
 const couchdbIterator = require('couchdb-iterator');
 const metadata = require('../../lib/analysis/analyze/collect/metadata');
-const getPackageJson = require('../../lib/analysis/analyze').getPackageJson;
+const getPackageJson = require('../../lib/analysis/analyze/util/getPackageJson');
 const save = require('../../lib/analysis/analyze').save;
+
+const logPrefix = 'cli/re-metadata';
 
 module.exports.builder = (yargs) => {
     return yargs
     .usage('Iterates over all analyzed modules, running the metadata collector again.\nThis command is useful if there was a bug in the \
-metadata collector.\n\nUsage: ./$0 task re-metadata [options]')
+metadata collector.\n\nUsage: ./$0 tasks re-metadata [options]')
     .demand(2, 2);
 };
 
@@ -25,7 +27,7 @@ module.exports.handler = (argv) => {
 
     // Iterate over all modules
     couchdbIterator(npmsNano, (row, index) => {
-        index && index % 10000 === 0 && log.info('', `Processed ${index} rows`);
+        index && index % 10000 === 0 && log.info(logPrefix, `Processed ${index} rows`);
 
         const name = row.id.split('!')[1];
 
@@ -43,7 +45,7 @@ module.exports.handler = (argv) => {
                 return save(row.doc, npmsNano);
             })
             .catch((err) => {
-                log.error('', `Failed to process ${name}`, { err });
+                log.error(logPrefix, `Failed to process ${name}`, { err });
                 throw err;
             });
         })
@@ -56,6 +58,6 @@ module.exports.handler = (argv) => {
         limit: 2500,
         includeDocs: true,
     })
-    .then((count) => log.info('', `Completed, processed a total of ${count} rows`))
+    .then((count) => log.info(logPrefix, `Completed, processed a total of ${count} rows`))
     .done();
 };

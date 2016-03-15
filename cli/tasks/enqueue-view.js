@@ -8,6 +8,7 @@ const stats = require('../stats');
 const queue = require('../../lib/analysis/queue');
 
 const blacklisted = config.get('blacklist');
+const logPrefix = 'cli/enqueue-view';
 
 /**
  * Fetches modules of a view.
@@ -32,7 +33,7 @@ function fetchView(view, npmNano) {
 
 module.exports.builder = (yargs) => {
     return yargs
-    .usage('Enqueues all modules contained in the npms database view.\n\nUsage: ./$0 task enqueue-view <design-doc/view-name> [options]')
+    .usage('Enqueues all modules contained in the npms database view.\n\nUsage: ./$0 tasks enqueue-view <design-doc/view-name> [options]')
     .demand(3, 3)
 
     .option('dry-run', {
@@ -61,26 +62,26 @@ module.exports.handler = (argv) => {
 
     const view = argv._[2];
 
-    log.info('', `Fetching view ${view}`);
+    log.info(logPrefix, `Fetching view ${view}`);
 
     // Load modules in memory.. we can do this because the total modules is around ~250k which fit well in memory
     // and is much faster than doing manual iteration
     return fetchView(view, npmsNano)
     .then((viewModules) => {
-        log.info('', `There's a total of ${viewModules.length} modules in the view`);
-        viewModules.forEach((name) => log.verbose('', name));
+        log.info(logPrefix, `There's a total of ${viewModules.length} modules in the view`);
+        viewModules.forEach((name) => log.verbose(logPrefix, name));
 
         if (!viewModules.length || argv.dryRun) {
-            log.info('', 'Exiting..');
+            log.info(logPrefix, 'Exiting..');
             return;
         }
 
         return Promise.map(viewModules, (name, index) => {
-            index && index % 5000 === 0 && log.info('', `Enqueued ${index} modules`);
+            index && index % 5000 === 0 && log.info(logPrefix, `Enqueued ${index} modules`);
 
             return analyzeQueue.push(name);
         }, { concurrency: 15 })
-        .then(() => log.info('', 'View modules were enqueued!'));
+        .then(() => log.info(logPrefix, 'View modules were enqueued!'));
     })
     .then(() => process.exit())  // Need to force exit because of queue
     .done();

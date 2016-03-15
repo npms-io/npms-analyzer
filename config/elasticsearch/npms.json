@@ -19,7 +19,7 @@
                 },
                 "version": {
                     "type": "string",
-                    "index": "not_analyzed"
+                    "index": "no"
                 },
                 "description": {
                     "type": "string"
@@ -28,10 +28,18 @@
                     "type": "string"
                 },
                 "publisher": {
-                    "type": "string"
+                    "type": "object",
+                    "properties": {
+                        "username": { "type": "string" },
+                        "email": { "type": "string", "index": "no" }
+                    }
                 },
                 "maintainers": {
-                    "type": "string"
+                    "type": "object",
+                    "properties": {
+                        "username": { "type": "string" },
+                        "email": { "type": "string", "index": "no" }
+                    }
                 },
                 "score": {
                     "type": "object",

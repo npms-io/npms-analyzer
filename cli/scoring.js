@@ -6,28 +6,31 @@ const nano = require('nano');
 const elasticsearch = require('elasticsearch');
 const couchdbIterator = require('couchdb-iterator');
 const humanizeDuration = require('humanize-duration');
+const difference = require('lodash/difference');
 const esIndexConfig = require('../config/elasticsearch/npms.json');
 const score = require('../lib/scoring/score');
 const aggregate = require('../lib/scoring/aggregate');
 const stats = require('./stats');
+
+const logPrefix = 'cli';
 
 /**
  * Prepares the elasticsearch for the scoring cycle.
  * Collects information about the current indices and aliases, creates a new index for the
  * scores to be written and updates the `npms-write` alias to point to it.
  *
- * @param {Elastic} esClient The elasticsearch client instance
+ * @param {Elastic} esClient The elasticsearch instance
  *
  * @return {Promise} A promise that resolves with the elasticsearch information
  */
 function prepareElasticsearch(esClient) {
     const esInfo = {};
 
-    log.info('', 'Preparing elasticsearch..');
+    log.info(logPrefix, 'Preparing elasticsearch..');
 
     // Get current indices and aliases
     return Promise.try(() => {
-        log.verbose('', 'Gathering elasticsearch info..');
+        log.verbose(logPrefix, 'Gathering elasticsearch info..');
 
         return Promise.all([
             esClient.cat.indices({ h: ['index'] }),
@@ -58,7 +61,7 @@ function prepareElasticsearch(esClient) {
     .then(() => {
         esInfo.newIndex = `npms-${Date.now()}`;
 
-        log.verbose('', `Creating index ${esInfo.newIndex}..`);
+        log.verbose(logPrefix, `Creating index ${esInfo.newIndex}..`);
 
         return esClient.indices.create({ index: esInfo.newIndex, body: esIndexConfig });
     })
@@ -70,10 +73,19 @@ function prepareElasticsearch(esClient) {
 
         actions.push({ add: { index: esInfo.newIndex, alias: 'npms-write' } });
 
-        log.verbose('', 'Updating npms-write alias..', { actions });
+        log.verbose(logPrefix, 'Updating npms-write alias..', { actions });
 
         return esClient.indices.updateAliases({ body: { actions } });
     })
+    // Remove all indices except the ones pointing to `npms-read` (should be only 1)
+    .then(() => {
+        const indices = difference(esInfo.indices, esInfo.aliases.read);
+
+        log.verbose(logPrefix, 'Removing unnecessary indices', { indices });
+
+        return esClient.indices.delete({ index: indices });
+    })
+
     .return(esInfo);
 }
 
@@ -82,14 +94,14 @@ function prepareElasticsearch(esClient) {
  * Updates the `npms-read` alias to point to the new index and removes all the old indices.
  *
  * @param {object}  esInfo   The object with the elasticsearch information
- * @param {Elastic} esClient The elasticsearch client instance
+ * @param {Elastic} esClient The elasticsearch instance
  *
  * @return {Promise} A promise that fulfills when done
  */
 function finalizeElasticsearch(esInfo, esClient) {
-    log.info('', 'Finalizing elasticsearch..');
+    log.info(logPrefix, 'Finalizing elasticsearch..');
 
-    // Update npms-read alias to point to the new index
+    // Update `npms-read` alias to point to the new index
     return Promise.try(() => {
         const actions = esInfo.aliases.read.map((index) => {
             return { remove: { index, alias: 'npms-read' } };
@@ -97,15 +109,17 @@ function finalizeElasticsearch(esInfo, esClient) {
 
         actions.push({ add: { index: esInfo.newIndex, alias: 'npms-read' } });
 
-        log.verbose('', 'Updating npms-read alias..', { actions });
+        log.verbose(logPrefix, 'Updating npms-read alias..', { actions });
 
         return esClient.indices.updateAliases({ body: { actions } });
     })
     // Remove old indices
     .then(() => {
-        log.verbose('', 'Removing old indices..', { indices: esInfo.indices });
+        const indices = esInfo.aliases.read;
 
-        return esClient.indices.delete({ index: esInfo.indices });
+        log.verbose(logPrefix, 'Removing old npms-read indices', { indices });
+
+        return esClient.indices.delete({ index: indices });
     });
 }
 
@@ -113,21 +127,21 @@ function finalizeElasticsearch(esInfo, esClient) {
  * Scores all modules.
  *
  * @param {Nano}    npmsNano The npm nano instance
- * @param {Elastic} esClient The elasticsearch client instance
+ * @param {Elastic} esClient The elasticsearch instance
  *
  * @return {Promise} A promise that fulfills when done
  */
 function scoreModules(npmsNano, esClient) {
-    log.info('', 'Aggregating evaluations..');
+    log.info(logPrefix, 'Aggregating..');
 
     return aggregate(npmsNano)
     .then((aggregation) => {
-        log.info('', 'Scoring modules..');
+        log.info(logPrefix, 'Scoring modules..', { aggregation });
 
         return couchdbIterator(npmsNano, (row, index) => {
-            index && index % 10000 === 0 && log.info('', `Scored a total of ${index} modules`);
+            index && index % 10000 === 0 && log.info(logPrefix, `Scored a total of ${index} modules`);
 
-            return score(row.doc, aggregation, esClient);
+            return score.calculate(row.doc, aggregation, esClient);
         }, {
             startkey: 'module!',
             endkey: 'module!\ufff0',
@@ -143,7 +157,7 @@ function scoreModules(npmsNano, esClient) {
  * When it finishes, another cycle will be automatically run after a certain delay.
  *
  * @param {Nano}    npmsNano The npm nano instance
- * @param {Elastic} esClient The elasticsearch client instance
+ * @param {Elastic} esClient The elasticsearch instance
  */
 function cycle(npmsNano, esClient) {
     const startedAt = Date.now();
@@ -158,9 +172,9 @@ function cycle(npmsNano, esClient) {
     .then(() => {
         const duration = humanizeDuration(Math.round((Date.now() - startedAt) / 1000) * 1000, { largest: 2 });
 
-        log.info('', `Scoring cycle successful, took ${duration}`);
+        log.info(logPrefix, `Scoring cycle successful, took ${duration}`);
     }, (err) => {
-        log.error('', 'Scoring cycle failed', { err });
+        log.error(logPrefix, 'Scoring cycle failed', { err });
     })
     // Start all over again after a short delay
     .then(() => {

@@ -8,6 +8,7 @@ const difference = require('lodash/difference');
 const queue = require('../../lib/analysis/queue');
 
 const blacklisted = config.get('blacklist');
+const logPrefix = 'cli/enqueue-missing';
 
 /**
  * Fetches the npm modules.
@@ -44,7 +45,7 @@ function fetchNpmsModules(npmsNano) {
 module.exports.builder = (yargs) => {
     return yargs
     .usage('Finds modules that were not analyzed and enqueues them.\nThis command is useful if modules were lost due to repeated transient \
-errors, e.g.: internet connection was lot or GitHub was down.\n\nUsage: ./$0 task enqueue-missing [options]')
+errors, e.g.: internet connection was lot or GitHub was down.\n\nUsage: ./$0 tasks enqueue-missing [options]')
     .demand(2, 2)
 
     .option('dry-run', {
@@ -67,7 +68,7 @@ module.exports.handler = (argv) => {
     // Stats
     stats.process();
 
-    log.info('', 'Fetching npm & npms modules, this might take a while..');
+    log.info(logPrefix, 'Fetching npm & npms modules, this might take a while..');
 
     // Load all modules in memory.. we can do this because the total modules is around ~250k which fit well in memory
     // and is much faster than doing manual iteration ( ~20sec vs ~3min)
@@ -78,20 +79,20 @@ module.exports.handler = (argv) => {
     .spread((npmModules, npmsModules) => {
         const missingModules = difference(npmModules, npmsModules);
 
-        log.info('', `There's a total of ${missingModules.length} missing modules`);
-        missingModules.forEach((name) => log.verbose('', name));
+        log.info(logPrefix, `There's a total of ${missingModules.length} missing modules`);
+        missingModules.forEach((name) => log.verbose(logPrefix, name));
 
         if (!missingModules.length || argv.dryRun) {
-            log.info('', 'Exiting..');
+            log.info(logPrefix, 'Exiting..');
             return;
         }
 
         return Promise.map(missingModules, (name, index) => {
-            index && index % 1000 === 0 && log.info('', `Enqueued ${index} modules`);
+            index && index % 1000 === 0 && log.info(logPrefix, `Enqueued ${index} modules`);
 
             return analyzeQueue.push(name);
         }, { concurrency: 15 })
-        .then(() => log.info('', 'Missing modules were enqueued!'));
+        .then(() => log.info(logPrefix, 'Missing modules were enqueued!'));
     })
     .then(() => process.exit())  // Need to force exit because of queue
     .done();

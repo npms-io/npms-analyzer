@@ -28,7 +28,6 @@ yargs
 .command('consume', 'Consumes modules from the queue, analyzing them', require('./cli/consume'))
 .command('scoring', 'Continuously iterate over the analyzed modules, scoring them', require('./cli/scoring'))
 
-.command('module', 'Single module related commands', require('./cli/module'))
-.command('task', 'Various useful tasks', require('./cli/task'))
+.command('tasks', 'Various useful tasks', require('./cli/tasks'))
 
 .argv;
