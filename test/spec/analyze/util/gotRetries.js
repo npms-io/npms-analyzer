@@ -1,6 +1,6 @@
 'use strict';
 
-const gotRetries = require(`${process.cwd()}/lib/analysis/analyze/util/gotRetries`);
+const gotRetries = require(`${process.cwd()}/lib/analyze/util/gotRetries`);
 
 describe('gotRetries', () => {
     const maxAttempts = 5;
