@@ -5,10 +5,10 @@ const nano = require('nano');
 const log = require('npmlog');
 const stats = require('../stats');
 const difference = require('lodash/difference');
-const queue = require('../../lib/analysis/queue');
+const queue = require('../../lib/queue');
 
 const blacklisted = config.get('blacklist');
-const logPrefix = 'cli/enqueue-missing';
+const logPrefix = '';
 
 /**
  * Fetches the npm modules.

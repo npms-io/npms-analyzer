@@ -5,12 +5,12 @@ const config = require('config');
 const nano = require('nano');
 const log = require('npmlog');
 const promiseRetry = require('promise-retry');
-const realtime = require('../lib/analysis/observers/realtime');
-const stale = require('../lib/analysis/observers/stale');
-const queue = require('../lib/analysis/queue');
+const realtime = require('../lib/observers/realtime');
+const stale = require('../lib/observers/stale');
+const queue = require('../lib/queue');
 const stats = require('./stats');
 
-const logPrefix = 'cli';
+const logPrefix = '';
 
 /**
  * Pushes modules into the queue, retrying several times on error.

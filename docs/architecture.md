@@ -1,17 +1,19 @@
 # Architecture
 
 The `npms-analyzer` runs two continuous and distinct processes. One is the `analysis` process where each module gets
-inspected and evaluated. The other one is the `scoring` process where each module gets a score based whole evaluation results.
+inspected and evaluated. The other one is the `continuous scoring` process where all modules get a score based on the aggregated evaluation results.
 
 - [Analysis](#analysis)
-- [Scoring](#scoring)
+- [Continuous scoring](#continuous-scoring)
 
 
 ## Analysis
 
-![Overview](./diagrams/analysis-overview.png)
+The analysis process analyzes the `npm` modules, producing an analyzes result and a score.
 
-By looking at the diagram above, you get an idea of how the analysis process works. Bellow you may find a more detailed description for the most complex pieces. The `grey` components are present in `lib/analysis`.
+![analysis](./diagrams/analysis.png)
+
+By looking at the diagram above, you get an idea of how the analysis process works. Below you may find a more detailed description for the most complex components. The `grey` components are present in `lib`.
 
 ### Observers
 
@@ -38,7 +40,7 @@ The analyze is a simple pipeline that produces an analysis result:
 4. Runs the evaluators
 5. Stores the result in CouchDB and Elasticsearch
 
-Bellow you may find additional information on the collectors and evaluators.
+Below you may find additional information on the collectors and evaluators.
 
 #### Collectors
 
@@ -143,7 +145,7 @@ Below follows some of the points taken into consideration:
 
 Popularity attributes allows us to understand the module extend and adoption. These are the kind of attributes that a person looks when they are undecided on the module choice.
 
-Bellow follows some of the points taken into consideration:
+Below follows some of the points taken into consideration:
 
 - Number of stars
 - Number of forks
@@ -159,7 +161,37 @@ If two modules are similar, one tend to choose the one in which the author is we
 
 I will not elaborate on this because this evaluator will NOT be developed nor used in the initial release.
 
+### Scoring
 
-## Scoring
+Calculates the module score based on the current aggregation if any. If there's no aggregation, the module won't be scored at the moment, but it will be later in the `continuous scoring` process.
 
-TODO:
+
+## Continuous scoring
+
+The continuous scoring process runs once in a while to score all `npm` modules, indexing the score data in `Elasticsearch` to be searchable.
+
+![continuous-scoring](./diagrams/continuous-scoring.png)
+
+By looking at the diagram above, you get an idea of how the continuous scoring process works. Below you may find a more detailed description for each component. The `grey` components are present in `lib`.
+
+One important detail is that the continuous scoring process creates and maintains two [aliases](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-aliases.html):
+
+- `npms-read`: Should be used to query the score data
+- `npms-write`: Should be used to write score data
+
+
+### Prepare
+
+The prepare step creates a new index and updates the `npms-write` alias to point to that index. It also removes extraneous indices from previous failed cycles (if any).
+
+### Aggregate
+
+The aggregation step iterates all the modules evaluations, calculating the `min`, `max` and `mean` values for each evaluation. The aggregation is stored in CouchDB to also be used by the `analysis` process.
+
+### Score modules
+
+After having the aggregation done, all modules are iterated again to produce a score based on the previously calculated aggregation. The score data for each module is stored in `Elasticsearch` into the index referenced by the `npms-write` alias.
+
+### Finalize
+
+The finalize step updates the `npms-read` alias to point to the newly populated index and deletes the previous index.

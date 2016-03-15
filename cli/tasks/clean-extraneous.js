@@ -7,7 +7,7 @@ const stats = require('../stats');
 const difference = require('lodash/difference');
 
 const blacklisted = config.get('blacklist');
-const logPrefix = 'cli/clean-extraneous';
+const logPrefix = '';
 
 /**
  * Fetches the npm modules.

@@ -5,10 +5,10 @@ const config = require('config');
 const nano = require('nano');
 const log = require('npmlog');
 const stats = require('../stats');
-const queue = require('../../lib/analysis/queue');
+const queue = require('../../lib/queue');
 
 const blacklisted = config.get('blacklist');
-const logPrefix = 'cli/enqueue-view';
+const logPrefix = '';
 
 /**
  * Fetches modules of a view.

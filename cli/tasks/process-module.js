@@ -5,20 +5,19 @@ const nano = require('nano');
 const elasticsearch = require('elasticsearch');
 const log = require('npmlog');
 const prettyjson = require('prettyjson');
-const analyze = require('../../lib/analysis/analyze');
+const analyze = require('../../lib/analyze');
 const score = require('../../lib/scoring/score');
 
 module.exports.builder = (yargs) => {
     return yargs
     .usage('Usage: ./$0 tasks process-module <module> [options]\n\nProcesses a single module, analyzing and scoring it.')
-    .demand(3, 3, 'Please supply one module to analyze')
-    .default('log-level', 'verbose')
+    .demand(3, 3, 'Please supply one module to process')
     .example('./$0 module analyze cross-spawn');
 };
 
 module.exports.handler = (argv) => {
-    process.title = 'npms-analyzer-module-analyze';
-    log.level = argv.logLevel || 'verbose';
+    process.title = 'npms-analyzer-process-module';
+    log.level = argv.logLevel || 'info';
 
     const npmNano = Promise.promisifyAll(nano(config.get('couchdbNpmAddr'), { requestDefaults: { timeout: 15000 } }));
     const npmsNano = Promise.promisifyAll(nano(config.get('couchdbNpmsAddr'), { requestDefaults: { timeout: 15000 } }));
@@ -27,7 +26,10 @@ module.exports.handler = (argv) => {
     const name = argv._[2].toString();  // module 0 evaluates to number so we must cast to a string
 
     // Analyze the module
-    return analyze(name, npmNano, npmsNano, { githubTokens: config.get('githubTokens') })
+    return analyze(name, npmNano, npmsNano, {
+        githubTokens: config.get('githubTokens'),
+        gitRefOverrides: config.get('gitRefOverrides'),
+    })
     .tap((analysis) => {
         process.stdout.write('\nAnalyze data:\n-------------------------------------------\n');
         process.stdout.write(prettyjson.render(analysis, {

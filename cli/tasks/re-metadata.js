@@ -4,16 +4,16 @@ const config = require('config');
 const nano = require('nano');
 const log = require('npmlog');
 const couchdbIterator = require('couchdb-iterator');
-const metadata = require('../../lib/analysis/analyze/collect/metadata');
-const getPackageJson = require('../../lib/analysis/analyze/util/getPackageJson');
-const save = require('../../lib/analysis/analyze').save;
+const metadata = require('../../lib/analyze/collect/metadata');
+const packageJsonFromData = require('../../lib/analyze/util/packageJsonFromData');
+const save = require('../../lib/analyze').save;
 
-const logPrefix = 'cli/re-metadata';
+const logPrefix = '';
 
 module.exports.builder = (yargs) => {
     return yargs
     .usage('Iterates over all analyzed modules, running the metadata collector again.\nThis command is useful if there was a bug in the \
-metadata collector.\n\nUsage: ./$0 tasks re-metadata [options]')
+metadata collector. Note that the modules score won\'t be updated.\n\nUsage: ./$0 tasks re-metadata [options]')
     .demand(2, 2);
 };
 
@@ -25,6 +25,8 @@ module.exports.handler = (argv) => {
     const npmNano = Promise.promisifyAll(nano(config.get('couchdbNpmAddr'), { requestDefaults: { timeout: 15000 } }));
     const npmsNano = Promise.promisifyAll(nano(config.get('couchdbNpmsAddr'), { requestDefaults: { timeout: 15000 } }));
 
+    log.info(logPrefix, 'Starting modules re-metadata');
+
     // Iterate over all modules
     couchdbIterator(npmsNano, (row, index) => {
         index && index % 10000 === 0 && log.info(logPrefix, `Processed ${index} rows`);
@@ -34,7 +36,7 @@ module.exports.handler = (argv) => {
         // Grab module data
         return npmNano.getAsync(name)
         .then((data) => {
-            const packageJson = getPackageJson(name, data);
+            const packageJson = packageJsonFromData(name, data);
 
             // Re-run metadata
             return metadata(data, packageJson)

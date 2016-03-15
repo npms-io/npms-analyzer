@@ -7,10 +7,7 @@
     elasticsearchHost: '127.0.0.1:9200',
     elasticsearchIndex: 'npms',
 
-    // Github tokens to be used by token-dealer
-    githubTokens: [],
-
-    // List of modules that will be ignored by the continuous analysis process
+    // List of modules that will be ignored by the CLI consume command (analysis process)
     blacklist: {
         'yourmom': 'Huge tar bomb',
         'tone-police': 'Registry crashes while downloading',
@@ -19,5 +16,14 @@
         'zachtestproject2': 'Registry returns 500 internal',
         'zachtestproject3': 'Registry returns 500 internal',
         'zachtestproject4': 'Registry returns 500 internal',
-    }
+    },
+
+    // List of download target overrides to be used when downloading
+    // This makes it possible to override the ref which defaults to `packageJson.gitHead`
+    gitRefOverrides: {
+        'bower': 'master',  // Bower removes the dependencies from package.json in a pre-publish script, so we must download from master
+    },
+
+    // Github tokens to be used by token-dealer
+    githubTokens: [],
 }

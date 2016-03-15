@@ -5,12 +5,12 @@ const config = require('config');
 const nano = require('nano');
 const elasticsearch = require('elasticsearch');
 const log = require('npmlog');
-const analyze = require('../lib/analysis/analyze');
-const queue = require('../lib/analysis/queue');
+const analyze = require('../lib/analyze');
+const queue = require('../lib/queue');
 const score = require('../lib/scoring/score');
 const stats = require('./stats');
 
-const logPrefix = 'cli';
+const logPrefix = '';
 
 // TODO: cleanup temporary folder
 
@@ -49,6 +49,7 @@ function onMessage(msg, npmNano, npmsNano, esClient) {
         // If not, analyze it! :D
         return analyze(name, npmNano, npmsNano, {
             githubTokens: config.get('githubTokens'),
+            gitRefOverrides: config.get('gitRefOverrides'),
             waitRateLimit: true,
             rev: analysis && analysis._rev,
         })
