@@ -89,7 +89,7 @@ module.exports.handler = (argv) => {
     // Prepare DB stuff
     const npmNano = Promise.promisifyAll(nano(config.get('couchdbNpmAddr'), { requestDefaults: { timeout: 15000 } }));
     const npmsNano = Promise.promisifyAll(nano(config.get('couchdbNpmsAddr'), { requestDefaults: { timeout: 15000 } }));
-    const esClient = new elasticsearch.Client({ host: config.get('elasticsearchHost'), apiVersion: '2.2' });
+    const esClient = new elasticsearch.Client({ host: config.get('elasticsearchHost'), apiVersion: '2.2', log: null });
     const analysisQueue = queue(config.get('rabbitmqQueue'), config.get('rabbitmqAddr'));
 
     // Stats

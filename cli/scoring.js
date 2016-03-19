@@ -79,7 +79,7 @@ exports.handler = (argv) => {
 
     // Prepare DB stuff
     const npmsNano = Promise.promisifyAll(nano(config.get('couchdbNpmsAddr'), { requestDefaults: { timeout: 15000 } }));
-    const esClient = new elasticsearch.Client({ host: config.get('elasticsearchHost'), apiVersion: '2.2' });
+    const esClient = new elasticsearch.Client({ host: config.get('elasticsearchHost'), apiVersion: '2.2', log: null });
 
     // Stats
     stats.process();
