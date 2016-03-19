@@ -12,7 +12,14 @@ module.exports.builder = (yargs) => {
     return yargs
     .usage('Usage: ./$0 tasks process-module <module> [options]\n\nProcesses a single module, analyzing and scoring it.')
     .demand(3, 3, 'Please supply one module to process')
-    .example('./$0 module analyze cross-spawn');
+    .example('./$0 module analyze cross-spawn')
+
+    .option('skip-analysis', {
+        alias: 'sa',
+        type: 'boolean',
+        default: false,
+        describe: 'Skips analysis, doing just scoring',
+    });
 };
 
 module.exports.handler = (argv) => {
@@ -26,9 +33,15 @@ module.exports.handler = (argv) => {
     const name = argv._[2].toString();  // module 0 evaluates to number so we must cast to a string
 
     // Analyze the module
-    return analyze(name, npmNano, npmsNano, {
-        githubTokens: config.get('githubTokens'),
-        gitRefOverrides: config.get('gitRefOverrides'),
+    return Promise.try(() => {
+        if (argv.skipAnalysis) {
+            return analyze.get(name, npmsNano);
+        }
+
+        return analyze(name, npmNano, npmsNano, {
+            githubTokens: config.get('githubTokens'),
+            gitRefOverrides: config.get('gitRefOverrides'),
+        });
     })
     .tap((analysis) => {
         process.stdout.write('\nAnalyze data:\n-------------------------------------------\n');
