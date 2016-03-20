@@ -35,7 +35,7 @@ module.exports.handler = (argv) => {
     }, {
         startkey: 'module!',
         endkey: 'module!\ufff0',
-        concurrency: 50,
+        concurrency: 25,
         limit: 2500,
         includeDocs: true,
     })
