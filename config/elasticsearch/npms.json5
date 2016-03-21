@@ -1,0 +1,174 @@
+{
+    // ------------------------------------------------------------------------------
+    // Index settings
+    // ------------------------------------------------------------------------------
+    "settings" : {
+        "number_of_shards" : 1,
+        "number_of_replicas": 1,
+
+        "analysis": {
+            // Custom filters
+            "filter": {
+                // English stemmer filter
+                "english_stemmer": {
+                  "type": "stemmer",
+                  "language": "english"
+                },
+
+                // Split word filter, which takes tokens, such as es6_promise or lodash.foreach, and splits them
+                // into several other tokens
+                "split_word": {
+                    "type": "word_delimiter",
+                    "generate_word_parts": true,
+                    "generate_number_parts": true,
+                    "catenate_words": false,
+                    "catenate_numbers": false,
+                    "catenate_all": false,
+                    "split_on_case_change": true,
+                    "split_on_numerics": true,
+                    "stem_english_possessive": true
+                }
+            },
+
+            // Custom analyzers
+            "analyzer": {
+                // The identifier analyzer produces good results for the `name` and `keywords` fields
+                "identifier": {
+                    "tokenizer": "standard",
+                    "filter": [
+                        "split_word",
+                        "lowercase",
+                        "english_stemmer"
+                    ]
+                }
+            }
+        }
+    },
+
+    // ------------------------------------------------------------------------------
+    // Mappings
+    // ------------------------------------------------------------------------------
+    "mappings" : {
+        "module" : {
+            "dynamic": "strict",
+            "_all": {
+                "enabled": false
+            },
+
+            "properties" : {
+                // The `name`, `description` and `keywords` fields all have `norms` disabled because we don't care about the fields length
+                // Also they have additional fields beyond the `standard` analyzer, which is `not_analyzed`, `identifier` and `english`
+                "name": {
+                    "type": "string",
+                    "norms": { "enabled": false },
+                    "fields": {
+                        "not_analyzed": {
+                            "type": "string",
+                            "index": "not_analyzed"
+                        },
+                        "identifier": {
+                            "type": "string",
+                            "analyzer": "identifier",
+                            "norms": { "enabled": false }
+                        },
+                        "english": {
+                            "type": "string",
+                            "analyzer": "english",
+                            "norms": { "enabled": false }
+                        }
+                    }
+                },
+                "description": {
+                    "type": "string",
+                    "norms": { "enabled": false },
+                    "fields": {
+                        "not_analyzed": {
+                            "type": "string",
+                            "index": "not_analyzed"
+                        },
+                        "identifier": {
+                            "type": "string",
+                            "analyzer": "identifier",
+                            "norms": { "enabled": false }
+                        },
+                        "english": {
+                            "type": "string",
+                            "analyzer": "english",
+                            "norms": { "enabled": false }
+                        }
+                    }
+                },
+                "keywords": {
+                    "type": "string",
+                    "norms": { "enabled": false },
+                    "fields": {
+                        "not_analyzed": {
+                            "type": "string",
+                            "index": "not_analyzed"
+                        },
+                        "identifier": {
+                            "type": "string",
+                            "analyzer": "identifier",
+                            "norms": { "enabled": false }
+                        },
+                        "english": {
+                            "type": "string",
+                            "analyzer": "english",
+                            "norms": { "enabled": false }
+                        }
+                    }
+                },
+                "version": {
+                    "type": "string",
+                    "index": "no"
+                },
+                "publisher": {
+                    "type": "object",
+                    "properties": {
+                        "username": {
+                            "type": "string",
+                            "norms": { "enabled": false },
+                            "fields": {
+                                "not_analyzed": {
+                                    "type": "string",
+                                    "index": "not_analyzed"
+                                }
+                            }
+                        },
+                        "email": { "type": "string", "index": "no" }
+                    }
+                },
+                "maintainers": {
+                    "type": "object",
+                    "properties": {
+                        "username": {
+                            "type": "string",
+                            "norms": { "enabled": false },
+                            "fields": {
+                                "not_analyzed": {
+                                    "type": "string",
+                                    "index": "not_analyzed"
+                                }
+                            }
+                        },
+                        "email": { "type": "string", "index": "no" }
+                    }
+                },
+                "score": {
+                    "type": "object",
+                    "properties": {
+                        "final": { "type": "double" },
+                        "detail": {
+                            "type": "object",
+                            "properties": {
+                                "quality": { "type": "double" },
+                                "popularity": { "type": "double" },
+                                "maintenance": { "type": "double" }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
