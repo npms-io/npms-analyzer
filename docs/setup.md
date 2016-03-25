@@ -22,7 +22,6 @@ You may create `config/local.json5` file to override the configuration as necess
 - Create database named `npms` by executing `curl -X PUT http://admin:admin@localhost:5984/npms`
 - Change default maximum replication retries to infinite by executing `curl -X PUT http://admin:admin@localhost:5984/_config/replicator/max_replication_retry_count -d '"infinity"'`
 - Setup npm replication by executing `curl -X PUT http://admin:admin@localhost:5984/_replicator/npm -d '{ "source":  "https://skimdb.npmjs.com/registry", "target": "http://admin:admin@localhost:5984/npm", "create_target": true, "continuous": true }'`
-- Add these two configurations to the `elasticsearch.yml`: `script.engine.groovy.inline.search: on`, `script.engine.groovy.inline.update: on`
 
 ### RabbitMQ
 
@@ -34,4 +33,5 @@ You may create `config/local.json5` file to override the configuration as necess
 
 ### Elasticsearch
 
-TODO
+- Install [Elasticsearch](https://www.elastic.co/downloads/elasticsearch) (tested with `v2.2.1`)
+- Add these two configurations to the `elasticsearch.yml`: `script.engine.groovy.inline.search: on`, `script.engine.groovy.inline.update: on`
