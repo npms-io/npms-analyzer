@@ -1,6 +1,6 @@
 ## Setup
 
-Bellow you will find a list of items that you must do to get the project working on your machine.
+Bellow you will find a list of items that you must do to get the project working on your local machine.
 
 ### Config file
 
@@ -17,8 +17,7 @@ You may create `config/local.json5` file to override the configuration as necess
 **NOTE**: You may put the `CouchDB` app into the gitignored `dev` folder while developing!
 
 - Install [CouchDB](http://couchdb.apache.org/) and run it (tested with `v1.6.1`).
-- Add user `admin` with `admin` as password by executing `curl -X PUT http://localhost:5984/_config/admins/admin -d '"admin"'`.
-- After doing this, operations done in the [web interface](http://localhost:5984/_utils/) require you to login (login is at bottom right corner).
+- Add user `admin` with `admin` as password by executing `curl -X PUT http://localhost:5984/_config/admins/admin -d '"admin"'`. After doing this, operations done in the [web interface](http://localhost:5984/_utils/) require you to login (login is at bottom right corner).
 - Create database named `npms` by executing `curl -X PUT http://admin:admin@localhost:5984/npms`
 - Change default maximum replication retries to infinite by executing `curl -X PUT http://admin:admin@localhost:5984/_config/replicator/max_replication_retry_count -d '"infinity"'`
 - Setup npm replication by executing `curl -X PUT http://admin:admin@localhost:5984/_replicator/npm -d '{ "source":  "https://skimdb.npmjs.com/registry", "target": "http://admin:admin@localhost:5984/npm", "create_target": true, "continuous": true }'`
