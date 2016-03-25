@@ -33,5 +33,7 @@ You may create `config/local.json5` file to override the configuration as necess
 
 ### Elasticsearch
 
+**NOTE**: You may put the `Elasticsearch` app into the gitignored `dev` folder while developing!
+
 - Install [Elasticsearch](https://www.elastic.co/downloads/elasticsearch) (tested with `v2.2.1`)
 - Add these two configurations to the `elasticsearch.yml`: `script.engine.groovy.inline.search: on`, `script.engine.groovy.inline.update: on`
