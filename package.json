@@ -39,7 +39,7 @@
     "detect-repo-linters": "^1.0.1",
     "elasticsearch": "^10.1.3",
     "get-folder-size": "^1.0.0",
-    "gh-issues-stats": "^1.0.0",
+    "gh-issues-stats": "^2.0.0",
     "glob": "^7.0.0",
     "got": "^6.2.0",
     "hosted-git-info": "^2.1.4",
