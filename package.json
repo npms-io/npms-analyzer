@@ -32,7 +32,7 @@
     "amqplib": "^0.4.0",
     "bluebird": "^3.1.1",
     "config": "^1.19.0",
-    "couchdb-iterator": "^1.0.0",
+    "couchdb-iterator": "^2.0.1",
     "david": "^7.0.1",
     "deep-compact": "^1.0.2",
     "detect-readme-badges": "^1.0.0",
