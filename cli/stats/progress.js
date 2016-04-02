@@ -1,6 +1,8 @@
 'use strict';
 
 const log = require('npmlog');
+const config = require('config');
+const couchdbIterator = require('couchdb-iterator');
 
 // TODO: Add status for replication and other stuff?
 
@@ -16,37 +18,25 @@ function statProgress(npmNano, npmsNano) {
         return;
     }
 
-    // Request the design docs so that they are decremented from the number of docs
-    // We only do this once, to avoid querying this "view" in each interval
-    const designDocs = {
-        npm: npmNano.listAsync({ startkey: '_design/', endkey: '_design0' }),
-        npms: npmsNano.listAsync({ startkey: '_design/', endkey: '_design0' }),
-    };
-
+    const blacklistCount = Object.keys(config.blacklist).length;
     let pending = false;
 
     setInterval(() => {
         if (pending) {
-            log.stat('progress', 'Progress stat is taking too long to be retrieved..');
+            log.stat('progress', 'Progress stat is still being retrieved..');
             return;
         }
 
         pending = true;
 
         Promise.props({
-            info: Promise.props({
-                npm: npmNano.infoAsync(),
-                npms: npmsNano.infoAsync(),
-            }),
-            designDocs: Promise.props(designDocs),
+            npmDocsCount: npmNano.infoAsync().then((res) => res.doc_count - blacklistCount),
+            npmDesignDocsCount: npmNano.listAsync({ startkey: '_design/', endkey: '_design0' }).then((res) => res.rows.length),
+            npmsModulesCount: npmsNano.viewAsync('npms-analyzer', 'modules-evaluation', { reduce: true }).then((res) => res.rows[0].value),
         })
         .finally(() => { pending = false; })
-        .then((res) => {
-            const npmCount = res.info.npm.doc_count - res.designDocs.npm.rows.length;
-            const npmsCount = res.info.npms.doc_count - res.designDocs.npms.rows.length - 1;  // dec last followed seq
-
-            // Subtract 1 from npms because of the last followed doc
-            const analysis = `${(npmsCount / npmCount * 100).toFixed(4)}%`;
+        .then((result) => {
+            const analysis = `${(result.npmsModulesCount / (result.npmDocsCount - result.npmDesignDocsCount) * 100).toFixed(4)}%`;
 
             log.stat('progress', 'Progress stat', { analysis });
         }, (err) => {

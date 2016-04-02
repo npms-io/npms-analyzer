@@ -17,7 +17,7 @@ function statQueue(queue) {
 
     setInterval(() => {
         if (pending) {
-            log.stat('progress', 'Queue stat is taking too long to be retrieved..');
+            log.stat('progress', 'Queue stat is still being retrieved..');
             return;
         }
 
