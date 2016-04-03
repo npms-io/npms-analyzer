@@ -63,6 +63,11 @@ There's a separate document that explains the architecture, you may read it [her
 There's a separate document that explains the setup procedure, you may read it [here](./docs/setup.md).
 
 
+## Deploys
+
+There's a separate document that explains the setup procedure, you may read it [here](./docs/deploys.md).
+
+
 ## Tests
 
 Before running the tests, you must have read through the setup guide.
