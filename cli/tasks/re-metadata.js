@@ -28,8 +28,12 @@ module.exports.handler = (argv) => {
     log.info(logPrefix, 'Starting modules re-metadata');
 
     // Iterate over all modules
-    couchdbIterator(npmsNano, (row, index) => {
-        index && index % 10000 === 0 && log.info(logPrefix, `Processed ${index} rows`);
+    couchdbIterator(npmsNano, (row) => {
+        row.index && row.index % 10000 === 0 && log.info(logPrefix, `Processed ${row.index} rows`);
+
+        if (!row.doc) {
+            return;
+        }
 
         const name = row.id.split('!')[1];
 

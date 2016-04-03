@@ -27,8 +27,13 @@ module.exports.handler = (argv) => {
     log.info(logPrefix, 'Starting modules re-evaluation');
 
     // Iterate over all modules, re-evaluating them
-    couchdbIterator(npmsNano, (row, index) => {
-        index && index % 10000 === 0 && log.info(logPrefix, `Processed ${index} rows`);
+    couchdbIterator(npmsNano, (row) => {
+        row.index && row.index % 10000 === 0 && log.info(logPrefix, `Processed ${row.index} rows`);
+
+        if (!row.doc) {
+            return;
+        }
+
         row.doc.evaluation = evaluate(row.doc.collected);
 
         return save(row.doc, npmsNano);
