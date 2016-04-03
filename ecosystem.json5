@@ -6,15 +6,15 @@
             script: './cli.js',
             args: 'observe',
             instances: 1,
-            log_date_format: "YYYY-MM-DD HH:mm:ss Z",
+            log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
             env_production : { NODE_ENV: 'production' },
         },
         {
             name: 'npms-analyzer-consume',
             script: './cli.js',
-            args: 'consume',
+            args: 'consume --concurrency 3 --log-level stat',
             instances: 2,
-            log_date_format: "YYYY-MM-DD HH:mm:ss Z",
+            log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
             env_production : { NODE_ENV: 'production' },
         },
         {
@@ -22,7 +22,7 @@
             script: './cli.js',
             args: 'scoring',
             instances: 1,
-            log_date_format: "YYYY-MM-DD HH:mm:ss Z",
+            log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
             env_production : { NODE_ENV: 'production' },
         },
     ],
@@ -33,7 +33,11 @@
             ref: 'origin/pm2',
             repo: 'https://github.com/npms-io/npms-analyzer.git',
             path: '/home/analyzer/npms-analyzer-test',
-            'post-deploy': 'rm -rf node_modules && npm install --production && pm2 startOrRestart ecosystem.json --env production',
+            'post-deploy': '\
+rm -rf node_modules && \
+npm install --production && \
+cp ../local.json5 ./config/ && \
+pm2 startOrRestart ecosystem.json5 --env production',
         },
     },
 }
