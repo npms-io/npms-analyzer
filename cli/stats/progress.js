@@ -2,7 +2,6 @@
 
 const log = require('npmlog');
 const config = require('config');
-const couchdbIterator = require('couchdb-iterator');
 
 // TODO: Add status for replication and other stuff?
 
