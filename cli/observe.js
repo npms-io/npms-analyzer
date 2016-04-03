@@ -13,36 +13,21 @@ const stats = require('./stats');
 const logPrefix = '';
 
 /**
- * Pushes modules into the queue, retrying several times on error.
+ * Pushes a module into the queue, retrying several times on error.
  * If all retries are used, there isn't much we can do, therefore the process will gracefully exit.
  *
- * @param {array} names         The modules
+ * @param {array} name          The module name
  * @param {Queue} analysisQueue The analysis queue instance
  *
  * @return {Promise} The promise that fulfills once done
  */
-function onModules(names, analysisQueue) {
+function onModule(name, analysisQueue) {
     return promiseRetry((retry) => {
-        let lastErr;
-
-        return Promise.filter(names, (module) => {
-            return analysisQueue.push(module)
-            .then(() => false, (err) => { lastErr = err; return true; });
-        })
-        .then((failedNames) => {
-            if (failedNames.length) {
-                names = failedNames;
-                retry(lastErr);
-            }
-        });
+        return analysisQueue.push(name)
+        .catch(retry);
     })
     .catch((err) => {
-        log.error(logPrefix, 'Too much failed attempts while trying to push modules into the queue, exiting..', {
-            err,
-            modules: names.slice(0, 10),
-            total: names.length,
-        });
-
+        log.error(logPrefix, 'Too much failed attempts while trying to push module into the queue, exiting..', { err, name });
         process.exit(1);
     });
 }
@@ -82,6 +67,6 @@ module.exports.handler = (argv) => {
     stats.queue(analysisQueue);
 
     // Start observing..
-    realtime(npmNano, npmsNano, { defaultSeq: argv.defaultSeq }, (names) => onModules(names, analysisQueue));
-    stale(npmsNano, (names) => onModules(names, analysisQueue));
+    realtime(npmNano, npmsNano, { defaultSeq: argv.defaultSeq }, (name) => onModule(name, analysisQueue));
+    // stale(npmsNano, (name) => onModule(name, analysisQueue));
 };
