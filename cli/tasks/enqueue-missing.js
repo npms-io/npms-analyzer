@@ -44,6 +44,7 @@ function fetchNpmsModules(npmsNano) {
 
 module.exports.builder = (yargs) => {
     return yargs
+    .strict()
     .usage('Finds modules that were not analyzed and enqueues them.\nThis command is useful if modules were lost due to repeated transient \
 errors, e.g.: internet connection was lot or GitHub was down.\n\nUsage: ./$0 tasks enqueue-missing [options]')
     .demand(2, 2)

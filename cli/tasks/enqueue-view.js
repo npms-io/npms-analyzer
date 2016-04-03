@@ -33,6 +33,7 @@ function fetchView(view, npmNano) {
 
 module.exports.builder = (yargs) => {
     return yargs
+    .strict()
     .usage('Enqueues all modules contained in the npms database view.\n\nUsage: ./$0 tasks enqueue-view <design-doc/view-name> [options]')
     .demand(3, 3)
 

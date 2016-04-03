@@ -43,6 +43,7 @@ function fetchNpmsModules(npmsNano) {
 
 module.exports.builder = (yargs) => {
     return yargs
+    .strict()
     .usage('Finds modules that are analyzed but no longer exist in npm.\nThis command is useful if operations were lost due to repeated \
 errors, e.g.: RabbitMQ or CouchDB were down or unstable.\n\nUsage: ./$0 tasks clean-extraneous [options]')
     .demand(2, 2)

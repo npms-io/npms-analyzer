@@ -65,6 +65,7 @@ function onMessage(msg, npmNano, npmsNano, esClient) {
 
 module.exports.builder = (yargs) => {
     return yargs
+    .strict()
     .usage('Consumes modules that are queued, triggering the analysis process for each module.\n\nUsage: ./$0 consume [options]')
     .demand(1, 1)
     .option('concurrency', {

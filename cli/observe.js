@@ -36,6 +36,7 @@ function onModule(name, analysisQueue) {
 
 module.exports.builder = (yargs) => {
     return yargs
+    .strict()
     .usage('Starts the observing process, enqueueing modules that need to be analyzed into the queue.\n\nUsage: ./$0 observe [options]')
     .demand(1, 1)
     .option('default-seq', {

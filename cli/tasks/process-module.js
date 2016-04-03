@@ -10,6 +10,7 @@ const score = require('../../lib/scoring/score');
 
 module.exports.builder = (yargs) => {
     return yargs
+    .strict()
     .usage('Usage: ./$0 tasks process-module <module> [options]\n\nProcesses a single module, analyzing and scoring it.')
     .demand(3, 3, 'Please supply one module to process')
     .example('./$0 module analyze cross-spawn')
