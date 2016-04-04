@@ -30,9 +30,9 @@
         production: {
             user: 'analyzer',
             host: '212.47.226.136',
-            ref: 'origin/pm2',
+            ref: 'origin/master',
             repo: 'https://github.com/npms-io/npms-analyzer.git',
-            path: '/home/analyzer/npms-analyzer-test',
+            path: '/home/analyzer/npms-analyzer',
             'post-deploy': '\
 npm install --production && \
 cp ../local.json5 ./config/ && \
