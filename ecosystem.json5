@@ -12,7 +12,7 @@
         {
             name: 'npms-analyzer-consume',
             script: './cli.js',
-            args: 'consume --concurrency 3 --log-level stat',
+            args: 'consume --concurrency 3',
             instances: 2,
             log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
             env_production : { NODE_ENV: 'production' },
