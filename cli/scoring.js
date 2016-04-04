@@ -14,6 +14,31 @@ const stats = require('./stats');
 const logPrefix = '';
 
 /**
+ * Waits the time needed before running the first cycle.
+ *
+ * @param {Number}  delay    The delay between each cycle
+ * @param {Elastic} esClient The elasticsearch instance
+ *
+ * @return {Promise} The promise to be waited
+ */
+function wait(delay, esClient) {
+    // Need to use Promise.resolve() due to a bug, see: https://github.com/elastic/elasticsearch-js/pull/362#issuecomment-195950901
+    return Promise.resolve(esClient.indices.getAlias({ name: 'npms-read' }))
+    .then((response) => {
+        const index = Object.keys(response)[0];
+        const timestamp = Number(index.replace(/^npms\-/, ''));
+        const wait = timestamp ? Math.max(0, timestamp + delay - Date.now()) : 0;
+        const waitStr = humanizeDuration(Math.round(wait / 1000) * 1000, { largest: 2 });
+
+        wait && log.info(logPrefix, `Waiting ${waitStr} before running the first cycle..`, { now: (new Date()).toISOString() });
+
+        return Promise.delay(wait);
+    })
+    .catch((err) => err.status === 404, () => {});
+}
+
+
+/**
  * Runs a scoring cycle.
  * When it finishes, another cycle will be automatically run after a certain delay.
  *
@@ -85,6 +110,8 @@ exports.handler = (argv) => {
     // Stats
     stats.process();
 
+    // Wait for the previous cycle delay if necessary
+    wait(argv.cycleDelay, esClient)
     // Start the continuous process of scoring!
-    cycle(argv.cycleDelay, npmsNano, esClient);
+    .then(() => cycle(argv.cycleDelay, npmsNano, esClient));
 };
