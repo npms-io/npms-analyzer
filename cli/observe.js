@@ -69,5 +69,5 @@ module.exports.handler = (argv) => {
 
     // Start observing..
     realtime(npmNano, npmsNano, { defaultSeq: argv.defaultSeq }, (name) => onModule(name, analysisQueue));
-    // stale(npmsNano, (name) => onModule(name, analysisQueue));
+    stale(npmsNano, (name) => onModule(name, analysisQueue));
 };
