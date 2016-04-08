@@ -37,7 +37,6 @@ function wait(delay, esClient) {
     .catch((err) => err.status === 404, () => {});
 }
 
-
 /**
  * Runs a scoring cycle.
  * When it finishes, another cycle will be automatically run after a certain delay.
