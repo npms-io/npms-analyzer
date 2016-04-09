@@ -1,6 +1,7 @@
 # Setup
 
-Bellow you will find a list of items that you must do to get the project working on your local machine.
+Bellow you will find a list of items that you must do to get the project working on your local machine.  
+The production setup document is not present in the repository for security reasons.
 
 
 ## Config file
