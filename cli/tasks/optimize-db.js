@@ -1,16 +1,15 @@
 'use strict';
 
-const config = require('config');
-const nano = require('nano');
 const log = require('npmlog');
 const minBy = require('lodash/minBy');
+const bootstrap = require('../util/bootstrap');
 
 const logPrefix = '';
 
 /**
  * Waits for compaction tasks to end.
  *
- * @param {Nano} nanoCouch A nano instance (root one)
+ * @param {Nano} nanoCouch A nano instance
  *
  * @return {Promise} The promise that fulfills when done
  */
@@ -18,7 +17,7 @@ function waitForCompaction(nanoCouch) {
     let isInflight = false;
     let contiguousErrors = 0;
 
-    log.info(logPrefix, 'Waiting the compaction task to complete..');
+    log.info(logPrefix, 'Waiting for compaction tasks to complete..');
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
@@ -28,7 +27,7 @@ function waitForCompaction(nanoCouch) {
 
             isInflight = true;
 
-            nanoCouch.requestAsync({ doc: '_active_tasks' })
+            nanoCouch.serverScope.requestAsync({ doc: '_active_tasks' })
             .finally(() => { isInflight = false; })
             .then((tasks) => {
                 contiguousErrors = 0;
@@ -54,46 +53,43 @@ function waitForCompaction(nanoCouch) {
 /**
  * Compacts a database.
  *
- * @param {Nano}   nanoCouch A nano instance (root one)
- * @param {string} dbName    The database name
+ * @param {Nano} nanoCouch A nano instance
  *
  * @return {Promise} The promise that fulfills when done
  */
-function compactDb(nanoCouch, dbName) {
-    log.info(logPrefix, `Starting ${dbName} database compaction..`);
+function compactDb(nanoCouch) {
+    log.info(logPrefix, `Compacting ${nanoCouch.config.db} database..`);
 
-    return nanoCouch.db.compactAsync(dbName)
+    return nanoCouch.compactAsync()
     .then(() => waitForCompaction(nanoCouch));
 }
 
 /**
  * Compacts a database design doc.
  *
- * @param {Nano}   nanoCouch A nano instance (root one)
- * @param {string} dbName    The database name
+ * @param {Nano}   nanoCouch A nano instance
  * @param {string} designDoc The design document name
  *
  * @return {Promise} The promise that fulfills when done
  */
-function compactDesignDoc(nanoCouch, dbName, designDoc) {
-    log.info(logPrefix, `Starting ${dbName}/${designDoc} view compaction..`);
+function compactDesignDoc(nanoCouch, designDoc) {
+    log.info(logPrefix, `Compacting ${nanoCouch.config.db}/${designDoc} view..`);
 
-    return nanoCouch.db.compactAsync(dbName, designDoc)
+    return nanoCouch.compactAsync(designDoc)
     .then(() => waitForCompaction(nanoCouch));
 }
 
 /**
  * Cleanups old views from a database.
  *
- * @param {Nano}   nanoCouch A nano instance (root one)
- * @param {string} dbName    The database name
+ * @param {Nano} nanoCouch A nano instance
  *
  * @return {Promise} The promise that fulfills when done
  */
-function cleanupViews(nanoCouch, dbName) {
-    log.info(logPrefix, `Cleaning up ${dbName} views..`);
+function cleanupViews(nanoCouch) {
+    log.info(logPrefix, `Cleaning up ${nanoCouch.config.db} views..`);
 
-    return nanoCouch.requestAsync({ db: dbName, doc: '_view_cleanup', method: 'POST' });
+    return nanoCouch.serverScope.requestAsync({ db: nanoCouch.config.db, doc: '_view_cleanup', method: 'POST' });
 }
 
 // --------------------------------------------------
@@ -117,41 +113,39 @@ module.exports.handler = (argv) => {
     process.title = 'npms-analyzer-db-optimize';
     log.level = argv.logLevel || 'info';
 
-    const npmNano = Promise.promisifyAll(nano(config.get('couchdbNpmAddr'), { requestDefaults: { timeout: 15000 } }));
-    const npmsNano = Promise.promisifyAll(nano(config.get('couchdbNpmsAddr'), { requestDefaults: { timeout: 15000 } }));
+    // Bootstrap dependencies on external services
+    bootstrap(['couchdbNpm', 'couchdbNpms'], { wait: false })
+    .spread((npmNano, npmsNano) => {
+        // Cleanup old views
+        return Promise.all([
+            cleanupViews(npmNano),
+            cleanupViews(npmsNano),
+        ])
+        .then(() => {
+            if (!argv.compact) {
+                return;
+            }
 
-    const npmNanoCouch = Promise.promisifyAll(nano(npmNano.config.url, { requestDefaults: { timeout: 15000 } }));
-    const npmsNanoCouch = Promise.promisifyAll(nano(npmsNano.config.url, { requestDefaults: { timeout: 15000 } }));
+            // Wait for compaction if any
+            return waitForCompaction(npmNano)
+            .then(() => npmNano.config.url !== npmsNano.config.url && waitForCompaction(npmsNano))
+            // Compact databases
+            .then(() => compactDb(npmNano))
+            .then(() => compactDb(npmsNano))
+            // Compact views
+            .then(() => Promise.all([
+                npmNano.listAsync({ startkey: '_design/', endkey: '_design/\ufff0' }),
+                npmsNano.listAsync({ startkey: '_design/', endkey: '_design/\ufff0' }),
+            ]))
+            .spread((npmResponse, npmsResponse) => {
+                const npmDesignDocs = npmResponse.rows.map((row) => row.key.substr(8));
+                const npmsDesignDocs = npmsResponse.rows.map((row) => row.key.substr(8));
 
-    Promise.promisifyAll(npmNanoCouch.db);
-    Promise.promisifyAll(npmsNanoCouch.db);
-
-    // Cleanup old views
-    return Promise.all([
-        cleanupViews(npmNanoCouch, npmNano.config.db),
-        cleanupViews(npmsNanoCouch, npmsNano.config.db),
-    ])
-    // Compact databases
-    .then(() => {
-        if (!argv.compact) {
-            return;
-        }
-
-        return compactDb(npmNanoCouch, npmNano.config.db)
-        .then(() => compactDb(npmsNanoCouch, npmsNano.config.db))
-        // Compact views
-        .then(() => Promise.all([
-            npmNano.listAsync({ startkey: '_design/', endkey: '_design/\ufff0' }),
-            npmsNano.listAsync({ startkey: '_design/', endkey: '_design/\ufff0' }),
-        ]))
-        .spread((npmResponse, npmsResponse) => {
-            const npmDesignDocs = npmResponse.rows.map((row) => row.key.substr(8));
-            const npmsDesignDocs = npmsResponse.rows.map((row) => row.key.substr(8));
-
-            return Promise.each(npmDesignDocs, (designDoc) => compactDesignDoc(npmNanoCouch, npmNano.config.db, designDoc))
-            .then(() => Promise.each(npmsDesignDocs, (designDoc) => compactDesignDoc(npmsNanoCouch, npmsNano.config.db, designDoc)));
-        });
+                return Promise.each(npmDesignDocs, (designDoc) => compactDesignDoc(npmNano, designDoc))
+                .then(() => Promise.each(npmsDesignDocs, (designDoc) => compactDesignDoc(npmsNano, designDoc)));
+            });
+        })
+        .then(() => log.info(logPrefix, 'Optimization completed successfully!'));
     })
-    .then(() => log.info(logPrefix, 'Optimization completed successfully!'))
     .done();
 };

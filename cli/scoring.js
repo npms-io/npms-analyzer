@@ -1,15 +1,13 @@
 'use strict';
 
-const config = require('config');
 const log = require('npmlog');
-const nano = require('nano');
-const elasticsearch = require('elasticsearch');
 const humanizeDuration = require('humanize-duration');
 const prepare = require('../lib/scoring/prepare');
 const aggregate = require('../lib/scoring/aggregate');
 const score = require('../lib/scoring/score');
 const finalize = require('../lib/scoring/finalize');
-const stats = require('./stats');
+const bootstrap = require('./util/bootstrap');
+const stats = require('./util/stats');
 
 const logPrefix = '';
 
@@ -21,7 +19,7 @@ const logPrefix = '';
  *
  * @return {Promise} The promise to be waited
  */
-function wait(delay, esClient) {
+function waitRemaining(delay, esClient) {
     // Need to use Promise.resolve() due to a bug, see: https://github.com/elastic/elasticsearch-js/pull/362#issuecomment-195950901
     return Promise.resolve(esClient.indices.getAlias({ name: 'npms-read' }))
     .then((response) => {
@@ -103,15 +101,16 @@ exports.handler = (argv) => {
     // Allow heapdump via USR2 signal
     process.env.NODE_ENV !== 'test' && require('heapdump');  // eslint-disable-line global-require
 
-    // Prepare DB stuff
-    const npmsNano = Promise.promisifyAll(nano(config.get('couchdbNpmsAddr'), { requestDefaults: { timeout: 15000 } }));
-    const esClient = new elasticsearch.Client({ host: config.get('elasticsearchHost'), apiVersion: '2.2', log: null });
+    // Bootstrap dependencies on external services
+    bootstrap(['couchdbNpms', 'elasticsearch'])
+    .spread((npmsNano, esClient) => {
+        // Stats
+        stats.process();
 
-    // Stats
-    stats.process();
-
-    // Wait for the previous cycle delay if necessary
-    wait(argv.cycleDelay, esClient)
-    // Start the continuous process of scoring!
-    .then(() => cycle(argv.cycleDelay, npmsNano, esClient));
+        // Wait for the previous cycle delay if necessary
+        waitRemaining(argv.cycleDelay, esClient)
+        // Start the continuous process of scoring!
+        .then(() => cycle(argv.cycleDelay, npmsNano, esClient));
+    })
+    .done();
 };

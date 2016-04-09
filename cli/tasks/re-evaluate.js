@@ -1,11 +1,10 @@
 'use strict';
 
-const config = require('config');
-const nano = require('nano');
 const log = require('npmlog');
 const couchdbIterator = require('couchdb-iterator');
 const evaluate = require('../../lib/analyze/evaluate');
 const save = require('../../lib/analyze').save;
+const bootstrap = require('../util/bootstrap');
 
 const logPrefix = '';
 
@@ -22,29 +21,34 @@ module.exports.handler = (argv) => {
     process.title = 'npms-analyzer-re-evaluate';
     log.level = argv.logLevel || 'info';
 
-    // Prepare DB stuff
-    const npmsNano = Promise.promisifyAll(nano(config.get('couchdbNpmsAddr'), { requestDefaults: { timeout: 15000 } }));
+    // Bootstrap dependencies on external services
+    bootstrap(['couchdbNpms'], { wait: false })
+    .spread((npmsNano) => {
+        log.info(logPrefix, 'Starting modules re-evaluation');
 
-    log.info(logPrefix, 'Starting modules re-evaluation');
+        // Iterate over all modules, re-evaluating them
+        return couchdbIterator(npmsNano, (row) => {
+            row.index && row.index % 10000 === 0 && log.info(logPrefix, `Processed ${row.index} rows`);
 
-    // Iterate over all modules, re-evaluating them
-    couchdbIterator(npmsNano, (row) => {
-        row.index && row.index % 10000 === 0 && log.info(logPrefix, `Processed ${row.index} rows`);
+            const doc = row.doc;
 
-        if (!row.doc) {
-            return;
-        }
+            if (!doc) {
+                return;
+            }
 
-        row.doc.evaluation = evaluate(row.doc.collected);
+            log.verbose(logPrefix, `Evaluating ${doc.collected.metadata.name}..`);
 
-        return save(row.doc, npmsNano);
-    }, {
-        startkey: 'module!',
-        endkey: 'module!\ufff0',
-        concurrency: 25,
-        limit: 2500,
-        includeDocs: true,
+            doc.evaluation = evaluate(doc.collected);
+
+            return save(doc, npmsNano);
+        }, {
+            startkey: 'module!',
+            endkey: 'module!\ufff0',
+            concurrency: 25,
+            limit: 2500,
+            includeDocs: true,
+        })
+        .then((count) => log.info(logPrefix, `Completed, processed a total of ${count} rows`));
     })
-    .then((count) => log.info(logPrefix, `Completed, processed a total of ${count} rows`))
     .done();
 };

@@ -1,10 +1,10 @@
 'use strict';
 
 const config = require('config');
-const nano = require('nano');
 const log = require('npmlog');
-const stats = require('../stats');
 const difference = require('lodash/difference');
+const stats = require('../util/stats');
+const bootstrap = require('../util/bootstrap');
 
 const blacklisted = config.get('blacklist');
 const logPrefix = '';
@@ -61,41 +61,40 @@ module.exports.handler = (argv) => {
     process.title = 'npms-analyzer-clean-extraneous';
     log.level = argv.logLevel || 'info';
 
-    // Prepare DB stuff
-    const npmNano = Promise.promisifyAll(nano(config.get('couchdbNpmAddr'), { requestDefaults: { timeout: 15000 } }));
-    const npmsNano = Promise.promisifyAll(nano(config.get('couchdbNpmsAddr'), { requestDefaults: { timeout: 15000 } }));
+    bootstrap(['couchdbNpm', 'couchdbNpms'], { wait: false })
+    .spread((npmNano, npmsNano) => {
+        // Stats
+        stats.process();
 
-    // Stats
-    stats.process();
+        log.info(logPrefix, 'Fetching npm & npms modules, this might take a while..');
 
-    log.info(logPrefix, 'Fetching npm & npms modules, this might take a while..');
+        // Load all modules in memory.. we can do this because the total modules is around ~250k which fit well in memory
+        // and is much faster than doing manual iteration ( ~20sec vs ~3min)
+        return Promise.all([
+            fetchNpmModules(npmNano),
+            fetchNpmsModules(npmsNano),
+        ])
+        .spread((npmModules, npmsModules) => {
+            const extraneousModules = difference(npmsModules, npmModules);
 
-    // Load all modules in memory.. we can do this because the total modules is around ~250k which fit well in memory
-    // and is much faster than doing manual iteration ( ~20sec vs ~3min)
-    return Promise.all([
-        fetchNpmModules(npmNano),
-        fetchNpmsModules(npmsNano),
-    ])
-    .spread((npmModules, npmsModules) => {
-        const extraneousModules = difference(npmsModules, npmModules);
+            log.info(logPrefix, `There's a total of ${extraneousModules.length} extraneous modules`);
+            extraneousModules.forEach((name) => log.verbose(logPrefix, name));
 
-        log.info(logPrefix, `There's a total of ${extraneousModules.length} extraneous modules`);
-        extraneousModules.forEach((name) => log.verbose(logPrefix, name));
+            if (!extraneousModules.length || argv.dryRun) {
+                log.info(logPrefix, 'Exiting..');
+                return;
+            }
 
-        if (!extraneousModules.length || argv.dryRun) {
-            log.info(logPrefix, 'Exiting..');
-            return;
-        }
+            return Promise.map(extraneousModules, (name, index) => {
+                index && index % 100 === 0 && log.info(logPrefix, `Removed ${index} modules`);
 
-        return Promise.map(extraneousModules, (name, index) => {
-            index && index % 100 === 0 && log.info(logPrefix, `Removed ${index} modules`);
+                const key = `module!${name}`;
 
-            const key = `module!${name}`;
-
-            return npmsNano.getAsync(key)
-            .then((doc) => npmsNano.destroyAsync(key, doc._rev));
-        }, { concurrency: 15 })
-        .then(() => log.info(logPrefix, 'Extraneous modules were removed!'));
+                return npmsNano.getAsync(key)
+                .then((doc) => npmsNano.destroyAsync(key, doc._rev));
+            }, { concurrency: 15 })
+            .then(() => log.info(logPrefix, 'Extraneous modules were removed!'));
+        });
     })
     .done();
 };

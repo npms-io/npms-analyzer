@@ -2,13 +2,11 @@
 
 const assert = require('assert');
 const config = require('config');
-const nano = require('nano');
-const elasticsearch = require('elasticsearch');
 const log = require('npmlog');
 const analyze = require('../lib/analyze');
-const queue = require('../lib/queue');
 const score = require('../lib/scoring/score');
-const stats = require('./stats');
+const bootstrap = require('./util/bootstrap');
+const stats = require('./util/stats');
 
 const logPrefix = '';
 
@@ -88,18 +86,17 @@ module.exports.handler = (argv) => {
     // Allow heapdump via USR2 signal
     process.env.NODE_ENV !== 'test' && require('heapdump');  // eslint-disable-line global-require
 
-    // Prepare DB stuff
-    const npmNano = Promise.promisifyAll(nano(config.get('couchdbNpmAddr'), { requestDefaults: { timeout: 15000 } }));
-    const npmsNano = Promise.promisifyAll(nano(config.get('couchdbNpmsAddr'), { requestDefaults: { timeout: 15000 } }));
-    const esClient = new elasticsearch.Client({ host: config.get('elasticsearchHost'), apiVersion: '2.2', log: null });
-    const analysisQueue = queue(config.get('rabbitmqQueue'), config.get('rabbitmqAddr'));
+    // Bootstrap dependencies on external services
+    bootstrap(['couchdbNpm', 'couchdbNpms', 'queue', 'elasticsearch'])
+    .spread((npmNano, npmsNano, queue, esClient) => {
+        // Stats
+        stats.process();
+        stats.queue(queue);
+        stats.progress(npmNano, npmsNano);
+        stats.tokens(config.get('githubTokens'), 'github');
 
-    // Stats
-    stats.process();
-    stats.queue(analysisQueue);
-    stats.progress(npmNano, npmsNano);
-    stats.tokens(config.get('githubTokens'), 'github');
-
-    // Start consuming
-    analysisQueue.consume((message) => onMessage(message, npmNano, npmsNano, esClient), { concurrency: argv.concurrency });
+        // Start consuming
+        return queue.consume((message) => onMessage(message, npmNano, npmsNano, esClient), { concurrency: argv.concurrency });
+    })
+    .done();
 };

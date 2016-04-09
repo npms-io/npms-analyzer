@@ -2,10 +2,9 @@
 
 const assert = require('assert');
 const config = require('config');
-const nano = require('nano');
 const log = require('npmlog');
-const stats = require('../stats');
-const queue = require('../../lib/queue');
+const bootstrap = require('../util/bootstrap');
+const stats = require('../util/stats');
 
 const blacklisted = config.get('blacklist');
 const logPrefix = '';
@@ -56,36 +55,35 @@ module.exports.handler = (argv) => {
     process.title = 'npms-analyzer-enqueue-view';
     log.level = argv.logLevel || 'info';
 
-    // Prepare DB stuff
-    const npmsNano = Promise.promisifyAll(nano(config.get('couchdbNpmsAddr'), { requestDefaults: { timeout: 15000 } }));
-    const analyzeQueue = queue(config.get('rabbitmqQueue'), config.get('rabbitmqAddr'));
-
-    // Stats
-    stats.process();
-
     const view = argv._[2];
 
-    log.info(logPrefix, `Fetching view ${view}`);
+    // Bootstrap dependencies on external services
+    bootstrap(['couchdbNpm', 'couchdbNpms', 'queue'], { wait: false })
+    .spread((npmNano, npmsNano, queue) => {
+        // Stats
+        stats.process();
 
-    // Load modules in memory.. we can do this because the total modules is around ~250k which fit well in memory
-    // and is much faster than doing manual iteration
-    return fetchView(view, npmsNano)
-    .then((viewModules) => {
-        log.info(logPrefix, `There's a total of ${viewModules.length} modules in the view`);
-        viewModules.forEach((name) => log.verbose(logPrefix, name));
+        log.info(logPrefix, `Fetching view ${view}`);
 
-        if (!viewModules.length || argv.dryRun) {
-            log.info(logPrefix, 'Exiting..');
-            return;
-        }
+        // Load modules in memory.. we can do this because the total modules is around ~250k which fit well in memory
+        // and is much faster than doing manual iteration
+        return fetchView(view, npmsNano)
+        .then((viewModules) => {
+            log.info(logPrefix, `There's a total of ${viewModules.length} modules in the view`);
+            viewModules.forEach((name) => log.verbose(logPrefix, name));
 
-        return Promise.map(viewModules, (name, index) => {
-            index && index % 5000 === 0 && log.info(logPrefix, `Enqueued ${index} modules`);
+            if (!viewModules.length || argv.dryRun) {
+                log.info(logPrefix, 'Exiting..');
+                return;
+            }
 
-            return analyzeQueue.push(name);
-        }, { concurrency: 15 })
-        .then(() => log.info(logPrefix, 'View modules were enqueued!'));
+            return Promise.map(viewModules, (name, index) => {
+                index && index % 5000 === 0 && log.info(logPrefix, `Enqueued ${index} modules`);
+                return queue.push(name);
+            }, { concurrency: 15 })
+            .then(() => log.info(logPrefix, 'View modules were enqueued!'));
+        })
+        .then(() => process.exit());  // Need to force exit because of queue
     })
-    .then(() => process.exit())  // Need to force exit because of queue
     .done();
 };
