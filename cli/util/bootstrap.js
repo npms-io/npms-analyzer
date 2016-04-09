@@ -95,7 +95,7 @@ function bootstrapElasticsearch(elasticsearchHost, options) {
         })
         .catch((err) => get(err.body.error.type) === 'index_not_found_exception', () => {})
         .catch((err) => {
-            log.warn(logPrefix, `Check of ${esClient.config.db} failed`, { err });
+            log.warn(logPrefix, 'Check of elasticsearch failed', { err });
             retry(err);
         });
     }, options.wait ? retriesOption : { retries: 0 })
