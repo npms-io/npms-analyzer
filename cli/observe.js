@@ -37,7 +37,8 @@ function onModule(name, analysisQueue) {
 module.exports.builder = (yargs) => {
     return yargs
     .strict()
-    .usage('Starts the observing process, enqueueing modules that need to be analyzed into the queue.\n\nUsage: ./$0 observe [options]')
+    .usage('Usage: ./$0 observe [options]\n\n\
+Starts the observing process, enqueueing modules that need to be analyzed into the queue.')
     .demand(1, 1)
     .option('default-seq', {
         type: 'number',

@@ -21,5 +21,6 @@ module.exports = (yargs) => {
     .command('enqueue-missing', 'Finds modules that were not analyzed and enqueues them', require('./enqueue-missing'))
     .command('clean-extraneous', 'Finds modules that are analyzed but no longer exist in npm', require('./clean-extraneous'))
     .command('re-metadata', 'Iterates over all analyzed modules, running the metadata collector again', require('./re-metadata'))
-    .command('re-evaluate', 'Iterates over all analyzed modules, evaluating them again', require('./re-evaluate'));
+    .command('re-evaluate', 'Iterates over all analyzed modules, evaluating them again', require('./re-evaluate'))
+    .command('optimize-db', 'Optimizes the CouchDB database, compacting itself and its views', require('./optimize-db.js'));
 };

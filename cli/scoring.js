@@ -84,7 +84,8 @@ function cycle(delay, npmsNano, esClient) {
 exports.builder = (yargs) => {
     return yargs
     .strict()
-    .usage('Continuously iterate over the analyzed modules, scoring them.\n\nUsage: ./$0 scoring [options]')
+    .usage('Usage: ./$0 scoring [options]\n\n\
+Continuously iterate over the analyzed modules, scoring them.')
     .demand(1, 1)
 
     .option('cycle-delay', {
