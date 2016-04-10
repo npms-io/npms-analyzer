@@ -95,7 +95,7 @@ function bootstrapElasticsearch(elasticsearchHost, options) {
         })
         .catch((err) => get(err, 'body.error.type') === 'index_not_found_exception', () => {})
         .catch((err) => {
-            log.warn(logPrefix, 'Check of elasticsearch failed', { err });
+            log.warn(logPrefix, 'Check of Elasticsearch failed', { err });
             retry(err);
         });
     }, options.wait ? retriesOption : { retries: 0 })
@@ -118,7 +118,7 @@ function bootstrapQueue(rabbitmqAddr, rabbitmqQueue, options) {
     return promiseRetry((retry) => {
         return analysisQueue.stat()
         .catch((err) => {
-            log.warn(logPrefix, 'Check of queue failed', { err });
+            log.warn(logPrefix, 'Check of Queue failed', { err });
             retry(err);
         });
     }, options.wait ? retriesOption : { retries: 0 })
