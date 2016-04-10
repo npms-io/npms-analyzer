@@ -8,7 +8,7 @@ You may find the pm2 configuration file in `ecosystem.json5`.
 
 Before actually doing the first deploy, you need to setup the server:
 
-- Ensure that the `analyzer` user exists
+- Ensure that the `analyzer` user exists in the server
 - Install pm2 in the server
 - Setup the deploy environment by running `$ pm2 deploy ecosystem.json5 production setup` in your local machine
 - Create `~/npms-analyzer/local.json5` in the server with the custom configuration (databases, GitHub api tokens, etc)
