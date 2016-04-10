@@ -93,7 +93,7 @@ function bootstrapElasticsearch(elasticsearchHost, options) {
             id: 'someidthatwillneverexist',
             maxRetries: 0,
         })
-        .catch((err) => get(err.body.error.type) === 'index_not_found_exception', () => {})
+        .catch((err) => get(err, 'body.error.type') === 'index_not_found_exception', () => {})
         .catch((err) => {
             log.warn(logPrefix, 'Check of elasticsearch failed', { err });
             retry(err);
