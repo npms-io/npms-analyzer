@@ -81,7 +81,7 @@ function bootstrapCouchdb(couchAddr, options) {
 function bootstrapElasticsearch(elasticsearchHost, options) {
     const esClient = new elasticsearch.Client({
         host: elasticsearchHost,
-        apiVersion: '2.2',
+        apiVersion: '2.3',
         log: null,
         requestTimeout: 15000,
     });

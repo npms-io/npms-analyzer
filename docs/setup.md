@@ -31,7 +31,7 @@ You may create `config/local.json5` file to override the configuration as necess
 
 **NOTE**: You may put `RabbitMQ standalone` into the gitignored `dev` folder while developing!
 
-- Install [RabbitMQ](https://www.rabbitmq.com/download.html) and run it.
+- Install [RabbitMQ](https://www.rabbitmq.com/download.html) and run it (tested with `v3.6.1`).
 - Install the [management](https://www.rabbitmq.com/management.html) plugin which is very useful by running `rabbitmq-plugins enable rabbitmq_management`
 - Head to `http://localhost:15672` and login with `guest/guest` and see if everything is ok.
 
@@ -40,5 +40,5 @@ You may create `config/local.json5` file to override the configuration as necess
 
 **NOTE**: You may put the `Elasticsearch` app into the gitignored `dev` folder while developing!
 
-- Install [Elasticsearch](https://www.elastic.co/downloads/elasticsearch) (tested with `v2.2.1`)
+- Install [Elasticsearch](https://www.elastic.co/downloads/elasticsearch) (tested with `v2.3.1`)
 - Add these two configurations to the `elasticsearch.yml`: `script.engine.groovy.inline.search: on`, `script.engine.groovy.inline.update: on`

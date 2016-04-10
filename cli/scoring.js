@@ -20,7 +20,7 @@ const logPrefix = '';
  * @return {Promise} The promise to be waited
  */
 function waitRemaining(delay, esClient) {
-    // Need to use Promise.resolve() due to a bug, see: https://github.com/elastic/elasticsearch-js/pull/362#issuecomment-195950901
+    // Need to use Promise.resolve() because elasticsearch doesn't use the global promise
     return Promise.resolve(esClient.indices.getAlias({ name: 'npms-read' }))
     .then((response) => {
         const index = Object.keys(response)[0];
