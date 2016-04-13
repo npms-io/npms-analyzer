@@ -2,16 +2,17 @@
 
 const fs = require('fs');
 const execSync = require('child_process').execSync;
+const loadJsonFile = require('load-json-file');
 const expect = require('chai').expect;
 const nock = require('nock');
 const sepia = require('../../../util/sepia');
 const github = require('../../../../lib/analyze/download/github');
 
 describe('github', () => {
-    const testDir = `${__dirname}/../../../`;
+    const testDir = `${__dirname}/../../..`;
     const tmpDir = `${testDir}/tmp`;
 
-    before(() => sepia.fixtureDir(`${testDir}/fixtures/analyze/download/github`));
+    before(() => sepia.fixtureDir(`${testDir}/fixtures/analyze/download/sepia/github`));
     beforeEach(() => {
         execSync(`mkdir -p ${tmpDir}`);
         sepia.disable();
@@ -87,9 +88,9 @@ describe('github', () => {
         .then(() => {
             throw new Error('Should have failed');
         }, (err) => {
+            expect(nock.isDone()).to.equal(true);
             expect(err.message).to.match(/too large/i);
             expect(err.unrecoverable).to.equal(true);
-            expect(nock.isDone()).to.equal(true);
         });
     });
 
@@ -106,24 +107,53 @@ describe('github', () => {
 
             return download(tmpDir)
             .then(() => {
+                expect(nock.isDone()).to.equal(true);
                 expect(fs.readdirSync(`${tmpDir}`)).to.eql(['package.json']);
             });
         });
     });
 
-    it('should override refs based on options.refOverrides', () => {
+    it('should prefer the passed package.json over the downloaded one', () => {
         sepia.enable();
 
         const download = github({
             name: 'cross-spawn',
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
-            gitHead: 'master',
         });
 
-        return download(tmpDir, { 'cross-spawn': 'master' })
+        return download(tmpDir)
+        .then(() => {
+            expect(nock.isDone()).to.equal(true);
+            return loadJsonFile(`${tmpDir}/package.json`);
+        })
+        .then((packageJson) => {
+            expect(packageJson).to.have.keys(['name', 'repository']);
+        });
+    });
+
+    it.only('should override refs based on options.refOverrides', () => {
+        sepia.enable();
+
+        const download = github({
+            name: 'cross-spawn',
+            repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
+            gitHead: '5fb20ce2f44d9947fcf59e8809fe6cb1d767433b',
+        }, {
+            refOverrides: { 'cross-spawn': 'master' },
+        });
+
+        return download(tmpDir)
         .then(() => {
             expect(() => fs.accessSync(`${tmpDir}/package.json`)).to.not.throw();
             expect(() => fs.accessSync(`${tmpDir}/appveyor.yml`)).to.not.throw();
+
+            // Test if package.json was NOT overridden
+            return loadJsonFile(`${tmpDir}/package.json`)
+            .then((packageJson) => {
+                expect(packageJson.name).to.equal('cross-spawn');
+                expect(packageJson.version).to.not.equal('0.1.0');
+                expect(packageJson.description).to.be.a('string');
+            });
         });
     });
 
