@@ -131,7 +131,7 @@ describe('github', () => {
         });
     });
 
-    it.only('should override refs based on options.refOverrides', () => {
+    it('should override refs based on options.refOverrides', () => {
         sepia.enable();
 
         const download = github({
