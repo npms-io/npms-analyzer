@@ -83,9 +83,6 @@ module.exports.handler = (argv) => {
     process.title = 'npms-analyzer-consume';
     log.level = argv.logLevel || 'warn';
 
-    // Allow heapdump via USR2 signal
-    process.env.NODE_ENV !== 'test' && require('heapdump');  // eslint-disable-line global-require
-
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms', 'queue', 'elasticsearch'])
     .spread((npmNano, npmsNano, queue, esClient) => {

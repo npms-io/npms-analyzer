@@ -4,6 +4,7 @@
 
 'use strict';
 
+require('heapdump');
 require('./lib/configure');
 
 const yargs = require('yargs');

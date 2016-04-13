@@ -98,9 +98,6 @@ exports.handler = (argv) => {
     process.title = 'npms-analyzer-scoring';
     log.level = argv.logLevel || 'warn';
 
-    // Allow heapdump via USR2 signal
-    process.env.NODE_ENV !== 'test' && require('heapdump');  // eslint-disable-line global-require
-
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpms', 'elasticsearch'])
     .spread((npmsNano, esClient) => {
