@@ -1,5 +1,6 @@
 'use strict';
 
+const expect = require('chai').expect;
 const gotRetries = require(`${process.cwd()}/lib/analyze/util/gotRetries`);
 
 describe('gotRetries', () => {

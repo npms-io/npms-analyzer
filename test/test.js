@@ -2,8 +2,19 @@
 
 'use strict';
 
-const fs = require('fs');
+require('../lib/configure');
 
+const fs = require('fs');
+const nock = require('nock');
+const sepia = require('./util/sepia');
+
+// Configure nock & sepia
+beforeEach(() => {
+    sepia.disable();
+    nock.cleanAll();
+});
+
+// Auto-load tests
 const walk = (dir) => fs.readdirSync(dir).forEach((file) => {
     const filePath = [dir, file].join('/');
 

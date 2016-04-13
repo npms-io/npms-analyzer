@@ -1,2 +1,2 @@
 --bail
---require ./test/util/inject.js
+--timeout 15000

@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint '{*.js,lib/**/*.js,test/**/*.js}' --ignore-pattern=test/coverage",
-    "test": "NODE_ENV=test mocha",
-    "test-cov": "NODE_ENV=test istanbul cover --dir test/coverage _mocha -- --bail && echo Coverage lies in test/coverage/lcov-report/index.html",
-    "test-travis": "NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "test": "VCR_MODE=cache mocha",
+    "test-cov": "VCR_MODE=cache istanbul cover --dir test/coverage _mocha -- --bail && echo Coverage lies in test/coverage/lcov-report/index.html",
+    "test-travis": "VCR_MODE=playback istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "bugs": {
     "url": "https://github.com/npms-io/npms-analyzer/issues/"
@@ -72,7 +72,9 @@
     "coveralls": "^2.11.6",
     "eslint": "^2.2.0",
     "istanbul": "^0.4.2",
-    "mocha": "^2.4.5"
+    "mocha": "^2.4.5",
+    "nock": "^8.0.0",
+    "sepia": "^2.0.1"
   },
   "engines": {
     "node": ">=4.0.0"
