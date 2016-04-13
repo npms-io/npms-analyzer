@@ -26,6 +26,9 @@ describe('github', () => {
 
         download = github({ repository: { type: 'git', url: 'https://github.com/IndigoUnited/node-cross-spawn.git' } });
         expect(download).to.be.a('function');
+
+        download = github({ repository: { type: 'git', url: 'https://foo.com/IndigoUnited/node-cross-spawn.git' } });
+        expect(download).to.equal(null);
     });
 
     it('should download a specific commit hash', () => {
@@ -60,7 +63,7 @@ describe('github', () => {
         });
     });
 
-    it('should not download huge files', () => {
+    it('should fail if the tarball is too large', () => {
         nock('https://api.github.com')
         .get('/repos/liferay/liferay-portal/tarball/')
         .reply(200, 'foo', {
@@ -82,11 +85,39 @@ describe('github', () => {
         });
     });
 
-    it('should handle 404 errors');
+    it('should handle 404 errors', () => {
+        sepia.enable();
 
-    it('should handle some 4xx errors');
+        const download = github({
+            name: 'cool-module',
+            repository: { type: 'git', url: 'git+https://github.com/some-org-that-will-never-exist/some-repo-that-will-never-exist.git' },
+        });
 
-    it('should override refs based on options.refOverrides');
+        return download(tmpDir)
+        .then(() => {
+            expect(fs.readdirSync(`${tmpDir}`)).to.eql(['package.json']);
+        });
+    });
+
+    it('should handle some 4xx errors', () => {
+        return Promise.each([403, 403, 400], (code) => {
+            nock('https://api.github.com')
+            .get(`/repos/some-org/repo-${code}/tarball/`)
+            .reply(code);
+
+            const download = github({
+                name: 'cool-module',
+                repository: { type: 'git', url: `git+https://github.com/some-org/repo-${code}.git` },
+            });
+
+            return download(tmpDir)
+            .then(() => {
+                expect(fs.readdirSync(`${tmpDir}`)).to.eql(['package.json']);
+            });
+        });
+    });
+
+    it('should override refs based on options.refOverrides', () => {});
 
     it('should pass the correct options to token-dealer');
 
