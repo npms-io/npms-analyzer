@@ -12,8 +12,16 @@ describe('github', () => {
     const tmpDir = `${testDir}/tmp`;
 
     before(() => sepia.fixtureDir(`${testDir}/fixtures/analyze/download/github`));
-    beforeEach(() => execSync(`mkdir -p ${tmpDir}`));
+    beforeEach(() => {
+        execSync(`mkdir -p ${tmpDir}`);
+        sepia.disable();
+        nock.cleanAll();
+    });
     afterEach(() => execSync(`rm -rf ${tmpDir}`));
+    after(() => {
+        sepia.disable();
+        nock.cleanAll();
+    });
 
     it('should detect various GitHub urls', () => {
         let download;
@@ -85,22 +93,8 @@ describe('github', () => {
         });
     });
 
-    it('should handle 404 errors', () => {
-        sepia.enable();
-
-        const download = github({
-            name: 'cool-module',
-            repository: { type: 'git', url: 'git+https://github.com/some-org-that-will-never-exist/some-repo-that-will-never-exist.git' },
-        });
-
-        return download(tmpDir)
-        .then(() => {
-            expect(fs.readdirSync(`${tmpDir}`)).to.eql(['package.json']);
-        });
-    });
-
     it('should handle some 4xx errors', () => {
-        return Promise.each([403, 403, 400], (code) => {
+        return Promise.each([404, 403, 400], (code) => {
             nock('https://api.github.com')
             .get(`/repos/some-org/repo-${code}/tarball/`)
             .reply(code);
@@ -117,9 +111,23 @@ describe('github', () => {
         });
     });
 
-    it('should override refs based on options.refOverrides', () => {});
+    it('should override refs based on options.refOverrides', () => {
+        sepia.enable();
+
+        const download = github({
+            name: 'cross-spawn',
+            repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
+            gitHead: 'master',
+        });
+
+        return download(tmpDir, { 'cross-spawn': 'master' })
+        .then(() => {
+            expect(() => fs.accessSync(`${tmpDir}/package.json`)).to.not.throw();
+            expect(() => fs.accessSync(`${tmpDir}/appveyor.yml`)).to.not.throw();
+        });
+    });
 
     it('should pass the correct options to token-dealer');
 
-    it('should handle rate limit errors');
+    it('should handle rate limit errors (wait/bail)');
 });
