@@ -1,0 +1,24 @@
+{
+  "statusCode": 404,
+  "headers": {
+    "content-length": "9",
+    "access-control-allow-origin": "https://render.githubusercontent.com",
+    "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'",
+    "x-xss-protection": "1; mode=block",
+    "x-frame-options": "deny",
+    "x-content-type-options": "nosniff",
+    "strict-transport-security": "max-age=31536000",
+    "vary": "Authorization,Accept-Encoding",
+    "date": "Wed, 13 Apr 2016 23:01:04 GMT",
+    "x-github-request-id": "5E3CA7B7:B5E0:3A23B5:570ECFB0"
+  },
+  "url": "https://codeload.github.com/IndigoUnited/node-cross-spawn/legacy.tar.gz/somecommithashthatwillneverexist00000000",
+  "time": 379,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.3.0 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate"
+    }
+  }
+}
