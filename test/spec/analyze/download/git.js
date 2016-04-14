@@ -4,25 +4,14 @@ const fs = require('fs');
 const cp = require('child_process');
 const loadJsonFile = require('load-json-file');
 const expect = require('chai').expect;
-const nock = require('nock');
-const sepia = require('../../../util/sepia');
 const git = require('../../../../lib/analyze/download/git');
 
 describe('git', () => {
     const testDir = `${__dirname}/../../..`;
     const tmpDir = `${testDir}/tmp`;
 
-    before(() => sepia.fixtureDir(`${testDir}/fixtures/analyze/download/sepia/git`));
-    beforeEach(() => {
-        cp.execSync(`mkdir -p ${tmpDir}`);
-        sepia.disable();
-        nock.cleanAll();
-    });
+    beforeEach(() => cp.execSync(`mkdir -p ${tmpDir}`));
     afterEach(() => cp.execSync(`rm -rf ${tmpDir}`));
-    after(() => {
-        sepia.disable();
-        nock.cleanAll();
-    });
 
     it('should detect GitHub, GitLab and BitBucket endpoints', () => {
         let download;
