@@ -5,14 +5,13 @@ const cp = require('child_process');
 const loadJsonFile = require('load-json-file');
 const expect = require('chai').expect;
 const nock = require('nock');
-const sepia = require('../../../util/sepia');
-const npm = require('../../../../lib/analyze/download/npm');
+const sepia = require(`${process.cwd()}/test/util/sepia`);
+const npm = require(`${process.cwd()}/lib/analyze/download/npm`);
 
 describe('npm', () => {
-    const testDir = `${__dirname}/../../..`;
-    const tmpDir = `${testDir}/tmp`;
+    const tmpDir = `${process.cwd()}/test/tmp`;
 
-    before(() => sepia.fixtureDir(`${testDir}/fixtures/analyze/download/sepia/npm`));
+    before(() => sepia.fixtureDir(`${process.cwd()}/test/fixtures/analyze/download/sepia/npm`));
     beforeEach(() => {
         cp.execSync(`mkdir -p ${tmpDir}`);
         sepia.disable();

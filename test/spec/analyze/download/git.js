@@ -4,11 +4,10 @@ const fs = require('fs');
 const cp = require('child_process');
 const loadJsonFile = require('load-json-file');
 const expect = require('chai').expect;
-const git = require('../../../../lib/analyze/download/git');
+const git = require(`${process.cwd()}/lib/analyze/download/git`);
 
 describe('git', () => {
-    const testDir = `${__dirname}/../../..`;
-    const tmpDir = `${testDir}/tmp`;
+    const tmpDir = `${process.cwd()}/test/tmp`;
 
     beforeEach(() => cp.execSync(`mkdir -p ${tmpDir}`));
     afterEach(() => cp.execSync(`rm -rf ${tmpDir}`));

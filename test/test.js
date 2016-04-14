@@ -2,9 +2,15 @@
 
 'use strict';
 
+const path = require('path');
 const fs = require('fs');
 const log = require('npmlog');
 
+if (process.cwd() !== path.join(__dirname, '..')) {
+    throw new Error('Tests must be run from the project root');
+}
+
+// Configure
 require('../lib/configure');
 log.level = 'silent';
 
