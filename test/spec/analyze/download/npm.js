@@ -1,7 +1,7 @@
 'use strict';
 
 const fs = require('fs');
-const execSync = require('child_process').execSync;
+const cp = require('child_process');
 const loadJsonFile = require('load-json-file');
 const expect = require('chai').expect;
 const nock = require('nock');
@@ -14,11 +14,11 @@ describe('npm', () => {
 
     before(() => sepia.fixtureDir(`${testDir}/fixtures/analyze/download/sepia/npm`));
     beforeEach(() => {
-        execSync(`mkdir -p ${tmpDir}`);
+        cp.execSync(`mkdir -p ${tmpDir}`);
         sepia.disable();
         nock.cleanAll();
     });
-    afterEach(() => execSync(`rm -rf ${tmpDir}`));
+    afterEach(() => cp.execSync(`rm -rf ${tmpDir}`));
     after(() => {
         sepia.disable();
         nock.cleanAll();
@@ -89,7 +89,7 @@ describe('npm', () => {
         });
     });
 
-    it('should override package.json (only) if broken', () => {
+    it('should merge package.json', () => {
         return Promise.try(() => {
             const npmPackageJson = {
                 name: 'cool-module',
@@ -102,12 +102,13 @@ describe('npm', () => {
             .then(() => loadJsonFile(`${tmpDir}/package.json`))
             .then((packageJson) => {
                 expect(nock.isDone()).to.equal(true);
-                expect(packageJson.name).to.equal('cross-spawn');
+
+                expect(packageJson.name).to.equal('cool-module');
                 expect(packageJson.version).to.equal('0.1.0');
                 expect(packageJson.description).to.be.a('string');
 
                 // Test if properties were merged back
-                expect(npmPackageJson.name).to.equal('cross-spawn');
+                expect(npmPackageJson.name).to.equal('cool-module');
                 expect(npmPackageJson.version).to.equal('0.1.0');
                 expect(npmPackageJson.description).to.be.a('string');
             });

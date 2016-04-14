@@ -2,15 +2,15 @@
   "statusCode": 302,
   "headers": {
     "server": "GitHub.com",
-    "date": "Wed, 13 Apr 2016 23:01:04 GMT",
+    "date": "Thu, 14 Apr 2016 22:34:44 GMT",
     "content-type": "text/html;charset=utf-8",
     "content-length": "0",
     "status": "302 Found",
     "x-ratelimit-limit": "60",
-    "x-ratelimit-remaining": "54",
-    "x-ratelimit-reset": "1460590154",
+    "x-ratelimit-remaining": "56",
+    "x-ratelimit-reset": "1460673824",
     "cache-control": "public, must-revalidate, max-age=0",
-    "expires": "Wed, 13 Apr 2016 23:01:04 GMT",
+    "expires": "Thu, 14 Apr 2016 22:34:44 GMT",
     "location": "https://codeload.github.com/IndigoUnited/node-cross-spawn/legacy.tar.gz/somecommithashthatwillneverexist00000000",
     "access-control-expose-headers": "ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
     "access-control-allow-origin": "*",
@@ -20,11 +20,11 @@
     "x-frame-options": "deny",
     "x-xss-protection": "1; mode=block",
     "vary": "Accept-Encoding",
-    "x-served-by": "173530fed4bbeb1e264b2ed22e8b5c20",
-    "x-github-request-id": "5E3CA7B7:1559E:E43ACE7:570ECFAF"
+    "x-served-by": "2811da37fbdda4367181b328b22b2499",
+    "x-github-request-id": "5E3CA7B7:DA3D:DEFCBCC:57101B04"
   },
   "url": "https://api.github.com/repos/IndigoUnited/node-cross-spawn/tarball/somecommithashthatwillneverexist00000000",
-  "time": 368,
+  "time": 370,
   "request": {
     "method": "GET",
     "headers": {

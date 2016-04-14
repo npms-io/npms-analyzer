@@ -9,14 +9,14 @@
     "x-content-type-options": "nosniff",
     "strict-transport-security": "max-age=31536000",
     "vary": "Authorization,Accept-Encoding",
-    "etag": "\"7bc71932e517c974c80f54ae9f7687c9cd25db74\"",
+    "etag": "\"65d41138e6b5161787df43d5f8de2442765e32d0\"",
     "content-type": "application/x-gzip",
-    "content-disposition": "attachment; filename=IndigoUnited-node-cross-spawn-2.2.3-0-g7bc7193.tar.gz",
-    "date": "Thu, 14 Apr 2016 22:34:45 GMT",
-    "x-github-request-id": "5E3CA7B7:106F5:1E8D4C:57101B05"
+    "content-disposition": "attachment; filename=IndigoUnited-node-cross-spawn-2.0.0-0-g65d4113.tar.gz",
+    "date": "Thu, 14 Apr 2016 22:34:46 GMT",
+    "x-github-request-id": "5E3CA7B7:106F9:4F15AD:57101B06"
   },
-  "url": "https://codeload.github.com/IndigoUnited/node-cross-spawn/legacy.tar.gz/master",
-  "time": 381,
+  "url": "https://codeload.github.com/IndigoUnited/node-cross-spawn/legacy.tar.gz/65d41138e6b5161787df43d5f8de2442765e32d0",
+  "time": 380,
   "request": {
     "method": "GET",
     "headers": {

@@ -1,7 +1,7 @@
 'use strict';
 
 const fs = require('fs');
-const execSync = require('child_process').execSync;
+const cp = require('child_process');
 const loadJsonFile = require('load-json-file');
 const expect = require('chai').expect;
 const nock = require('nock');
@@ -14,11 +14,11 @@ describe('github', () => {
 
     before(() => sepia.fixtureDir(`${testDir}/fixtures/analyze/download/sepia/github`));
     beforeEach(() => {
-        execSync(`mkdir -p ${tmpDir}`);
+        cp.execSync(`mkdir -p ${tmpDir}`);
         sepia.disable();
         nock.cleanAll();
     });
-    afterEach(() => execSync(`rm -rf ${tmpDir}`));
+    afterEach(() => cp.execSync(`rm -rf ${tmpDir}`));
     after(() => {
         sepia.disable();
         nock.cleanAll();
@@ -46,14 +46,12 @@ describe('github', () => {
         const download = github({
             name: 'cross-spawn',
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
-            gitHead: '5fb20ce2f44d9947fcf59e8809fe6cb1d767433b',
+            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad',
         });
 
         return download(tmpDir)
-        .then(() => {
-            expect(() => fs.accessSync(`${tmpDir}/package.json`)).to.not.throw();
-            expect(() => fs.accessSync(`${tmpDir}/appveyor.yml`)).to.throw(/ENOENT/);
-        });
+        .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
+        .then((packageJson) => expect(packageJson.version).to.equal('1.0.0'));
     });
 
     it('should fallback to master branch if the commit hash does not exist', () => {
@@ -118,17 +116,15 @@ describe('github', () => {
 
         const download = github({
             name: 'cross-spawn',
+            version: '0.0.1',
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
+            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad',  // This is ref for 1.0.0
         });
 
         return download(tmpDir)
-        .then(() => {
-            expect(nock.isDone()).to.equal(true);
-            return loadJsonFile(`${tmpDir}/package.json`);
-        })
-        .then((packageJson) => {
-            expect(packageJson).to.have.keys(['name', 'repository']);
-        });
+        .tap(() => expect(nock.isDone()).to.equal(true))
+        .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
+        .then((packageJson) => expect(packageJson.version).to.equal('0.0.1'));
     });
 
     it('should override refs based on options.refOverrides', () => {
@@ -136,24 +132,23 @@ describe('github', () => {
 
         const download = github({
             name: 'cross-spawn',
+            version: '0.0.1',
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
-            gitHead: '5fb20ce2f44d9947fcf59e8809fe6cb1d767433b',
+            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad',                           // This is ref for 1.0.0
         }, {
-            refOverrides: { 'cross-spawn': 'master' },
+            refOverrides: { 'cross-spawn': '65d41138e6b5161787df43d5f8de2442765e32d0' },   // This is ref for 2.0.0
         });
 
         return download(tmpDir)
         .then(() => {
+            expect(nock.isDone()).to.equal(true);
             expect(() => fs.accessSync(`${tmpDir}/package.json`)).to.not.throw();
             expect(() => fs.accessSync(`${tmpDir}/appveyor.yml`)).to.not.throw();
 
-            // Test if package.json was NOT overridden
+            // Test if the downloaded package.json was preferred
             return loadJsonFile(`${tmpDir}/package.json`)
-            .then((packageJson) => {
-                expect(packageJson.name).to.equal('cross-spawn');
-                expect(packageJson.version).to.not.equal('0.1.0');
-                expect(packageJson.description).to.be.a('string');
-            });
+            .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
+            .then((packageJson) => expect(packageJson.version).to.equal('2.0.0'));
         });
     });
 
