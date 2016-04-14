@@ -114,41 +114,56 @@ describe('github', () => {
     it('should prefer the passed package.json over the downloaded one', () => {
         sepia.enable();
 
-        const download = github({
-            name: 'cross-spawn',
-            version: '0.0.1',
+        const npmPackageJson = {
+            name: 'cool-module',
+            version: '0.1.0',
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
-            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad',  // This is ref for 1.0.0
-        });
+            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad',  // This is the ref for 1.0.0
+        };
+
+        const download = github(npmPackageJson);
 
         return download(tmpDir)
-        .tap(() => expect(nock.isDone()).to.equal(true))
         .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
-        .then((packageJson) => expect(packageJson.version).to.equal('0.0.1'));
+        .then((packageJson) => {
+            expect(nock.isDone()).to.equal(true);
+
+            expect(packageJson.name).to.equal('cool-module');
+            expect(packageJson.version).to.equal('0.1.0');
+            expect(packageJson.description).to.be.a('string');
+
+            // Test if properties were merged back
+            expect(npmPackageJson.name).to.equal('cool-module');
+            expect(npmPackageJson.version).to.equal('0.1.0');
+            expect(npmPackageJson.description).to.be.a('string');
+        });
     });
 
     it('should override refs based on options.refOverrides', () => {
         sepia.enable();
 
-        const download = github({
+        const npmPackageJson = {
             name: 'cross-spawn',
-            version: '0.0.1',
+            version: '0.1.0',
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
-            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad',                           // This is ref for 1.0.0
-        }, {
-            refOverrides: { 'cross-spawn': '65d41138e6b5161787df43d5f8de2442765e32d0' },   // This is ref for 2.0.0
+            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad',  // This is the ref for 1.0.0
+        };
+
+        const download = github(npmPackageJson, {
+            refOverrides: { 'cross-spawn': '65d41138e6b5161787df43d5f8de2442765e32d0' },   // This is the ref for 2.0.0
         });
 
         return download(tmpDir)
-        .then(() => {
+        .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
+        .then((packageJson) => {
             expect(nock.isDone()).to.equal(true);
-            expect(() => fs.accessSync(`${tmpDir}/package.json`)).to.not.throw();
-            expect(() => fs.accessSync(`${tmpDir}/appveyor.yml`)).to.not.throw();
 
-            // Test if the downloaded package.json was preferred
-            return loadJsonFile(`${tmpDir}/package.json`)
-            .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
-            .then((packageJson) => expect(packageJson.version).to.equal('2.0.0'));
+            expect(packageJson.version).to.equal('2.0.0');
+            expect(packageJson.description).to.be.a('string');
+
+            // Test if properties were merged back
+            expect(npmPackageJson.version).to.equal('2.0.0');
+            expect(npmPackageJson.description).to.be.a('string');
         });
     });
 

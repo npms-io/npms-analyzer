@@ -154,4 +154,27 @@ describe('git', () => {
             });
         });
     });
+
+    it('should merge package.json', () => {
+        const npmPackageJson = {
+            name: 'cool-module',
+            repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
+            gitHead: '5fb20ce2f44d9947fcf59e8809fe6cb1d767433b', // This is the ref for 1.0.0
+        };
+
+        const download = git(npmPackageJson);
+
+        return download(tmpDir)
+        .then(() => loadJsonFile(`${tmpDir}/package.json`))
+        .then((packageJson) => {
+            expect(packageJson.name).to.equal('cool-module');
+            expect(packageJson.version).to.equal('0.1.0');
+            expect(packageJson.description).to.be.a('string');
+
+            // Test if properties were merged back
+            expect(npmPackageJson.name).to.equal('cool-module');
+            expect(npmPackageJson.version).to.equal('0.1.0');
+            expect(npmPackageJson.description).to.be.a('string');
+        });
+    });
 });
