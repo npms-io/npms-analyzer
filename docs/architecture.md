@@ -157,7 +157,8 @@ Below follows some of the points taken into consideration:
 
 ##### personalities
 
-If two modules are similar, one tend to choose the one in which the author is well known in the community. Also, there are people that simply prefer to use a module over another because the author is popular. While this doesn't directly translate to quality, it's still a strong factor that we should account.
+If two modules are similar, one tend to choose the one in which the author is well known in the community. Also, there are people that simply prefer to use a module over another because the author is popular. While this doesn't directly translate to quality, it's still a strong factor that we should account.  
+Relationships between people are also important. If user X follows user Y, he might prefer user Y's modules over other people simply because of the bound they have.
 
 I will not elaborate on this because this evaluator will NOT be developed nor used in the initial release.
 
