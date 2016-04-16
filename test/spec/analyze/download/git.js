@@ -4,8 +4,8 @@ const fs = require('fs');
 const cp = require('child_process');
 const loadJsonFile = require('load-json-file');
 const expect = require('chai').expect;
-const git = require(`${process.cwd()}/lib/analyze/download/git`);
 const betray = require('betray');
+const git = require(`${process.cwd()}/lib/analyze/download/git`);
 
 const tmpDir = `${process.cwd()}/test/tmp`;
 
