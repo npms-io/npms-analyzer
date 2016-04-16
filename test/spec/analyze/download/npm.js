@@ -8,9 +8,9 @@ const nock = require('nock');
 const sepia = require(`${process.cwd()}/test/util/sepia`);
 const npm = require(`${process.cwd()}/lib/analyze/download/npm`);
 
-describe('npm', () => {
-    const tmpDir = `${process.cwd()}/test/tmp`;
+const tmpDir = `${process.cwd()}/test/tmp`;
 
+describe('npm', () => {
     before(() => sepia.fixtureDir(`${process.cwd()}/test/fixtures/analyze/download/sepia/npm`));
     beforeEach(() => {
         cp.execSync(`mkdir -p ${tmpDir}`);
@@ -45,7 +45,7 @@ describe('npm', () => {
 
         return download(tmpDir)
         .then(() => {
-            expect(fs.readdirSync(`${tmpDir}`)).to.eql(['package.json']);
+            expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
         });
     });
 
@@ -84,7 +84,7 @@ describe('npm', () => {
         return download(tmpDir)
         .then(() => {
             expect(nock.isDone()).to.equal(true);
-            expect(fs.readdirSync(`${tmpDir}`)).to.eql(['package.json']);
+            expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
         });
     });
 

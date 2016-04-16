@@ -8,9 +8,9 @@ const nock = require('nock');
 const sepia = require(`${process.cwd()}/test/util/sepia`);
 const github = require(`${process.cwd()}/lib/analyze/download/github`);
 
-describe('github', () => {
-    const tmpDir = `${process.cwd()}/test/tmp`;
+const tmpDir = `${process.cwd()}/test/tmp`;
 
+describe('github', () => {
     before(() => sepia.fixtureDir(`${process.cwd()}/test/fixtures/analyze/download/sepia/github`));
     beforeEach(() => {
         cp.execSync(`mkdir -p ${tmpDir}`);
@@ -105,7 +105,7 @@ describe('github', () => {
             return download(tmpDir)
             .then(() => {
                 expect(nock.isDone()).to.equal(true);
-                expect(fs.readdirSync(`${tmpDir}`)).to.eql(['package.json']);
+                expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
             });
         });
     });
