@@ -103,8 +103,8 @@ describe('git', () => {
             return download(tmpDir)
             .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
             .then((packageJson) => {
-                expect(packageJson.version).to.equal('0.1.0');
                 expect(betrayed.invoked).to.be.greaterThan(1);
+                expect(packageJson.version).to.equal('0.1.0');
 
                 cp.execSync(`rm -rf ${tmpDir}`);
                 cp.execSync(`mkdir -p ${tmpDir}`);
@@ -131,8 +131,8 @@ describe('git', () => {
             return download(tmpDir)
             .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
             .then((packageJson) => {
-                expect(packageJson.version).to.equal('0.2.2');
                 expect(betrayed.invoked).to.be.greaterThan(1);
+                expect(packageJson.version).to.equal('0.2.2');
 
                 cp.execSync(`rm -rf ${tmpDir}`);
                 cp.execSync(`mkdir -p ${tmpDir}`);
@@ -160,8 +160,8 @@ describe('git', () => {
             return download(tmpDir)
             .then(() => loadJsonFile.sync(`${tmpDir}/bower.json`))
             .then((packageJson) => {
-                expect(packageJson.version).to.equal('0.2.0');
                 expect(betrayed.invoked).to.be.greaterThan(1);
+                expect(packageJson.version).to.equal('0.2.0');
 
                 cp.execSync(`rm -rf ${tmpDir}`);
                 cp.execSync(`mkdir -p ${tmpDir}`);
@@ -191,9 +191,9 @@ describe('git', () => {
 
         return download(tmpDir)
         .then(() => {
+            expect(betrayed.invoked).to.be.greaterThan(1);
             expect(() => fs.accessSync(`${tmpDir}/package.json`)).to.not.throw();
             expect(() => fs.accessSync(`${tmpDir}/appveyor.yml`)).to.not.throw();
-            expect(betrayed.invoked).to.be.greaterThan(1);
         })
         .finally(() => betrayed.restore());
     });
@@ -217,9 +217,9 @@ describe('git', () => {
 
         return download(tmpDir, { refOverrides: { 'cross-spawn': 'foo' } })
         .then(() => {
+            expect(betrayed.invoked).to.be.greaterThan(1);
             expect(() => fs.accessSync(`${tmpDir}/package.json`)).to.not.throw();
             expect(() => fs.accessSync(`${tmpDir}/appveyor.yml`)).to.not.throw();
-            expect(betrayed.invoked).to.be.greaterThan(1);
         })
         .finally(() => betrayed.restore());
     });
@@ -239,8 +239,8 @@ describe('git', () => {
 
         return download(tmpDir)
         .then(() => {
-            expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
             expect(betrayed.invoked).to.be.greaterThan(1);
+            expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
         })
         .finally(() => betrayed.restore());
     });
@@ -260,8 +260,8 @@ describe('git', () => {
 
         return download(tmpDir)
         .then(() => {
-            expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
             expect(betrayed.invoked).to.be.greaterThan(1);
+            expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
         })
         .finally(() => betrayed.restore());
     });
@@ -281,8 +281,8 @@ describe('git', () => {
 
         return download(tmpDir)
         .then(() => {
-            expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
             expect(betrayed.invoked).to.be.greaterThan(1);
+            expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
         })
         .finally(() => betrayed.restore());
     });
@@ -297,8 +297,8 @@ describe('git', () => {
 
         return download(tmpDir)
         .then(() => {
-            expect(() => fs.accessSync(`${tmpDir}/.git`)).to.throw(/ENOENT/);
             expect(betrayed.invoked).to.be.greaterThan(1);
+            expect(() => fs.accessSync(`${tmpDir}/.git`)).to.throw(/ENOENT/);
 
             cp.execSync(`rm -rf ${tmpDir}`);
             cp.execSync(`mkdir -p ${tmpDir}`);
@@ -327,6 +327,8 @@ describe('git', () => {
         return download(tmpDir)
         .then(() => loadJsonFile(`${tmpDir}/package.json`))
         .then((packageJson) => {
+            expect(betrayed.invoked).to.be.greaterThan(1);
+
             expect(packageJson.name).to.equal('cool-module');
             expect(packageJson.version).to.equal('0.1.0');
             expect(packageJson.description).to.equal('Cross platform child_process#spawn and child_process#spawnSync');

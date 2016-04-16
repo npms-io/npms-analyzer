@@ -89,6 +89,8 @@ describe('npm', () => {
     });
 
     it('should merge package.json', () => {
+        sepia.enable();
+
         const npmPackageJson = {
             name: 'cool-module',
             dist: { tarball: 'https://registry.npmjs.org/cross-spawn/-/cross-spawn-0.1.0.tgz' },
@@ -99,8 +101,6 @@ describe('npm', () => {
         return download(tmpDir)
         .then(() => loadJsonFile(`${tmpDir}/package.json`))
         .then((packageJson) => {
-            expect(nock.isDone()).to.equal(true);
-
             expect(packageJson.name).to.equal('cool-module');
             expect(packageJson.version).to.equal('0.1.0');
             expect(packageJson.description).to.be.a('string');
