@@ -26,7 +26,7 @@ This project exposes all its functionality through a CLI.
 Note that you must it [setup](./docs/setup.md) the project before using the CLI.
 Keep reading to learn more about the CLI and its commands.
 
-The most important commands will be describe below. To discover the other ones run `$ npms-analyzer -h`.
+The most important commands will be described below. To discover the other ones run `$ npms-analyzer -h`.
 
 ### npms-analyzer observe
 
