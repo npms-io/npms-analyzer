@@ -25,7 +25,7 @@ function onModule(name, queue) {
         .catch(retry);
     })
     .catch((err) => {
-        log.error(logPrefix, 'Too much failed attempts while trying to push module into the queue, exiting..', { err, name });
+        log.error(logPrefix, 'Too many failed attempts while trying to push module into the queue, exiting..', { err, name });
         process.exit(1);
     });
 }
