@@ -1,11 +1,9 @@
 # Architecture
 
-The `npms-analyzer` runs two continuous and distinct processes. One is the `analysis` process where each module gets
-inspected and evaluated. The other one is the `continuous scoring` process where all modules get a score based on the aggregated evaluation results.
+The `npms-analyzer` runs two continuous and distinct processes. One is the `analysis` process where each module gets inspected and evaluated. The other one is the `continuous scoring` process where all modules get a score based on the aggregated evaluation results.
 
 - [Analysis](#analysis)
 - [Continuous scoring](#continuous-scoring)
-
 
 ## Analysis
 
@@ -83,8 +81,7 @@ Items signaled with * are not yet done.
 
 ##### github
 
-The github collector uses GitHub and [Issue Stats](http://issuestats.com/) to collect useful data and statistics
-present there.
+The github collector uses GitHub and [Issue Stats](http://issuestats.com/) to collect useful data and statistics present there.
 
 - Get number of stars, subscribers and forks
 - Fetch the repository activity in terms of commits
@@ -93,13 +90,11 @@ present there.
 - Fetch contributors
 - Check the build status
 
-This collector is susceptible to the GitHub [rate limit](https://developer.github.com/v3/rate_limit/) policy. To fight
-against this limit, you may define several GitHub keys to be used in a round-robin fashion.
+This collector is susceptible to the GitHub [rate limit](https://developer.github.com/v3/rate_limit/) policy. To fight against this limit, you may define several GitHub keys to be used in a round-robin fashion.
 
 ##### npm
 
-The npm collector uses the replicated CouchDB views and the npm [download-counts](https://github.com/npm/download-counts)
-API to extract useful information present there.
+The npm collector uses the replicated CouchDB views and the npm [download-counts](https://github.com/npm/download-counts) API to extract useful information present there.
 
 - Get number of stars
 - Get number of downloads over time
@@ -157,15 +152,13 @@ Below follows some of the points taken into consideration:
 
 ##### personalities
 
-If two modules are similar, one tend to choose the one in which the author is well known in the community. Also, there are people that simply prefer to use a module over another because the author is popular. While this doesn't directly translate to quality, it's still a strong factor that we should account.  
-Relationships between people are also important. If user X follows user Y, he might prefer user Y's modules over other people simply because of the bound they have.
+If two modules are similar, one tend to choose the one in which the author is well known in the community. Also, there are people that simply prefer to use a module over another because the author is popular. While this doesn't directly translate to quality, it's still a strong factor that we should account. Relationships between people are also important. If user X follows user Y, he might prefer user Y's modules over other people simply because of the bound they have.
 
 I will not elaborate on this because this evaluator will NOT be developed nor used in the initial release.
 
 ### Scoring
 
 Calculates the module score based on the current aggregation if any. If there's no aggregation, the module won't be scored at the moment, but it will be later in the `continuous scoring` process.
-
 
 ## Continuous scoring
 
@@ -179,7 +172,6 @@ One important detail is that the continuous scoring process creates and maintain
 
 - `npms-read`: Should be used to query the score data
 - `npms-write`: Should be used to write score data
-
 
 ### Prepare
 
