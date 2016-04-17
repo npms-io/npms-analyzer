@@ -57,7 +57,9 @@ describe('untar', () => {
         return untar(`${tmpDir}/archive-that-will-never-exist.tgz`)
         .then(() => {
             throw new Error('Expected to fail');
-        }, () => {});
+        }, (err) => {
+            expect(err.stderr).to.match(/(error opening|no such file)/i);
+        });
     });
 
 
