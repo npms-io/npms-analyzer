@@ -2,7 +2,9 @@
 
 const fs = require('fs');
 const cp = require('child_process');
+const log = require('npmlog');
 const expect = require('chai').expect;
+const betray = require('betray');
 const untar = require(`${process.cwd()}/lib/analyze/download/util/untar`);
 
 const tmpDir = `${process.cwd()}/test/tmp`;
@@ -38,10 +40,17 @@ describe('untar', () => {
     });
 
     it('should deal with malformed archives', () => {
+        const betrayed = betray(log, 'warn');
+
         fs.writeFileSync(`${tmpDir}/broken-archive.tgz`, fs.readFileSync(`${fixturesDir}/broken-archive.tgz`));
 
         return untar(`${tmpDir}/broken-archive.tgz`)
-        .then(() => expect(fs.readdirSync(tmpDir)).to.eql([]));
+        .then(() => {
+            expect(betrayed.invoked).to.equal(1);
+            expect(betrayed.invocations[0][1]).to.match(/malformed/i);
+            expect(fs.readdirSync(tmpDir)).to.eql([]);
+        })
+        .finally(() => betrayed.restore());
     });
 
     it('should delete the archive file, even if the extraction failed', () => {
