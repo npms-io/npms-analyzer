@@ -1,15 +1,15 @@
 # Setup
 
-Bellow you will find a list of items that you must do to get the project working on your local machine. The production setup document is not present in the repository for security reasons.
+Below you will find a list of items that you must do to get the project working on your local machine. The production setup document is not present in the repository for security reasons.
 
 ## Config file
 
-This project uses the [config](https://www.npmjs.com/package/config) for configuration. You may create `config/local.json5` file to override the configuration as necessary, specially to define some `githubTokens`.
+This project uses [config](https://www.npmjs.com/package/config) for configuration. You may create `config/local.json5` file to override the configuration as necessary, especially to define `githubTokens`.
 
 ## General utilities
 
-- `git` must be installed in the system and available in the PATH.
-- `rm`, `mkdir`, `chmod` and `tar` utilities must be available.
+- `git` must be installed and available in the `$PATH`.
+- GNU coreutils (`rm`, `mkdir`, `chmod` and `tar`) must be available.
 
 ## CouchDB
 

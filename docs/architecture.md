@@ -7,7 +7,7 @@ The `npms-analyzer` runs two continuous and distinct processes. One is the `anal
 
 ## Analysis
 
-The analysis process analyzes the `npm` modules, producing an analyzes result and a score.
+The analysis process analyzes the `npm` modules, producing a result and a score.
 
 ![analysis](./diagrams/analysis.png)
 
