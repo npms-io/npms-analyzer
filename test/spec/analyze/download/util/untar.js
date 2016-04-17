@@ -53,6 +53,14 @@ describe('untar', () => {
         .finally(() => betrayed.restore());
     });
 
+    it('should fail if extraction fails', () => {
+        return untar(`${tmpDir}/archive-that-will-never-exist.tgz`)
+        .then(() => {
+            throw new Error('Expected to fail');
+        }, () => {});
+    });
+
+
     it('should delete the archive file, even if the extraction failed', () => {
         // Good tar
         return Promise.try(() => {
