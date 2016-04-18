@@ -97,14 +97,16 @@ describe('packageJsonFromData', () => {
         })).to.throw(/name mismatch/i);
     });
 
-    it('should fail if versions mismatch', () => {
-        expect(() => packageJsonFromData('foo', {
+    it('should check if versions mismatch', () => {
+        const packageJson = packageJsonFromData('foo', {
             name: 'foo',
             'dist-tags': { latest: '1.0.0' },
             versions: {
                 '1.0.0': { name: 'foo', version: '2.0.0' },
             },
-        })).to.throw(/version mismatch/i);
+        });
+
+        expect(packageJson.version).to.equal('1.0.0');
     });
 
     it('should normalize package json with normalize-package-data', () => {
