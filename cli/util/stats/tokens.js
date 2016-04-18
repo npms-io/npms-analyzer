@@ -6,7 +6,7 @@ const values = require('lodash/values');
 const minBy = require('lodash/minBy');
 
 /**
- * Monitors the tokens managed by token-dealer of a given group.
+ * Monitors the API tokens managed by token-dealer of a given group.
  *
  * @param {array}  tokens  The array of tokens
  * @param {string} [group] The token's group (e.g.: github)
