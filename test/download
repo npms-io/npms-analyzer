@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd test/fixtures/analyze/download/downloaded
+wget -nv --show-progress -c -N http://registry.npmjs.org/pickles2-contents-editor/-/pickles2-contents-editor-2.0.0-alpha.1.tgz
+wget -nv --show-progress -c -N https://registry.npmjs.org/couchdb-iterator/-/couchdb-iterator-2.0.2.tgz

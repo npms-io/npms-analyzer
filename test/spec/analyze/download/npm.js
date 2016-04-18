@@ -11,7 +11,7 @@ const npm = require(`${process.cwd()}/lib/analyze/download/npm`);
 const tmpDir = `${process.cwd()}/test/tmp`;
 
 describe('npm', () => {
-    before(() => sepia.fixtureDir(`${process.cwd()}/test/fixtures/analyze/download/sepia/npm`));
+    before(() => sepia.fixtureDir(`${process.cwd()}/test/fixtures/analyze/download/recorded/npm`));
     beforeEach(() => {
         cp.execSync(`mkdir -p ${tmpDir}`);
         sepia.disable();

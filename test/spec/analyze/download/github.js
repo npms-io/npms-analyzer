@@ -11,7 +11,7 @@ const github = require(`${process.cwd()}/lib/analyze/download/github`);
 const tmpDir = `${process.cwd()}/test/tmp`;
 
 describe('github', () => {
-    before(() => sepia.fixtureDir(`${process.cwd()}/test/fixtures/analyze/download/sepia/github`));
+    before(() => sepia.fixtureDir(`${process.cwd()}/test/fixtures/analyze/download/recorded/github`));
     beforeEach(() => {
         cp.execSync(`mkdir -p ${tmpDir}`);
         sepia.disable();
