@@ -2,17 +2,13 @@
 
 # Thanks Patrick Marques <patrickfmarques@gmail.com> for helping with bash
 
-# Resume download and turn on timestamping by default
-WGET_OPTS="--continue --timestamping"
-
-# Travis runs on a old linux distribution that does not have a recent `wget` nor certificates
+# Travis runs on a old linux distribution which has an old `wget` and certificates
 if [ -z "$TRAVIS" ]; then
-    WGET_OPTS="${WGET_OPTS} --no-verbose --show-progress"
+    WGET_OPTS="--continue --timestamping --no-verbose --show-progress"
 else
-    WGET_OPTS="${WGET_OPTS} --no-check-certificate --progress=dot:mega"
+    WGET_OPTS="--no-check-certificate --progress=dot:mega"
 fi
 
-echo ${WGET_OPTS}
 DIR=test/fixtures/analyze/download/downloaded
 mkdir -p ${DIR} && cd ${DIR}
 wget ${WGET_OPTS} http://registry.npmjs.org/pickles2-contents-editor/-/pickles2-contents-editor-2.0.0-alpha.1.tgz
