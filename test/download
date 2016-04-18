@@ -1,6 +1,19 @@
 #!/bin/sh
 
-mkdir -p test/fixtures/analyze/download/downloaded
-cd test/fixtures/analyze/download/downloaded
-wget -nv --show-progress -c -N http://registry.npmjs.org/pickles2-contents-editor/-/pickles2-contents-editor-2.0.0-alpha.1.tgz
-wget -nv --show-progress -c -N https://registry.npmjs.org/couchdb-iterator/-/couchdb-iterator-2.0.2.tgz
+# Thanks Patrick Marques <patrickfmarques@gmail.com> for helping with bash
+
+# Resume download and turn on timestamping by default
+WGET_OPTS="--continue --timestamping"
+
+# Travis runs on a old linux distribution that does not have a recent `wget` nor certificates
+if [ -z "$TRAVIS" ]; then
+    WGET_OPTS="${WGET_OPTS} --no-verbose --show-progress"
+else
+    WGET_OPTS="${WGET_OPTS} --no-check-certificate --progress=dot:mega"
+fi
+
+echo ${WGET_OPTS}
+DIR=test/fixtures/analyze/download/downloaded
+mkdir -p ${DIR} && cd ${DIR}
+wget ${WGET_OPTS} http://registry.npmjs.org/pickles2-contents-editor/-/pickles2-contents-editor-2.0.0-alpha.1.tgz
+wget ${WGET_OPTS} https://registry.npmjs.org/couchdb-iterator/-/couchdb-iterator-2.0.2.tgz
