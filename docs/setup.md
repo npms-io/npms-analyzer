@@ -1,20 +1,15 @@
 # Setup
 
-Bellow you will find a list of items that you must do to get the project working on your local machine.  
-The production setup document is not present in the repository for security reasons.
-
+Below you will find a list of items that you must do to get the project working on your local machine. The production setup document is not present in the repository for security reasons.
 
 ## Config file
 
-This project uses the [config][https://www.npmjs.com/package/config] for configuration.
-You may create `config/local.json5` file to override the configuration as necessary, specially to define some `githubTokens`.
-
+This project uses [config](https://www.npmjs.com/package/config) for configuration. You may create `config/local.json5` file to override the configuration as necessary, especially to define `githubTokens`.
 
 ## General utilities
 
-- `git` must be installed in the system and available in the PATH.
-- `rm`, `mkdir`, `chmod` and `tar` utilities must be available.
-
+- `git` must be installed and available in the `$PATH`.
+- GNU coreutils (`rm`, `mkdir`, `chmod` and `tar`) must be available.
 
 ## CouchDB
 
@@ -24,9 +19,8 @@ You may create `config/local.json5` file to override the configuration as necess
 - Add user `admin` with `admin` as password by executing `curl -X PUT http://localhost:5984/_config/admins/admin -d '"admin"'`. After doing this, operations done in the [web interface](http://localhost:5984/_utils/) require you to login (login is at bottom right corner).
 - Create database named `npms` by executing `curl -X PUT http://admin:admin@localhost:5984/npms`
 - Change default maximum replication retries to infinite by executing `curl -X PUT http://admin:admin@localhost:5984/_config/replicator/max_replication_retry_count -d '"infinity"'`
-- Setup npm replication by executing `curl -X PUT http://admin:admin@localhost:5984/_replicator/npm -d '{ "source":  "https://skimdb.npmjs.com/registry", "target": "http://admin:admin@localhost:5984/npm", "create_target": true, "continuous": true }'`
+- Setup npm replication by executing `curl -X PUT http://admin:admin@localhost:5984/_replicator/npm -d '{ "source": "https://skimdb.npmjs.com/registry", "target": "http://admin:admin@localhost:5984/npm", "create_target": true, "continuous": true }'`
 - Setup the necessary views by creating the document `_design/npms-analyzer` in the `npms` database with the contents of `https://github.com/npms-io/npms-analyzer/blob/master/config/couchdb/npms-analyzer.json5`
-
 
 ## RabbitMQ
 
@@ -35,7 +29,6 @@ You may create `config/local.json5` file to override the configuration as necess
 - Install [RabbitMQ](https://www.rabbitmq.com/download.html) and run it (tested with `v3.6.1`).
 - Install the [management](https://www.rabbitmq.com/management.html) plugin which is very useful by running `rabbitmq-plugins enable rabbitmq_management`
 - Head to `http://localhost:15672` and login with `guest/guest` and see if everything is ok.
-
 
 ## Elasticsearch
 
