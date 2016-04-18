@@ -68,16 +68,16 @@ describe('git', () => {
         download = git({ repository: { type: 'git', url: 'https://github.com/IndigoUnited/node-cross-spawn.git' } });
         expect(download).to.be.a('function');
 
-        download = git({ repository: { type: 'git', url: 'git@gitlab.com:codium/angular-ui-select.git' } });
-        expect(download).to.be.a('function');
-
-        download = git({ repository: { type: 'git', url: 'https://gitlab.com/codium/angular-ui-select.git' } });
-        expect(download).to.be.a('function');
-
         download = git({ repository: { type: 'git', url: 'git@bitbucket.org:fvdm/node-xml2json.git' } });
         expect(download).to.be.a('function');
 
         download = git({ repository: { type: 'git', url: 'https://bitbucket.org/fvdm/node-xml2json.git' } });
+        expect(download).to.be.a('function');
+
+        download = git({ repository: { type: 'git', url: 'git@gitlab.com:codium/angular-ui-select.git' } });
+        expect(download).to.be.a('function');
+
+        download = git({ repository: { type: 'git', url: 'https://gitlab.com/codium/angular-ui-select.git' } });
         expect(download).to.be.a('function');
 
         download = git({ repository: { type: 'git', url: 'https://foo.com/IndigoUnited/node-cross-spawn.git' } });
