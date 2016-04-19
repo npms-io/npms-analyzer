@@ -183,7 +183,13 @@ The aggregation step iterates all the modules evaluations, calculating the `min`
 
 ### Score modules
 
-After having the aggregation done, all modules are iterated again to produce a score based on the previously calculated aggregation. The score data for each module is stored in `Elasticsearch` into the index referenced by the `npms-write` alias.
+After having the aggregation done, all modules are iterated again to produce a score based on the previously calculated aggregation.
+
+The module evaluation and aggregation `mean` are normalized ([0, 1]), using the aggregation `min` and `max` values, and a Bezier Curve is computed using 4 control points: (0, 0), (normalizedAggregationMean, 0.75), (normalizedAggregationMean, 0.75), (1, 1). The module score is the Y value that corresponds, in this curve, to the module evaluation (X axis).
+
+![bezier](./diagrams/bezier.png)
+
+The score data for each module is stored in `Elasticsearch` into the index referenced by the `npms-write` alias.
 
 ### Finalize
 
