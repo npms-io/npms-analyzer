@@ -25,6 +25,10 @@ function statTokens(tokens, group) {
             log.stat('tokens', `${usableTokensUsage.length} out of ${tokensUsage.length} tokens are usable (${group})`);
             return;
         }
+        if (tokensUsage.length < 1) {
+            log.stat('tokens', `We have no tokens (${group})`);
+            return;
+        }
 
         const nextResettingToken = minBy(tokensUsage, 'reset');
         const remainingMins = Math.ceil((nextResettingToken.reset - Date.now()) / 1000 / 60);
