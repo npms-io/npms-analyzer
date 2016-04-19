@@ -3,6 +3,7 @@
 const tokenDealer = require('token-dealer');
 const log = require('npmlog');
 const values = require('lodash/values');
+const minBy = require('lodash/minBy');
 
 /**
  * Monitors the tokens managed by token-dealer of a given group.
@@ -25,8 +26,8 @@ function statTokens(tokens, group) {
             return;
         }
 
-        const closerTokenUsage = tokensUsage.reduce((closer, entry) => entry.reset < closer.reset ? entry : closer);
-        const remainingMins = Math.ceil((closerTokenUsage.reset - Date.now()) / 1000 / 60);
+        const nextResettingToken = minBy(tokensUsage, 'reset');
+        const remainingMins = Math.ceil((nextResettingToken.reset - Date.now()) / 1000 / 60);
 
         log.stat('tokens', `All tokens are exhausted, next one will reset in ${remainingMins} minutes (${group})`);
     }, 15000)
