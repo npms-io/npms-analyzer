@@ -29,7 +29,7 @@
     deploy: {
         production: {
             user: 'analyzer',
-            host: '212.47.226.136',
+            host: '163.172.148.133',
             ref: 'origin/master',
             repo: 'https://github.com/npms-io/npms-analyzer.git',
             path: '/home/analyzer/npms-analyzer',
