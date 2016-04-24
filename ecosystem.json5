@@ -34,8 +34,8 @@
             repo: 'https://github.com/npms-io/npms-analyzer.git',
             path: '/home/analyzer/npms-analyzer',
             'post-deploy': '\
-npm install --production && \
 cp ../local.json5 ./config/ && \
+npm install --production && \
 pm2 startOrRestart ecosystem.json5 --env production',
         },
     },
