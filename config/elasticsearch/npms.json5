@@ -149,6 +149,38 @@
                         "email": { "type": "string", "index": "no" }
                     }
                 },
+                "evaluation": {
+                    "type": "object",
+                    "properties": {
+                        "quality": {
+                            "type": "object",
+                            "properties": {
+                                "carefulness": { "type": "double" },
+                                "tests": { "type": "double" },
+                                "dependenciesHealth": { "type": "double" },
+                                "branding": { "type": "double" }
+                            }
+                        },
+                        "popularity": {
+                            "type": "object",
+                            "properties": {
+                                "communityInterest": { "type": "double" },
+                                "downloadsCount": { "type": "double" },
+                                "downloadsAcceleration": { "type": "double" },
+                                "dependentsCount": { "type": "double" }
+                            }
+                        },
+                        "maintenance": {
+                            "type": "object",
+                            "properties": {
+                                "recentCommits": { "type": "double" },
+                                "commitsFrequency": { "type": "double" },
+                                "openIssues": { "type": "double" },
+                                "issuesDistribution": { "type": "double" }
+                            }
+                        }
+                    }
+                },
                 "score": {
                     "type": "object",
                     "properties": {
