@@ -88,7 +88,7 @@ Continuously iterate over the analyzed modules, scoring them.')
 
     .option('cycle-delay', {
         type: 'number',
-        default: 1 * 60 * 60 * 1000,  // 1 hour
+        default: 3 * 60 * 60 * 1000,  // 3 hours
         alias: 'd',
         describe: 'The time to wait between each scoring cycle (in ms)',
     });
