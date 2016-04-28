@@ -10,8 +10,6 @@ const stats = require('./util/stats');
 
 const logPrefix = '';
 
-// TODO: cleanup temporary folder
-
 /**
  * Handles a message.
  *
@@ -92,8 +90,10 @@ module.exports.handler = (argv) => {
         stats.progress(npmNano, npmsNano);
         stats.tokens(config.get('githubTokens'), 'github');
 
+        // Clean old modules from the download directory
+        return analyze.cleanTmpDir()
         // Start consuming
-        return queue.consume((message) => onMessage(message, npmNano, npmsNano, esClient), { concurrency: argv.concurrency });
+        .then(() => queue.consume((message) => onMessage(message, npmNano, npmsNano, esClient), { concurrency: argv.concurrency }));
     })
     .done();
 };
