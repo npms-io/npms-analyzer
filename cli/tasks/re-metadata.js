@@ -44,7 +44,7 @@ module.exports.handler = (argv) => {
 
                 // Extract package json
                 try {
-                    packageJsonFromData(name, data);
+                    packageJson = packageJsonFromData(name, data);
                 } catch (err) {
                     if (err.unrecoverable) {
                         throw err;
