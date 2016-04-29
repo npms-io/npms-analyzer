@@ -23,7 +23,7 @@ function fetchView(view, npmNano) {
     return npmNano.viewAsync(split[0], split[1])
     .then((response) => {
         return response.rows
-        .map((row) => row.key)
+        .map((row) => row.key.replace(/^module!/, ''))
         .filter((id) => !blacklisted[id]);
     });
 }
@@ -34,7 +34,8 @@ module.exports.builder = (yargs) => {
     return yargs
     .strict()
     .usage('Usage: ./$0 tasks enqueue-view <design-doc/view-name> [options]\n\n\
-Enqueues all modules contained in the npms database view.')
+Enqueues all modules contained in the npms database view.\n\nNOTE: The view must be in the npms database and the key must be the module \
+name (may be prefixed with `module!`)')
     .demand(3, 3)
     .example('./$0 tasks enqueue-view npms-analyzer/docs-to-be-fixed')
 
