@@ -48,7 +48,7 @@
                     "filter": [
                         "split_word",
                         "lowercase",
-                        "kstem"  // Non-aggressive english stemmer, while preserving original keywords
+                        "kstem"        // Non-aggressive english stemmer, while preserving original keywords
                     ]
                 },
 
