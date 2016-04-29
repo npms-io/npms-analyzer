@@ -40,7 +40,18 @@ module.exports.handler = (argv) => {
             // Grab module data
             return npmNano.getAsync(name)
             .then((data) => {
-                const packageJson = packageJsonFromData(name, data);
+                let packageJson;
+
+                // Extract package json
+                try {
+                    packageJsonFromData(name, data);
+                } catch (err) {
+                    if (err.unrecoverable) {
+                        throw err;
+                    }
+
+                    return;
+                }
 
                 // Re-run metadata
                 return metadata(data, packageJson)
