@@ -80,14 +80,6 @@ describe('packageJsonFromData', () => {
             },
         })).to.throw(/name mismatch/i);
 
-        expect(() => packageJsonFromData('foo', {
-            name: 'foo',
-            'dist-tags': { latest: '1.0.0' },
-            versions: {
-                '1.0.0': { name: 'bar', version: '2.0.0' },
-            },
-        })).to.throw(/name mismatch/i);
-
         expect(() => packageJsonFromData('bar', {
             name: 'foo',
             'dist-tags': { latest: '1.0.0' },
@@ -95,6 +87,15 @@ describe('packageJsonFromData', () => {
                 '1.0.0': { name: 'foo', version: '2.0.0' },
             },
         })).to.throw(/name mismatch/i);
+
+        // Data is ok but package.json is not, it should simply overwrite
+        expect(packageJsonFromData('foo', {
+            name: 'foo',
+            'dist-tags': { latest: '1.0.0' },
+            versions: {
+                '1.0.0': { name: 'bar', version: '2.0.0' },
+            },
+        }).name).to.equal('foo');
     });
 
     it('should check if versions mismatch', () => {

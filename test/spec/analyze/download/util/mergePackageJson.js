@@ -13,7 +13,7 @@ describe('mergePackageJson', () => {
 
     it('should merge the files, preferring the passed one', () => {
         fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({
-            name: 'foo',
+            name: 'cool-module',
             version: '2.0.0',
             description: 'bar',
             dependencies: { 'foo-dep': '^1.0.0' },
@@ -39,7 +39,7 @@ describe('mergePackageJson', () => {
 
     it('should merge the files, preferring the downloaded one', () => {
         fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({
-            name: 'foo',
+            name: 'foo',  // Intentionally changing it to 'foo' and it must be ignored because it's the name property
             version: '2.0.0',
             description: 'bar',
             dependencies: { 'foo-dep': '^1.0.0' },
@@ -55,7 +55,7 @@ describe('mergePackageJson', () => {
         return mergePackageJson(packageJson, tmpDir, { preferDownloaded: true })
         .then((mergedPackageJson) => {
             expect(packageJson).to.equal(mergedPackageJson);
-            expect(packageJson.name).to.equal('foo');
+            expect(packageJson.name).to.equal('cool-module');
             expect(packageJson.version).to.equal('2.0.0');
             expect(packageJson.description).to.equal('bar');
             expect(packageJson.keywords).to.eql(['cool']);
