@@ -9,12 +9,6 @@
         "analysis": {
             // Custom filters
             "filter": {
-                // English stemmer filter
-                "english_stemmer": {
-                  "type": "kstem",
-                  "language": "english"
-                },
-
                 // Split word filter, which takes tokens, such as es6_promise or lodash.foreach, and splits them
                 // into several other tokens
                 "split_word": {
@@ -28,18 +22,52 @@
                     "preserve_original": true,
                     "split_on_numerics": true,
                     "stem_english_possessive": true
-                }
+                },
+
+                // Edge ngram to enable provide fallback to stemming
+                "identifier_edge_ngram": {
+                    "type": "edgeNGram",
+                    "min_gram": "4",
+                    "max_gram": "15"
+                },
             },
 
             // Custom analyzers
+            // The identifier_* series produces good results for the `name` and `keywords` fields
             "analyzer": {
-                // The identifier analyzer produces good results for the `name` and `keywords` fields
                 "identifier": {
                     "tokenizer": "standard",
                     "filter": [
                         "split_word",
+                        "lowercase"
+                    ],
+                },
+
+                "identifier_english": {
+                    "tokenizer": "standard",
+                    "filter": [
+                        "split_word",
                         "lowercase",
-                        "english_stemmer"
+                        "kstem"        // Non-aggressive english stemmer, while preserving original keywords
+                    ]
+                },
+
+                "identifier_english_aggressive": {
+                    "tokenizer": "standard",
+                    "filter": [
+                        "split_word",
+                        "lowercase",
+                        "porter_stem"  // Aggressive english stemmer
+                    ]
+                },
+
+                // This analyzer provides fallbacks in which the stemmer is not efficient, e.g.: search for "glob" should match "globby"
+                "identifier_edge_ngram": {
+                    "tokenizer": "standard",
+                    "filter": [
+                        "split_word",
+                        "lowercase",
+                        "identifier_edge_ngram"
                     ]
                 }
             }
@@ -62,14 +90,23 @@
                 "name": {
                     "type": "string",
                     "fields": {
-                        "identifier": {
+                        "identifier_english": {
                             "type": "string",
-                            "analyzer": "identifier"
+                            "analyzer": "identifier_english"
                         },
-                        "identifier_docs": {
+                        "identifier_english_docs": {
                             "type": "string",
-                            "analyzer": "identifier",
+                            "analyzer": "identifier_english",
                             "index_options": "docs"
+                        },
+                        "identifier_english_aggressive_docs": {
+                            "type": "string",
+                            "analyzer": "identifier_english_aggressive",
+                            "index_options": "docs"
+                        },
+                        "identifier_edge_ngram": {
+                            "type": "string",
+                            "analyzer": "identifier_edge_ngram"
                         },
                         "not_analyzed": {
                             "type": "string",
@@ -80,14 +117,27 @@
                 "description": {
                     "type": "string",
                     "fields": {
-                        "identifier": {
+                        "identifier_english": {
                             "type": "string",
-                            "analyzer": "identifier"
+                            "analyzer": "identifier_english"
                         },
-                        "identifier_docs": {
+                        "identifier_english_docs": {
                             "type": "string",
-                            "analyzer": "identifier",
+                            "analyzer": "identifier_english",
                             "index_options": "docs"
+                        },
+                        "identifier_english_aggressive_docs": {
+                            "type": "string",
+                            "analyzer": "identifier_english_aggressive",
+                            "index_options": "docs"
+                        },
+                        "identifier_edge_ngram": {
+                            "type": "string",
+                            "analyzer": "identifier_edge_ngram"
+                        },
+                        "identifier_edge_ngram": {
+                            "type": "string",
+                            "analyzer": "identifier_edge_ngram"
                         },
                         "not_analyzed": {
                             "type": "string",
@@ -98,14 +148,27 @@
                 "keywords": {
                     "type": "string",
                     "fields": {
-                        "identifier": {
+                        "identifier_english": {
                             "type": "string",
-                            "analyzer": "identifier"
+                            "analyzer": "identifier_english"
                         },
-                        "identifier_docs": {
+                        "identifier_english_docs": {
                             "type": "string",
-                            "analyzer": "identifier",
+                            "analyzer": "identifier_english",
                             "index_options": "docs"
+                        },
+                        "identifier_english_aggressive_docs": {
+                            "type": "string",
+                            "analyzer": "identifier_english_aggressive",
+                            "index_options": "docs"
+                        },
+                        "identifier_edge_ngram": {
+                            "type": "string",
+                            "analyzer": "identifier_edge_ngram"
+                        },
+                        "identifier_edge_ngram": {
+                            "type": "string",
+                            "analyzer": "identifier_edge_ngram"
                         },
                         "not_analyzed": {
                             "type": "string",
