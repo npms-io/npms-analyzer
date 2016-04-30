@@ -27,8 +27,6 @@ function fetchView(view, npmNano) {
     });
 }
 
-// --------------------------------------------------
-
 module.exports.builder = (yargs) => {
     return yargs
     .strict()

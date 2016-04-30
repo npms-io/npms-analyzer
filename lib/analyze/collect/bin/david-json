@@ -21,8 +21,6 @@ const argv = yargs
 })
 .argv;
 
-// ---------------------------------------
-
 const packageJsonPath = path.join(process.cwd(), 'package.json');
 
 loadJsonFile(packageJsonPath)

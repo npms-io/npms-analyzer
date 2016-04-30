@@ -91,8 +91,6 @@ function cleanupViews(nanoCouch) {
     return nanoCouch.serverScope.requestAsync({ db: nanoCouch.config.db, doc: '_view_cleanup', method: 'POST' });
 }
 
-// --------------------------------------------------
-
 module.exports.builder = (yargs) => {
     return yargs
     .strict()

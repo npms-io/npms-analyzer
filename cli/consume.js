@@ -56,8 +56,6 @@ function onMessage(msg, npmNano, npmsNano, esClient) {
     });
 }
 
-// ----------------------------------------------------------------------------
-
 module.exports.builder = (yargs) => {
     return yargs
     .strict()

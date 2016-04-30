@@ -76,8 +76,6 @@ function cycle(delay, npmsNano, esClient) {
     .done();
 }
 
-// ----------------------------------------------------------------------------
-
 exports.builder = (yargs) => {
     return yargs
     .strict()
