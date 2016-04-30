@@ -24,10 +24,10 @@
                     "stem_english_possessive": true
                 },
 
-                // Edge ngram to enable auto-complete and to provide fallback to stemming
-                "edge_ngram": {
+                // Edge ngram to enable provide fallback to stemming
+                "identifier_edge_ngram": {
                     "type": "edgeNGram",
-                    "min_gram": "3",
+                    "min_gram": "4",
                     "max_gram": "15"
                 },
             },
@@ -67,7 +67,7 @@
                     "filter": [
                         "split_word",
                         "lowercase",
-                        "edge_ngram"
+                        "identifier_edge_ngram"
                     ]
                 }
             }
@@ -90,6 +90,10 @@
                 "name": {
                     "type": "string",
                     "fields": {
+                        "identifier_english": {
+                            "type": "string",
+                            "analyzer": "identifier_english"
+                        },
                         "identifier_english_docs": {
                             "type": "string",
                             "analyzer": "identifier_english",
@@ -113,6 +117,10 @@
                 "description": {
                     "type": "string",
                     "fields": {
+                        "identifier_english": {
+                            "type": "string",
+                            "analyzer": "identifier_english"
+                        },
                         "identifier_english_docs": {
                             "type": "string",
                             "analyzer": "identifier_english",
@@ -140,6 +148,10 @@
                 "keywords": {
                     "type": "string",
                     "fields": {
+                        "identifier_english": {
+                            "type": "string",
+                            "analyzer": "identifier_english"
+                        },
                         "identifier_english_docs": {
                             "type": "string",
                             "analyzer": "identifier_english",
