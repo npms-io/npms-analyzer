@@ -11,8 +11,14 @@ describe('normalizePackageJson', () => {
         expect(packageJson).to.equal(normalizedPackageJson);
     });
 
-    it('should mock name if not present', () => {
-        expect(normalizePackageJson('foo', { }).name).to.equal('foo');
+    it('should set name if present or mismatches', () => {
+        expect(normalizePackageJson('foo', { name: '' }).name).to.equal('foo');
+        expect(normalizePackageJson('foo', { name: 'bar' }).name).to.equal('foo');
+    });
+
+    it('should leave name untouched if options.checkName is false', () => {
+        expect(normalizePackageJson('foo', { }, { checkName: false }).name).to.equal('');
+        expect(normalizePackageJson('foo', { name: 'bar' }, { checkName: false }).name).to.equal('bar');
     });
 
     it('should mock version if not present', () => {

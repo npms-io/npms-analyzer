@@ -2,15 +2,15 @@
   "statusCode": 302,
   "headers": {
     "server": "GitHub.com",
-    "date": "Thu, 14 Apr 2016 22:34:46 GMT",
+    "date": "Sun, 01 May 2016 10:10:15 GMT",
     "content-type": "text/html;charset=utf-8",
     "content-length": "0",
     "status": "302 Found",
     "x-ratelimit-limit": "60",
-    "x-ratelimit-remaining": "56",
-    "x-ratelimit-reset": "1460673824",
+    "x-ratelimit-remaining": "60",
+    "x-ratelimit-reset": "1462101015",
     "cache-control": "public, must-revalidate, max-age=0",
-    "expires": "Thu, 14 Apr 2016 22:34:46 GMT",
+    "expires": "Sun, 01 May 2016 10:10:15 GMT",
     "location": "https://codeload.github.com/IndigoUnited/node-cross-spawn/legacy.tar.gz/65d41138e6b5161787df43d5f8de2442765e32d0",
     "access-control-expose-headers": "ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
     "access-control-allow-origin": "*",
@@ -20,11 +20,11 @@
     "x-frame-options": "deny",
     "x-xss-protection": "1; mode=block",
     "vary": "Accept-Encoding",
-    "x-served-by": "8dd185e423974a7e13abbbe6e060031e",
-    "x-github-request-id": "5E3CA7B7:DA3F:DFC7417:57101B06"
+    "x-served-by": "4c8b2d4732c413f4b9aefe394bd65569",
+    "x-github-request-id": "D98186F0:76D5:26829A44:5725D607"
   },
   "url": "https://api.github.com/repos/IndigoUnited/node-cross-spawn/tarball/65d41138e6b5161787df43d5f8de2442765e32d0",
-  "time": 372,
+  "time": 618,
   "request": {
     "method": "GET",
     "headers": {

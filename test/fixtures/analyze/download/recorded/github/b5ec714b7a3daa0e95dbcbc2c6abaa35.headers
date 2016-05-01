@@ -9,11 +9,11 @@
     "x-content-type-options": "nosniff",
     "strict-transport-security": "max-age=31536000",
     "vary": "Authorization,Accept-Encoding",
-    "date": "Thu, 14 Apr 2016 22:34:44 GMT",
-    "x-github-request-id": "5E3CA7B7:106F5:1E8D48:57101B04"
+    "date": "Sun, 01 May 2016 10:10:13 GMT",
+    "x-github-request-id": "D98186F0:A756:3DC0C6:5725D605"
   },
   "url": "https://codeload.github.com/IndigoUnited/node-cross-spawn/legacy.tar.gz/somecommithashthatwillneverexist00000000",
-  "time": 369,
+  "time": 376,
   "request": {
     "method": "GET",
     "headers": {

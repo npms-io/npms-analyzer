@@ -27,8 +27,7 @@ describe('mergePackageJson', () => {
         };
 
         return mergePackageJson(packageJson, tmpDir)
-        .then((mergedPackageJson) => {
-            expect(packageJson).to.equal(mergedPackageJson);
+        .then(() => {
             expect(packageJson.name).to.equal('cool-module');
             expect(packageJson.version).to.equal('1.0.0');
             expect(packageJson.description).to.equal('bar');
@@ -53,8 +52,7 @@ describe('mergePackageJson', () => {
         };
 
         return mergePackageJson(packageJson, tmpDir, { preferDownloaded: true })
-        .then((mergedPackageJson) => {
-            expect(packageJson).to.equal(mergedPackageJson);
+        .then(() => {
             expect(packageJson.name).to.equal('cool-module');
             expect(packageJson.version).to.equal('2.0.0');
             expect(packageJson.description).to.equal('bar');
@@ -74,8 +72,7 @@ describe('mergePackageJson', () => {
         };
 
         return mergePackageJson(packageJson, tmpDir)
-        .then((mergedPackageJson) => {
-            expect(packageJson).to.equal(mergedPackageJson);
+        .then(() => {
             expect(packageJson.name).to.equal('cool-module');
             expect(packageJson.version).to.equal('1.0.0');
             expect(packageJson.keywords).to.eql(['cool']);

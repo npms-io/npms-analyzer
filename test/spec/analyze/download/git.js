@@ -319,7 +319,7 @@ describe('git', () => {
             name: 'cool-module',
             version: '0.1.0',
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
-            gitHead: '5fb20ce2f44d9947fcf59e8809fe6cb1d767433b', // This is the ref for 1.0.0
+            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad', // This is the ref for 1.0.0
         };
 
         const download = git(npmPackageJson);
@@ -337,6 +337,27 @@ describe('git', () => {
             expect(npmPackageJson.name).to.equal('cool-module');
             expect(npmPackageJson.version).to.equal('0.1.0');
             expect(npmPackageJson.description).to.equal('Cross platform child_process#spawn and child_process#spawnSync');
+        })
+        .finally(() => betrayed.restore());
+    });
+
+    it('should resolve with the downloaded object', () => {
+        const betrayed = mock({
+            checkout: () => fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ version: '1.0.0' })),
+        });
+
+        const download = git({
+            name: 'cool-module',
+            version: '0.1.0',
+            repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
+            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad', // This is the ref for 1.0.0
+        });
+
+        return download(tmpDir)
+        .then((downloaded) => {
+            expect(downloaded.dir).to.equal(tmpDir);
+            expect(downloaded.packageJson.name).to.equal('');
+            expect(downloaded.packageJson.version).to.equal('1.0.0');
         })
         .finally(() => betrayed.restore());
     });

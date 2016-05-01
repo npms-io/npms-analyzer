@@ -166,6 +166,24 @@ describe('github', () => {
         });
     });
 
+    it('should resolve with the downloaded object', () => {
+        sepia.enable();
+
+        const download = github({
+            name: 'cool-module',
+            version: '0.1.0',
+            repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
+            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad',  // This is the ref for 1.0.0
+        });
+
+        return download(tmpDir)
+        .then((downloaded) => {
+            expect(downloaded.dir).to.equal(tmpDir);
+            expect(downloaded.packageJson.name).to.equal('cross-spawn');
+            expect(downloaded.packageJson.version).to.equal('1.0.0');
+        });
+    });
+
     it('should pass the correct options to token-dealer');
 
     it('should handle rate limit errors (wait/bail)');
