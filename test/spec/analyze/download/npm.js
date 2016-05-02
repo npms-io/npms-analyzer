@@ -111,4 +111,23 @@ describe('npm', () => {
             expect(npmPackageJson.description).to.be.a('string');
         });
     });
+
+    it('should resolve with the downloaded object', () => {
+        sepia.enable();
+
+        const npmPackageJson = {
+            name: 'cool-module',
+            version: '0.1.0',
+            dist: { tarball: 'https://registry.npmjs.org/cross-spawn/-/cross-spawn-1.0.0.tgz' },
+        };
+
+        const download = npm(npmPackageJson);
+
+        return download(tmpDir)
+        .then((downloaded) => {
+            expect(downloaded.dir).to.equal(tmpDir);
+            expect(downloaded.packageJson.name).to.equal('cross-spawn');
+            expect(downloaded.packageJson.version).to.equal('1.0.0');
+        });
+    });
 });
