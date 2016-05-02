@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const cp = require('child_process');
-const log = require('npmlog');
 const expect = require('chai').expect;
 const betray = require('betray');
 const untar = require(`${process.cwd()}/lib/analyze/download/util/untar`);
@@ -39,6 +38,7 @@ describe('untar', () => {
     });
 
     it('should deal with malformed archives', () => {
+        const log = logger.children['util/untar'];
         const betrayed = betray(log, 'warn');
 
         fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/broken-archive.tgz`));

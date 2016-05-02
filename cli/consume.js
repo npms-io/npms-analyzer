@@ -2,13 +2,12 @@
 
 const assert = require('assert');
 const config = require('config');
-const log = require('npmlog');
 const analyze = require('../lib/analyze');
 const score = require('../lib/scoring/score');
 const bootstrap = require('./util/bootstrap');
 const stats = require('./util/stats');
 
-const logPrefix = '';
+const log = logger.child({ module: 'cli/consume' });
 
 /**
  * Handles a message.
@@ -27,18 +26,18 @@ function onMessage(msg, npmNano, npmsNano, esClient) {
     const blacklisted = config.get('blacklist')[name];
 
     if (blacklisted) {
-        log.info(logPrefix, `Module ${name} is blacklisted`, { reason: blacklisted });
+        log.info({ reason: blacklisted }, `Module ${name} is blacklisted`);
         return Promise.resolve();
     }
 
-    log.info(logPrefix, `Processing module ${name}`);
+    log.info(`Processing module ${name}`);
 
     // Check if the module has been analyzed after it has been pushed to the queue
     return analyze.get(name, npmsNano)
     .catch({ code: 'ANALYSIS_NOT_FOUND' }, () => {})
     .then((analysis) => {
         if (analysis && Date.parse(analysis.startedAt) >= Date.parse(msg.pushedAt)) {
-            log.info(logPrefix, `Skipping analysis of ${name} because it was already analyzed meanwhile`);
+            log.info(`Skipping analysis of ${name} because it was already analyzed meanwhile`);
             return;
         }
 
@@ -79,7 +78,7 @@ Consumes modules that are queued, triggering the analysis process for each modul
 
 module.exports.handler = (argv) => {
     process.title = 'npms-analyzer-consume';
-    log.level = argv.logLevel || 'warn';
+    logger.level = argv.logLevel || 'warn';
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms', 'queue', 'elasticsearch'])

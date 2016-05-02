@@ -1,10 +1,9 @@
 'use strict';
 
-const log = require('npmlog');
 const minBy = require('lodash/minBy');
 const bootstrap = require('../util/bootstrap');
 
-const logPrefix = '';
+const log = logger.child({ module: 'cli/optimize-db' });
 
 /**
  * Waits for compaction tasks to end.
@@ -17,7 +16,7 @@ function waitForCompaction(nanoCouch) {
     let isInflight = false;
     let contiguousErrors = 0;
 
-    log.info(logPrefix, 'Waiting for compaction tasks to complete..');
+    log.info('Waiting for compaction tasks to complete..');
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
@@ -40,7 +39,7 @@ function waitForCompaction(nanoCouch) {
 
                 const slowerTask = minBy(tasks, 'progress');
 
-                log.verbose(logPrefix, `Compaction task is at ${slowerTask.progress}%`);
+                log.debug(`Compaction task is at ${slowerTask.progress}%`);
             })
             .catch((err) => {
                 contiguousErrors += 1;
@@ -58,7 +57,7 @@ function waitForCompaction(nanoCouch) {
  * @return {Promise} The promise that fulfills when done
  */
 function compactDb(nanoCouch) {
-    log.info(logPrefix, `Compacting ${nanoCouch.config.db} database..`);
+    log.info(`Compacting ${nanoCouch.config.db} database..`);
 
     return nanoCouch.compactAsync()
     .then(() => waitForCompaction(nanoCouch));
@@ -73,7 +72,7 @@ function compactDb(nanoCouch) {
  * @return {Promise} The promise that fulfills when done
  */
 function compactDesignDoc(nanoCouch, designDoc) {
-    log.info(logPrefix, `Compacting ${nanoCouch.config.db}/${designDoc} view..`);
+    log.info(`Compacting ${nanoCouch.config.db}/${designDoc} view..`);
 
     return nanoCouch.compactAsync(designDoc)
     .then(() => waitForCompaction(nanoCouch));
@@ -87,7 +86,7 @@ function compactDesignDoc(nanoCouch, designDoc) {
  * @return {Promise} The promise that fulfills when done
  */
 function cleanupViews(nanoCouch) {
-    log.info(logPrefix, `Cleaning up ${nanoCouch.config.db} views..`);
+    log.info(`Cleaning up ${nanoCouch.config.db} views..`);
 
     return nanoCouch.serverScope.requestAsync({ db: nanoCouch.config.db, doc: '_view_cleanup', method: 'POST' });
 }
@@ -111,7 +110,7 @@ module.exports.builder = (yargs) => {
 
 module.exports.handler = (argv) => {
     process.title = 'npms-analyzer-db-optimize';
-    log.level = argv.logLevel || 'info';
+    logger.level = argv.logLevel || 'info';
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms'], { wait: false })
@@ -145,7 +144,7 @@ module.exports.handler = (argv) => {
                 .then(() => Promise.each(npmsDesignDocs, (designDoc) => compactDesignDoc(npmsNano, designDoc)));
             });
         })
-        .then(() => log.info(logPrefix, 'Optimization completed successfully!'));
+        .then(() => log.info('Optimization completed successfully!'));
     })
     .done();
 };

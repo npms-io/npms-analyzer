@@ -1,13 +1,12 @@
 'use strict';
 
-const log = require('npmlog');
 const couchdbIterator = require('couchdb-iterator');
 const metadata = require('../../lib/analyze/collect/metadata');
 const packageJsonFromData = require('../../lib/analyze/util/packageJsonFromData');
 const save = require('../../lib/analyze').save;
 const bootstrap = require('../util/bootstrap');
 
-const logPrefix = '';
+const log = logger.child({ module: 'cli/re-metadata' });
 
 module.exports.builder = (yargs) => {
     return yargs
@@ -20,16 +19,16 @@ metadata collector. Note that the modules score won\'t be updated.')
 
 module.exports.handler = (argv) => {
     process.title = 'npms-analyzer-re-metadata';
-    log.level = argv.logLevel || 'info';
+    logger.level = argv.logLevel || 'info';
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms'], { wait: false })
     .spread((npmNano, npmsNano) => {
-        log.info(logPrefix, 'Starting modules re-metadata');
+        log.info('Starting modules re-metadata');
 
         // Iterate over all modules
         return couchdbIterator(npmsNano, (row) => {
-            row.index && row.index % 10000 === 0 && log.info(logPrefix, `Processed ${row.index} rows`);
+            row.index && row.index % 10000 === 0 && log.info(`Processed ${row.index} rows`);
 
             if (!row.doc) {
                 return;
@@ -62,7 +61,7 @@ module.exports.handler = (argv) => {
                     return save(row.doc, npmsNano);
                 })
                 .catch((err) => {
-                    log.error(logPrefix, `Failed to process ${name}`, { err });
+                    log.error({ err }, `Failed to process ${name}`);
                     throw err;
                 });
             })
@@ -75,7 +74,7 @@ module.exports.handler = (argv) => {
             limit: 2500,
             includeDocs: true,
         })
-        .then((count) => log.info(logPrefix, `Completed, processed a total of ${count} rows`));
+        .then((count) => log.info(`Completed, processed a total of ${count} rows`));
     })
     .done();
 };
