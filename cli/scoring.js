@@ -1,6 +1,5 @@
 'use strict';
 
-const log = require('npmlog');
 const humanizeDuration = require('humanize-duration');
 const prepare = require('../lib/scoring/prepare');
 const aggregate = require('../lib/scoring/aggregate');
@@ -9,7 +8,7 @@ const finalize = require('../lib/scoring/finalize');
 const bootstrap = require('./util/bootstrap');
 const stats = require('./util/stats');
 
-const logPrefix = '';
+const log = logger.child({ module: 'cli/scoring' });
 
 /**
  * Waits the time needed before running the first cycle.
@@ -28,7 +27,7 @@ function waitRemaining(delay, esClient) {
         const wait = timestamp ? Math.max(0, timestamp + delay - Date.now()) : 0;
         const waitStr = humanizeDuration(Math.round(wait / 1000) * 1000, { largest: 2 });
 
-        wait && log.info(logPrefix, `Waiting ${waitStr} before running the first cycle..`, { now: (new Date()).toISOString() });
+        wait && log.info({ now: (new Date()).toISOString() }, `Waiting ${waitStr} before running the first cycle..`);
 
         return Promise.delay(wait);
     })
@@ -46,7 +45,7 @@ function waitRemaining(delay, esClient) {
 function cycle(delay, npmsNano, esClient) {
     const startedAt = Date.now();
 
-    log.info(logPrefix, 'Starting scoring cycle');
+    log.info('Starting scoring cycle');
 
     // Prepare
     prepare(esClient)
@@ -61,15 +60,15 @@ function cycle(delay, npmsNano, esClient) {
     .then(() => {
         const durationStr = humanizeDuration(Math.round((Date.now() - startedAt) / 1000) * 1000, { largest: 2 });
 
-        log.info(logPrefix, `Scoring cycle successful, took ${durationStr}`);
+        log.info(`Scoring cycle successful, took ${durationStr}`);
     }, (err) => {
-        log.error(logPrefix, 'Scoring cycle failed', { err });
+        log.error({ err }, 'Scoring cycle failed');
     })
     // Start all over again after a short delay
     .then(() => {
         const delayStr = humanizeDuration(Math.round(delay / 1000) * 1000, { largest: 2 });
 
-        log.info(logPrefix, `Waiting ${delayStr} before running the next cycle..`, { now: (new Date()).toISOString() });
+        log.info({ now: (new Date()).toISOString() }, `Waiting ${delayStr} before running the next cycle..`);
 
         Promise.delay(delay)
         .then(() => cycle(delay, npmsNano, esClient));
@@ -96,7 +95,7 @@ Continuously iterate over the analyzed modules, scoring them.')
 
 exports.handler = (argv) => {
     process.title = 'npms-analyzer-scoring';
-    log.level = argv.logLevel || 'warn';
+    logger.level = argv.logLevel || 'warn';
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpms', 'elasticsearch'])

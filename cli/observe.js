@@ -1,14 +1,13 @@
 'use strict';
 
 const assert = require('assert');
-const log = require('npmlog');
 const promiseRetry = require('promise-retry');
 const realtime = require('../lib/observers/realtime');
 const stale = require('../lib/observers/stale');
 const bootstrap = require('./util/bootstrap');
 const stats = require('./util/stats');
 
-const logPrefix = '';
+const log = logger.child({ module: 'cli/observe' });
 
 /**
  * Pushes a module into the queue, retrying several times on error.
@@ -25,7 +24,7 @@ function onModule(name, queue) {
         .catch(retry);
     })
     .catch((err) => {
-        log.error(logPrefix, 'Too many failed attempts while trying to push module into the queue, exiting..', { err, name });
+        log.error({ err, name }, 'Too many failed attempts while trying to push module into the queue, exiting..');
         process.exit(1);
     });
 }
@@ -52,7 +51,7 @@ Starts the observing process, enqueueing modules that need to be analyzed into t
 
 module.exports.handler = (argv) => {
     process.title = 'npms-analyzer-observe';
-    log.level = argv.logLevel || 'warn';
+    logger.level = argv.logLevel || 'warn';
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms', 'queue'])

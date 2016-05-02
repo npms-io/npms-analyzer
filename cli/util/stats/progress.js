@@ -1,7 +1,8 @@
 'use strict';
 
-const log = require('npmlog');
 const config = require('config');
+
+const log = logger.child({ module: 'stats/progress' });
 
 // TODO: Add status for replication and other stuff?
 
@@ -12,8 +13,8 @@ const config = require('config');
  * @param {Nano} npmsNano The npms nano client instance
  */
 function statProgress(npmNano, npmsNano) {
-    // Do nothing if loglevel is higher than stat
-    if (log.levels[log.level] < log.level.stat) {
+    // Do nothing if loglevel is higher than info
+    if (log.level === 'fatal' || log.level === 'error' || log.level === 'warn') {
         return;
     }
 
@@ -22,7 +23,7 @@ function statProgress(npmNano, npmsNano) {
 
     setInterval(() => {
         if (pending) {
-            log.stat('progress', 'Progress stat is still being retrieved..');
+            log.info('Progress stat is still being retrieved..');
             return;
         }
 
@@ -37,9 +38,9 @@ function statProgress(npmNano, npmsNano) {
         .then((result) => {
             const analysis = `${(result.npmsModulesCount / (result.npmDocsCount - result.npmDesignDocsCount) * 100).toFixed(4)}%`;
 
-            log.stat('progress', 'Progress stat', { analysis });
+            log.info({ analysis }, 'Progress stat');
         }, (err) => {
-            log.error('progress', 'Progress stat failed', { err });
+            log.error({ err }, 'Progress stat failed');
         })
         .done();
     }, 15000)

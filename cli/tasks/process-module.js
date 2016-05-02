@@ -1,7 +1,6 @@
 'use strict';
 
 const config = require('config');
-const log = require('npmlog');
 const prettyjson = require('prettyjson');
 const analyze = require('../../lib/analyze');
 const score = require('../../lib/scoring/score');
@@ -25,7 +24,7 @@ Processes a single module, analyzing and scoring it.')
 
 module.exports.handler = (argv) => {
     process.title = 'npms-analyzer-process-module';
-    log.level = argv.logLevel || 'info';
+    logger.level = argv.logLevel || 'info';
 
     const name = argv._[2].toString();  // module 0 evaluates to number so we must cast to a string
 

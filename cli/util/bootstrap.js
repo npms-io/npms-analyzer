@@ -2,14 +2,13 @@
 
 const config = require('config');
 const nano = require('nano');
-const log = require('npmlog');
 const elasticsearch = require('elasticsearch');
 const promiseRetry = require('promise-retry');
 const get = require('lodash/get');
 const queue = require('../../lib/queue');
 
-const logPrefix = 'util/bootstrap';
 const retriesOption = { minTimeout: 2500, retries: 5 };
+const log = logger.child({ module: 'bootstrap' });
 
 /**
  * Bootstrap several dependencies, waiting for them to be ready: CouchDB, Elasticsearch and Queue.
@@ -62,11 +61,11 @@ function bootstrapCouchdb(couchAddr, options) {
         return nanoClient.getAsync('somedocthatwillneverexist')
         .catch({ error: 'not_found' }, () => {})
         .catch((err) => {
-            log.warn(logPrefix, `Check of ${nanoClient.config.db} failed`, { err });
+            log.warn({ err }, `Check of ${nanoClient.config.db} failed`);
             retry(err);
         });
     }, options.wait ? retriesOption : { retries: 0 })
-    .then(() => log.verbose(logPrefix, `CouchDB for ${nanoClient.config.db} is ready`))
+    .then(() => log.debug(`CouchDB for ${nanoClient.config.db} is ready`))
     .return(nanoClient);
 }
 
@@ -95,11 +94,11 @@ function bootstrapElasticsearch(elasticsearchHost, options) {
         })
         .catch((err) => get(err, 'body.error.type') === 'index_not_found_exception', () => {})
         .catch((err) => {
-            log.warn(logPrefix, 'Check of Elasticsearch failed', { err });
+            log.warn({ err }, 'Check of Elasticsearch failed');
             retry(err);
         });
     }, options.wait ? retriesOption : { retries: 0 })
-    .then(() => log.verbose(logPrefix, 'Elasticsearch is ready'))
+    .then(() => log.debug('Elasticsearch is ready'))
     .return(esClient);
 }
 
@@ -118,11 +117,11 @@ function bootstrapQueue(rabbitmqAddr, rabbitmqQueue, options) {
     return promiseRetry((retry) => {
         return analysisQueue.stat()
         .catch((err) => {
-            log.warn(logPrefix, 'Check of Queue failed', { err });
+            log.warn({ err }, 'Check of Queue failed');
             retry(err);
         });
     }, options.wait ? retriesOption : { retries: 0 })
-    .then(() => log.verbose(logPrefix, 'Queue is ready'))
+    .then(() => log.debug('Queue is ready'))
     .return(analysisQueue);
 }
 

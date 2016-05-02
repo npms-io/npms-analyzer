@@ -1,12 +1,11 @@
 'use strict';
 
-const log = require('npmlog');
 const couchdbIterator = require('couchdb-iterator');
 const evaluate = require('../../lib/analyze/evaluate');
 const save = require('../../lib/analyze').save;
 const bootstrap = require('../util/bootstrap');
 
-const logPrefix = '';
+const log = logger.child({ module: 'cli/re-evaluate' });
 
 module.exports.builder = (yargs) => {
     return yargs
@@ -19,16 +18,16 @@ the evaluation needs to be re-calculated for all modules. Note that the modules 
 
 module.exports.handler = (argv) => {
     process.title = 'npms-analyzer-re-evaluate';
-    log.level = argv.logLevel || 'info';
+    logger.level = argv.logLevel || 'info';
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpms'], { wait: false })
     .spread((npmsNano) => {
-        log.info(logPrefix, 'Starting modules re-evaluation');
+        log.info('Starting modules re-evaluation');
 
         // Iterate over all modules, re-evaluating them
         return couchdbIterator(npmsNano, (row) => {
-            row.index && row.index % 10000 === 0 && log.info(logPrefix, `Processed ${row.index} rows`);
+            row.index && row.index % 10000 === 0 && log.info(`Processed ${row.index} rows`);
 
             const doc = row.doc;
 
@@ -36,7 +35,7 @@ module.exports.handler = (argv) => {
                 return;
             }
 
-            log.verbose(logPrefix, `Evaluating ${doc.collected.metadata.name}..`);
+            log.debug(`Evaluating ${doc.collected.metadata.name}..`);
 
             doc.evaluation = evaluate(doc.collected);
 
@@ -48,7 +47,7 @@ module.exports.handler = (argv) => {
             limit: 2500,
             includeDocs: true,
         })
-        .then((count) => log.info(logPrefix, `Completed, processed a total of ${count} rows`));
+        .then((count) => log.info(`Completed, processed a total of ${count} rows`));
     })
     .done();
 };

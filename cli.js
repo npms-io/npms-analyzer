@@ -21,7 +21,7 @@ yargs
     type: 'string',
     default: 'warn',
     alias: 'll',
-    describe: 'The log level to use (error, warn, info, verbose, etc.)',
+    describe: 'The log level to use (fatal, error, warn, info, debug, trace)',
     global: true,
 })
 

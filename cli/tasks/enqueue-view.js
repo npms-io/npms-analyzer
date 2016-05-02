@@ -2,12 +2,11 @@
 
 const assert = require('assert');
 const config = require('config');
-const log = require('npmlog');
 const bootstrap = require('../util/bootstrap');
 const stats = require('../util/stats');
 
 const blacklisted = config.get('blacklist');
-const logPrefix = '';
+const log = logger.child({ module: 'cli/enqueue-view' });
 
 /**
  * Fetches modules of a view.
@@ -54,7 +53,7 @@ name (may be prefixed with `module!`)')
 
 module.exports.handler = (argv) => {
     process.title = 'npms-analyzer-enqueue-view';
-    log.level = argv.logLevel || 'info';
+    logger.level = argv.logLevel || 'info';
 
     const view = argv._[2];
 
@@ -64,25 +63,25 @@ module.exports.handler = (argv) => {
         // Stats
         stats.process();
 
-        log.info(logPrefix, `Fetching view ${view}`);
+        log.info(`Fetching view ${view}`);
 
         // Load modules in memory.. we can do this because the total modules is around ~250k which fit well in memory
         // and is much faster than doing manual iteration
         return fetchView(view, npmsNano)
         .then((viewModules) => {
-            log.info(logPrefix, `There's a total of ${viewModules.length} modules in the view`);
-            viewModules.forEach((name) => log.verbose(logPrefix, name));
+            log.info(`There's a total of ${viewModules.length} modules in the view`);
+            viewModules.forEach((name) => log.debug(name));
 
             if (!viewModules.length || argv.dryRun) {
-                log.info(logPrefix, 'Exiting..');
+                log.info('Exiting..');
                 return;
             }
 
             return Promise.map(viewModules, (name, index) => {
-                index && index % 5000 === 0 && log.info(logPrefix, `Enqueued ${index} modules`);
+                index && index % 5000 === 0 && log.info(`Enqueued ${index} modules`);
                 return queue.push(name);
             }, { concurrency: 15 })
-            .then(() => log.info(logPrefix, 'View modules were enqueued!'));
+            .then(() => log.info('View modules were enqueued!'));
         })
         .then(() => process.exit());  // Need to force exit because of queue
     })

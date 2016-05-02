@@ -4,7 +4,6 @@
 
 const path = require('path');
 const fs = require('fs');
-const log = require('npmlog');
 
 if (process.cwd() !== path.join(__dirname, '..')) {
     throw new Error('Tests must be run from the project root');
@@ -12,7 +11,7 @@ if (process.cwd() !== path.join(__dirname, '..')) {
 
 // Configure
 require('../lib/configure');
-log.level = 'silent';
+logger.level = 'fatal';
 
 // Auto-load tests
 const walk = (dir) => fs.readdirSync(dir).forEach((file) => {
