@@ -22,6 +22,12 @@ const log = logger.child({ module: 'bootstrap' });
 function bootstrap(deps, options) {
     options = Object.assign({ wait: true }, options);
 
+    // Log uncaught exceptions
+    process.on('uncaughtException', (err) => {
+        log.fatal({ err }, `Uncaught exception: ${err.message}`);
+        throw err;
+    });
+
     return Promise.map(deps, (dep) => {
         switch (dep) {
         case 'couchdbNpm':

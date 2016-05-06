@@ -62,7 +62,7 @@ function cycle(delay, npmsNano, esClient) {
 
         log.info(`Scoring cycle successful, took ${durationStr}`);
     }, (err) => {
-        log.error({ err }, 'Scoring cycle failed');
+        log.fatal({ err }, 'Scoring cycle failed');
     })
     // Start all over again after a short delay
     .then(() => {
@@ -104,7 +104,7 @@ exports.handler = (argv) => {
         stats.process();
 
         // Wait for the previous cycle delay if necessary
-        waitRemaining(argv.cycleDelay, esClient)
+        return waitRemaining(argv.cycleDelay, esClient)
         // Start the continuous process of scoring!
         .then(() => cycle(argv.cycleDelay, npmsNano, esClient));
     })
