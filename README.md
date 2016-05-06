@@ -4,6 +4,7 @@
 
 The npms-analyzer analyzes the npm ecosystem, collecting info, evaluating and scoring each module.
 
+
 ## Usage
 
 This project exposes all its functionality through a CLI.
@@ -44,17 +45,21 @@ $ npms-analyzer scoring
 
 For more information about the command, run `$ npms-analyzer scoring -h`
 
+
 ## Architecture
 
 There's a separate document that explains the architecture, you may read it [here](./docs/architecture.md).
+
 
 ## Setup
 
 There's a separate document that explains the setup procedure, you may read it [here](./docs/setup.md).
 
+
 ## Deploys
 
 There's a separate document that explains the setup procedure, you may read it [here](./docs/deploys.md).
+
 
 ## Tests
 
