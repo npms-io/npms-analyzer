@@ -1,5 +1,7 @@
 'use strict';
 
+const pino = require('pino');
+
 const log = logger.child({ module: 'stats/queue' });
 
 /**
@@ -9,7 +11,7 @@ const log = logger.child({ module: 'stats/queue' });
  */
 function statQueue(queue) {
     // Do nothing if loglevel is higher than info
-    if (log.level === 'fatal' || log.level === 'error' || log.level === 'warn') {
+    if (log.levelVal >= pino.levels.values.info) {
         return;
     }
 

@@ -1,5 +1,6 @@
 'use strict';
 
+const pino = require('pino');
 const humanizeDuration = require('humanize-duration');
 
 const log = logger.child({ module: 'stats/process' });
@@ -9,7 +10,7 @@ const log = logger.child({ module: 'stats/process' });
  */
 function statProcess() {
     // Do nothing if loglevel is higher than info
-    if (log.level === 'fatal' || log.level === 'error' || log.level === 'warn') {
+    if (log.levelVal >= pino.levels.values.info) {
         return;
     }
 

@@ -1,5 +1,6 @@
 'use strict';
 
+const pino = require('pino');
 const tokenDealer = require('token-dealer');
 const values = require('lodash/values');
 const minBy = require('lodash/minBy');
@@ -14,7 +15,7 @@ const log = logger.child({ module: 'stats/tokens' });
  */
 function statTokens(tokens, group) {
     // Do nothing if loglevel is higher than info
-    if (log.level === 'fatal' || log.level === 'error' || log.level === 'warn') {
+    if (log.levelVal >= pino.levels.values.info) {
         return;
     }
 
