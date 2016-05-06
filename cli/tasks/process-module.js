@@ -6,6 +6,8 @@ const analyze = require('../../lib/analyze');
 const score = require('../../lib/scoring/score');
 const bootstrap = require('../util/bootstrap');
 
+const log = logger.child({ module: 'cli/process-module' });
+
 module.exports.builder = (yargs) => {
     return yargs
     .strict()
@@ -42,28 +44,12 @@ module.exports.handler = (argv) => {
                 gitRefOverrides: config.get('gitRefOverrides'),
             });
         })
-        .tap((analysis) => {
-            process.stdout.write('\nAnalyze data:\n-------------------------------------------\n');
-            process.stdout.write(prettyjson.render(analysis, {
-                keysColor: 'cyan',
-                dashColor: 'grey',
-                stringColor: 'white',
-            }));
-            process.stdout.write('\n');
-        })
+        .tap((analysis) => log.info({ analysis }, 'Analyze data'))
         // Score the module
         .then((analysis) => {
             return score(analysis, npmsNano, esClient)
             .catch(() => {})
-            .then((score) => {
-                process.stdout.write('\nScore data:\n-------------------------------------------\n');
-                process.stdout.write(prettyjson.render(score, {
-                    keysColor: 'cyan',
-                    dashColor: 'grey',
-                    stringColor: 'white',
-                }));
-                process.stdout.write('\n');
-            });
+            .tap((analysis) => log.info({ analysis }, 'Score data'));
         })
         .catch({ code: 'MODULE_NOT_FOUND' }, (err) => score.remove(name, esClient).finally(() => { throw err; }));
     })
