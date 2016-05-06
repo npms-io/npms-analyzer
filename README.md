@@ -1,6 +1,6 @@
 # npms-analyzer
 
-[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependency status][david-dm-image]][david-dm-url] [![Dev Dependency status][david-dm-dev-image]][david-dm-dev-url]
+[![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependency status][david-dm-image]][david-dm-url] [![Dev Dependency status][david-dm-dev-image]][david-dm-dev-url]
 
 The npms-analyzer analyzes the npm ecosystem, collecting info, evaluating and scoring each module.
 
@@ -71,8 +71,5 @@ $ npm test-cov # to get coverage report
 [david-dm-dev-url]: https://david-dm.org/npms-io/npms-analyzer#info=devDependencies
 [david-dm-image]: https://img.shields.io/david/npms-io/npms-analyzer.svg
 [david-dm-url]: https://david-dm.org/npms-io/npms-analyzer
-[downloads-image]: http://img.shields.io/npm/dm/npms-analyzer.svg
-[npm-image]: http://img.shields.io/npm/v/npms-analyzer.svg
-[npm-url]: https://npmjs.org/package/npms-analyzer
 [travis-image]: http://img.shields.io/travis/npms-io/npms-analyzer.svg
 [travis-url]: https://travis-ci.org/npms-io/npms-analyzer
