@@ -34,7 +34,7 @@ function onModule(name, queue) {
 module.exports.builder = (yargs) => {
     return yargs
     .strict()
-    .usage('Usage: ./$0 observe [options]\n\n\
+    .usage('Usage: $0 observe [options]\n\n\
 Starts the observing process, enqueueing modules that need to be analyzed into the queue.')
     .demand(1, 1)
     .option('default-seq', {

@@ -11,7 +11,7 @@ const log = logger.child({ module: 'cli/re-metadata' });
 module.exports.builder = (yargs) => {
     return yargs
     .strict()
-    .usage('Usage: ./$0 tasks re-metadata [options]\n\n\
+    .usage('Usage: $0 tasks re-metadata [options]\n\n\
 Iterates over all analyzed modules, running the metadata collector again.\nThis command is useful if there was a bug in the \
 metadata collector. Note that the modules score won\'t be updated.')
     .demand(2, 2);

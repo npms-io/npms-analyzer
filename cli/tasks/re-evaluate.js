@@ -10,7 +10,7 @@ const log = logger.child({ module: 'cli/re-evaluate' });
 module.exports.builder = (yargs) => {
     return yargs
     .strict()
-    .usage('Usage: ./$0 tasks re-evaluate [options]\n\n\
+    .usage('Usage: $0 tasks re-evaluate [options]\n\n\
 Iterates over all analyzed modules, evaluating them again.\nThis command is useful if the evaluation algorithm has changed and \
 the evaluation needs to be re-calculated for all modules. Note that the modules score won\'t be updated.')
     .demand(2, 2);

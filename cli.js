@@ -14,7 +14,7 @@ yargs
 .wrap(Math.min(120, yargs.terminalWidth()))
 .version().alias('version', 'v')
 .help('help').alias('help', 'h')
-.usage('npms-analyzer command line, choose one of the available commands.\n\nUsage: ./$0 <command> .. [options]')
+.usage('npms-analyzer command line, choose one of the available commands.\n\nUsage: $0 <command> .. [options]')
 .demand(1, 'Please supply a valid command')
 
 .option('log-level', {

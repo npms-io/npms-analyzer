@@ -9,11 +9,11 @@ const bootstrap = require('../util/bootstrap');
 module.exports.builder = (yargs) => {
     return yargs
     .strict()
-    .usage('Usage: ./$0 tasks process-module <module> [options]\n\n\
+    .usage('Usage: $0 tasks process-module <module> [options]\n\n\
 Processes a single module, analyzing and scoring it.')
     .demand(3, 3, 'Please supply one module to process')
-    .example('./$0 tasks process-module analyze cross-spawn')
-    .example('./$0 tasks process-module analyze cross-spawn --no-analyze', 'Just score the module, do not analyze')
+    .example('$0 tasks process-module analyze cross-spawn')
+    .example('$0 tasks process-module analyze cross-spawn --no-analyze', 'Just score the module, do not analyze')
 
     .option('analyze', {
         type: 'boolean',

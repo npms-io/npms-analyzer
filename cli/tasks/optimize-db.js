@@ -96,10 +96,10 @@ function cleanupViews(nanoCouch) {
 module.exports.builder = (yargs) => {
     return yargs
     .strict()
-    .usage('Usage: ./$0 tasks db-optimize [options]\n\nOptimizes the CouchDB database, compacting itself and its views.')
+    .usage('Usage: $0 tasks db-optimize [options]\n\nOptimizes the CouchDB database, compacting itself and its views.')
     .demand(2, 2)
-    .example('./$0 tasks db-optimize ')
-    .example('./$0 tasks db-optimize --no-compact', 'Just cleanup old views, do not compact')
+    .example('$0 tasks db-optimize ')
+    .example('$0 tasks db-optimize --no-compact', 'Just cleanup old views, do not compact')
 
     .option('compact', {
         type: 'boolean',

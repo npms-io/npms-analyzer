@@ -32,11 +32,11 @@ function fetchView(view, npmNano) {
 module.exports.builder = (yargs) => {
     return yargs
     .strict()
-    .usage('Usage: ./$0 tasks enqueue-view <design-doc/view-name> [options]\n\n\
+    .usage('Usage: $0 tasks enqueue-view <design-doc/view-name> [options]\n\n\
 Enqueues all modules contained in the npms database view.\n\nNOTE: The view must be in the npms database and the key must be the module \
 name (may be prefixed with `module!`)')
     .demand(3, 3)
-    .example('./$0 tasks enqueue-view npms-analyzer/docs-to-be-fixed')
+    .example('$0 tasks enqueue-view npms-analyzer/docs-to-be-fixed')
 
     .option('dry-run', {
         alias: 'dr',
