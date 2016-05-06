@@ -38,8 +38,6 @@ function fetchNpmsModules(npmsNano) {
     });
 }
 
-// --------------------------------------------------
-
 module.exports.builder = (yargs) => {
     return yargs
     .strict()

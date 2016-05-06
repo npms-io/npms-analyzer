@@ -29,8 +29,6 @@ function onModule(name, queue) {
     });
 }
 
-// ----------------------------------------------------------------------------
-
 module.exports.builder = (yargs) => {
     return yargs
     .strict()

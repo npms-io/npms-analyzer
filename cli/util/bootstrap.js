@@ -37,8 +37,6 @@ function bootstrap(deps, options) {
     });
 }
 
-// ----------------------------------------------------------------------------
-
 /**
  * Bootstraps a CouchDB database client, returning a nano instance.
  *
