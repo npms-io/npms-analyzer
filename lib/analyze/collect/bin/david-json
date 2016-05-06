@@ -10,7 +10,7 @@ const loadJsonFile = require('load-json-file');
 const david = Promise.promisifyAll(require('david'));
 
 const argv = yargs
-.usage('Usage: ./$0 --registry [registry-url]')
+.usage('Usage: $0 --registry [registry-url]')
 .wrap(Math.min(120, yargs.terminalWidth()))
 .help('help').alias('help', 'h')
 .option('registry', {
