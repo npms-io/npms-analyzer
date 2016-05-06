@@ -58,7 +58,7 @@ There's a separate document that explains the setup procedure, you may read it [
 
 ## Deploys
 
-There's a separate document that explains the setup procedure, you may read it [here](./docs/deploys.md).
+There's a separate document that explains the deployment procedure, you may read it [here](./docs/deploys.md).
 
 
 ## Tests
