@@ -26,7 +26,7 @@ function statQueue(queue) {
         queue.stat()
         .finally(() => { pending = false; })
         .then((stat) => {
-            log.info(stat, 'Queue stat');
+            log.info({ stat }, 'Queue stat');
         }, (err) => {
             log.error({ err }, 'Queue stat failed');
         })
