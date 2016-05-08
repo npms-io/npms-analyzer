@@ -2,14 +2,18 @@
 
 Below you will find a list of items that you must do to get the project working on your local machine. The production setup document is not present in the repository for security reasons.
 
+
 ## Config file
 
 This project uses [config](https://www.npmjs.com/package/config) for configuration. You may create `config/local.json5` file to override the configuration as necessary, especially to define `githubTokens`.
+
 
 ## General utilities
 
 - `git` must be installed and available in the `$PATH`.
 - GNU coreutils (`rm`, `mkdir`, `chmod` and `tar`) must be available.
+- Install the `pino` CLI to prettify logging output by running `$ npm install -g pino`
+
 
 ## CouchDB
 
@@ -22,6 +26,7 @@ This project uses [config](https://www.npmjs.com/package/config) for configurati
 - Setup npm replication by executing `curl -X PUT http://admin:admin@localhost:5984/_replicator/npm -d '{ "source": "https://skimdb.npmjs.com/registry", "target": "http://admin:admin@localhost:5984/npm", "create_target": true, "continuous": true }'`
 - Setup the necessary views by creating the document `_design/npms-analyzer` in the `npms` database with the contents of `https://github.com/npms-io/npms-analyzer/blob/master/config/couchdb/npms-analyzer.json5`
 
+
 ## RabbitMQ
 
 **NOTE**: You may put `RabbitMQ standalone` into the gitignored `dev` folder while developing!
@@ -29,6 +34,7 @@ This project uses [config](https://www.npmjs.com/package/config) for configurati
 - Install [RabbitMQ](https://www.rabbitmq.com/download.html) and run it (tested with `v3.6.1`).
 - Install the [management](https://www.rabbitmq.com/management.html) plugin which is very useful by running `rabbitmq-plugins enable rabbitmq_management`
 - Head to `http://localhost:15672` and login with `guest/guest` and see if everything is ok.
+
 
 ## Elasticsearch
 

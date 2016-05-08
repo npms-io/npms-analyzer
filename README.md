@@ -21,7 +21,7 @@ The most important commands will be described below. To discover the other ones 
 The `observe` command starts observing changes that occur in the `npm` registry as well as modules that were not analyzed for a while. Each reported module will be pushed into a queue to be analyzed by the queue consumers.
 
 ```bash
-$ npms-analyzer observe --log-level verbose
+$ npms-analyzer observe --log-level debug | pino
 ```
 
 For more information about the command, run `$ npms-analyzer observe -h`
@@ -31,7 +31,7 @@ For more information about the command, run `$ npms-analyzer observe -h`
 The `consume` command starts consuming the queue, running the analysis process for each module.
 
 ```bash
-$ npms-analyzer consume --log-level verbose --concurrency 5
+$ npms-analyzer consume --log-level debug --concurrency 5 | pino
 ```
 
 For more information about the command, run `$ npms-analyzer consume -h`

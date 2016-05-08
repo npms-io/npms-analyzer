@@ -2,6 +2,7 @@
 
 We use `pm2` to deploy `npms-analyzer`, install it by running `$ npm install -g pm2`. You may find the pm2 configuration file in `ecosystem.json5`.
 
+
 ## Setting up
 
 Before doing the first deploy, you need to setup the server. All commands executed in the server are expected to be run with `analyzer` user.
@@ -15,6 +16,7 @@ Before doing the first deploy, you need to setup the server. All commands execut
 - Setup logrotate by running `$ sudo pm2 logrotate -u analyzer` on the server and then edit `/etc/logrotate.d/pm2-www` to change change `/root` to `/home/analyzer`, weekly to daily, and from 12 days to 14 days)
 - Setup pm2 to run at start by running `$ sudo pm2 startup -u analyzer --hp "/home/analyzer"` on the server
 - Finally run `$ pm2 save` to store the running processes
+
 
 ## Deploying
 

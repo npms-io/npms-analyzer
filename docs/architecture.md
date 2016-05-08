@@ -5,6 +5,7 @@ The `npms-analyzer` runs two continuous and distinct processes. One is the `anal
 - [Analysis](#analysis)
 - [Continuous scoring](#continuous-scoring)
 
+
 ## Analysis
 
 The analysis process analyzes the `npm` modules, producing a result and a score.
@@ -159,6 +160,7 @@ I will not elaborate on this because this evaluator will NOT be developed nor us
 ### Scoring
 
 Calculates the module score based on the current aggregation if any. If there's no aggregation, the module won't be scored at the moment, but it will be later in the `continuous scoring` process.
+
 
 ## Continuous scoring
 
