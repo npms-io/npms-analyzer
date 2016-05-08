@@ -325,7 +325,7 @@ describe('git', () => {
         const download = git(npmPackageJson);
 
         return download(tmpDir)
-        .then(() => loadJsonFile(`${tmpDir}/package.json`))
+        .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
         .then((packageJson) => {
             expect(betrayed.invoked).to.be.greaterThan(1);
 

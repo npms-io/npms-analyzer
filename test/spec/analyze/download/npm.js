@@ -99,7 +99,7 @@ describe('npm', () => {
         const download = npm(npmPackageJson);
 
         return download(tmpDir)
-        .then(() => loadJsonFile(`${tmpDir}/package.json`))
+        .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
         .then((packageJson) => {
             expect(packageJson.name).to.equal('cool-module');
             expect(packageJson.version).to.equal('0.1.0');
