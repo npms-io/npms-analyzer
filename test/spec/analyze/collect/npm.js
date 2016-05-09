@@ -30,7 +30,7 @@ describe('npm', () => {
         });
     });
 
-    it.only('should handle 200 OK error responses from api.npmjs.org', () => {
+    it('should handle 200 OK error responses from api.npmjs.org', () => {
         nock('https://api.npmjs.org')
         .get((path) => path.indexOf('/downloads/range/') === 0)
         .reply(200, { error: 'foo' });
