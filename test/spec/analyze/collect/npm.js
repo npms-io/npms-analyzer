@@ -47,5 +47,19 @@ describe('npm', () => {
         .finally(() => nock.cleanAll());
     });
 
+    it('should handle `no stats yet` error from api.npmjs.org', () => {
+        nock('https://api.npmjs.org')
+        .get((path) => path.indexOf('/downloads/range/') === 0)
+        .reply(200, { error: 'no stats for this package' });
+
+        const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
+
+        return npm(data, packageJsonFromData('cross-spawn', data), npmNano)
+        .then((collected) => {
+            collected.downloads.forEach((download) => expect(download.count).to.equal(0));
+        })
+        .finally(() => nock.cleanAll());
+    });
+
     it('should retry on network errors');
 });
