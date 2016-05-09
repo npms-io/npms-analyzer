@@ -12,16 +12,8 @@ const tmpDir = `${process.cwd()}/test/tmp`;
 
 describe('github', () => {
     before(() => sepia.fixtureDir(`${process.cwd()}/test/fixtures/analyze/download/recorded/github`));
-    beforeEach(() => {
-        cp.execSync(`mkdir -p ${tmpDir}`);
-        sepia.disable();
-        nock.cleanAll();
-    });
+    beforeEach(() => cp.execSync(`mkdir -p ${tmpDir}`));
     afterEach(() => cp.execSync(`rm -rf ${tmpDir}`));
-    after(() => {
-        sepia.disable();
-        nock.cleanAll();
-    });
 
     it('should detect various GitHub urls', () => {
         let download;
@@ -50,7 +42,8 @@ describe('github', () => {
 
         return download(tmpDir)
         .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
-        .then((packageJson) => expect(packageJson.version).to.equal('1.0.0'));
+        .then((packageJson) => expect(packageJson.version).to.equal('1.0.0'))
+        .finally(() => sepia.disable());
     });
 
     it('should fallback to master branch if the commit hash does not exist', () => {
@@ -66,7 +59,8 @@ describe('github', () => {
         .then(() => {
             expect(() => fs.accessSync(`${tmpDir}/package.json`)).to.not.throw();
             expect(() => fs.accessSync(`${tmpDir}/appveyor.yml`)).to.not.throw();
-        });
+        })
+        .finally(() => sepia.disable());
     });
 
     it('should fail if the tarball is too large', () => {
@@ -88,7 +82,8 @@ describe('github', () => {
             expect(nock.isDone()).to.equal(true);
             expect(err.message).to.match(/too large/i);
             expect(err.unrecoverable).to.equal(true);
-        });
+        })
+        .finally(() => nock.cleanAll());
     });
 
     it('should handle some 4xx errors', () => {
@@ -106,7 +101,8 @@ describe('github', () => {
             .then(() => {
                 expect(nock.isDone()).to.equal(true);
                 expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
-            });
+            })
+            .finally(() => nock.cleanAll());
         });
     });
 
@@ -125,8 +121,6 @@ describe('github', () => {
         return download(tmpDir)
         .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
         .then((packageJson) => {
-            expect(nock.isDone()).to.equal(true);
-
             expect(packageJson.name).to.equal('cool-module');
             expect(packageJson.version).to.equal('0.1.0');
             expect(packageJson.description).to.be.a('string');
@@ -135,7 +129,8 @@ describe('github', () => {
             expect(npmPackageJson.name).to.equal('cool-module');
             expect(npmPackageJson.version).to.equal('0.1.0');
             expect(npmPackageJson.description).to.be.a('string');
-        });
+        })
+        .finally(() => sepia.disable());
     });
 
     it('should override refs based on options.refOverrides', () => {
@@ -155,15 +150,14 @@ describe('github', () => {
         return download(tmpDir)
         .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
         .then((packageJson) => {
-            expect(nock.isDone()).to.equal(true);
-
             expect(packageJson.version).to.equal('2.0.0');
             expect(packageJson.description).to.be.a('string');
 
             // Test if properties were merged back
             expect(npmPackageJson.version).to.equal('2.0.0');
             expect(npmPackageJson.description).to.be.a('string');
-        });
+        })
+        .finally(() => sepia.disable());
     });
 
     it('should resolve with the downloaded object', () => {
@@ -181,7 +175,8 @@ describe('github', () => {
             expect(downloaded.dir).to.equal(tmpDir);
             expect(downloaded.packageJson.name).to.equal('cross-spawn');
             expect(downloaded.packageJson.version).to.equal('1.0.0');
-        });
+        })
+        .finally(() => sepia.disable());
     });
 
     it('should pass the correct options to token-dealer');

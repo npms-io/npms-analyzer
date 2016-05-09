@@ -23,6 +23,8 @@ function disable() {
     https.request = originalRequests.https;
 }
 
+disable();
+
 module.exports = sepia;
 module.exports.enable = enable;
 module.exports.disable = disable;

@@ -1,0 +1,32 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "server": "nginx/1.4.6 (Ubuntu)",
+    "content-type": "application/octet-stream",
+    "last-modified": "Wed, 24 Feb 2016 17:10:10 GMT",
+    "etag": "\"56cde3f2-e51\"",
+    "expires": "Sun, 01 May 2016 13:40:45 GMT",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": "GET",
+    "cache-control": "max-age=21600",
+    "content-length": "3665",
+    "accept-ranges": "bytes",
+    "date": "Sun, 01 May 2016 10:10:17 GMT",
+    "via": "1.1 varnish",
+    "age": "8972",
+    "connection": "keep-alive",
+    "x-served-by": "cache-lcy1128-LCY",
+    "x-cache": "HIT",
+    "x-cache-hits": "1",
+    "x-timer": "S1462097417.695732,VS0,VE0"
+  },
+  "url": "https://registry.npmjs.org:443/cross-spawn/-/cross-spawn-0.1.0.tgz",
+  "time": 5,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.3.0 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate"
+    }
+  }
+}

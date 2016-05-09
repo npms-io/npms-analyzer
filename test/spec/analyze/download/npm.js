@@ -12,16 +12,8 @@ const tmpDir = `${process.cwd()}/test/tmp`;
 
 describe('npm', () => {
     before(() => sepia.fixtureDir(`${process.cwd()}/test/fixtures/analyze/download/recorded/npm`));
-    beforeEach(() => {
-        cp.execSync(`mkdir -p ${tmpDir}`);
-        sepia.disable();
-        nock.cleanAll();
-    });
+    beforeEach(() => cp.execSync(`mkdir -p ${tmpDir}`));
     afterEach(() => cp.execSync(`rm -rf ${tmpDir}`));
-    after(() => {
-        sepia.disable();
-        nock.cleanAll();
-    });
 
     it('should download the dist tarball', () => {
         sepia.enable();
@@ -35,7 +27,8 @@ describe('npm', () => {
         .then(() => {
             expect(() => fs.accessSync(`${tmpDir}/package.json`)).to.not.throw();
             expect(() => fs.accessSync(`${tmpDir}/appveyor.yml`)).to.throw(/ENOENT/);
-        });
+        })
+        .finally(() => sepia.disable());
     });
 
     it('should still work if there\'s no dist tarball', () => {
@@ -68,7 +61,8 @@ describe('npm', () => {
             expect(nock.isDone()).to.equal(true);
             expect(err.message).to.match(/too large/i);
             expect(err.unrecoverable).to.equal(true);
-        });
+        })
+        .finally(() => nock.cleanAll());
     });
 
     it('should handle 404 errors', () => {
@@ -85,7 +79,8 @@ describe('npm', () => {
         .then(() => {
             expect(nock.isDone()).to.equal(true);
             expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
-        });
+        })
+        .finally(() => nock.cleanAll());
     });
 
     it('should merge package.json', () => {
@@ -109,7 +104,8 @@ describe('npm', () => {
             expect(npmPackageJson.name).to.equal('cool-module');
             expect(npmPackageJson.version).to.equal('0.1.0');
             expect(npmPackageJson.description).to.be.a('string');
-        });
+        })
+        .finally(() => sepia.disable());
     });
 
     it('should resolve with the downloaded object', () => {
@@ -128,6 +124,7 @@ describe('npm', () => {
             expect(downloaded.dir).to.equal(tmpDir);
             expect(downloaded.packageJson.name).to.equal('cross-spawn');
             expect(downloaded.packageJson.version).to.equal('1.0.0');
-        });
+        })
+        .finally(() => sepia.disable());
     });
 });

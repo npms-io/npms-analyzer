@@ -1,0 +1,34 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "server": "nginx/1.4.6 (Ubuntu)",
+    "content-type": "application/json; charset=utf-8",
+    "access-control-allow-origin": "*",
+    "access-control-max-age": "86400",
+    "access-control-allow-methods": "GET, HEAD, POST, PUT, DELETE, OPTIONS",
+    "access-control-allow-headers": "Authorization, Content-Type, If-None-Match",
+    "access-control-expose-headers": "WWW-Authenticate, Server-Authorization",
+    "cache-control": "no-cache",
+    "content-encoding": "gzip",
+    "via": "1.1 varnish, 1.1 varnish",
+    "content-length": "2394",
+    "accept-ranges": "bytes",
+    "date": "Mon, 09 May 2016 17:08:04 GMT",
+    "age": "109",
+    "connection": "keep-alive",
+    "x-served-by": "cache-lax1435-LAX, cache-lcy1128-LCY",
+    "x-cache": "HIT, HIT",
+    "x-cache-hits": "1, 1",
+    "vary": "accept-encoding"
+  },
+  "url": "http://api.npmjs.org:443/downloads/range/2015-05-09:2016-05-08/cross-spawn",
+  "time": 315,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.3.0 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/json"
+    }
+  }
+}

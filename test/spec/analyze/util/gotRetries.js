@@ -4,10 +4,8 @@ const expect = require('chai').expect;
 const gotRetries = require(`${process.cwd()}/lib/analyze/util/gotRetries`);
 
 describe('gotRetries', () => {
-    const maxAttempts = 5;
-
-    it(`should stop after attempt ${maxAttempts}`, () => {
-        expect(gotRetries(maxAttempts + 1, new Error())).to.equal(0);
+    it('should stop after attempt 5', () => {
+        expect(gotRetries(5 + 1, new Error())).to.equal(0);
         expect(gotRetries(Number.MAX_VALUE, new Error())).to.equal(0);
     });
 

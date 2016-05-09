@@ -41,7 +41,7 @@ describe('untar', () => {
         const log = logger.children['util/untar'];
         const betrayed = betray(log, 'warn');
 
-        fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/broken-archive.tgz`));
+        fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/mocked/broken-archive.tgz`));
 
         return untar(`${tmpDir}/test.tgz`)
         .then(() => {
@@ -88,7 +88,7 @@ describe('untar', () => {
         .then(() => {
             cp.execSync(`rm -rf ${tmpDir}`);
             cp.execSync(`mkdir -p ${tmpDir}`);
-            fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/broken-archive.tgz`));
+            fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/mocked/broken-archive.tgz`));
 
             return untar(`${tmpDir}/test.tgz`)
             .then(() => expect(() => fs.accessSync(`${tmpDir}/test.tgz`)).to.throw(/ENOENT/));

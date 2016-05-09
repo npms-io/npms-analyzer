@@ -1,0 +1,21 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "transfer-encoding": "chunked",
+    "server": "CouchDB/1.5.0 (Erlang OTP/R16B03)",
+    "etag": "\"2WGXHV85LUY45038QDVTUJ9TP\"",
+    "date": "Mon, 09 May 2016 17:08:04 GMT",
+    "content-type": "application/json",
+    "cache-control": "must-revalidate"
+  },
+  "url": "http://skimdb.npmjs.com:443/registry/_design/app/_view/dependedUpon?startkey=%5B%22cross-spawn%22%5D&endkey=%5B%22cross-spawn%22%2C%22%EF%BF%B0%22%5D&limit=1&reduce=true&stale=update_after",
+  "time": 612,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "content-type": "application/json",
+      "accept": "application/json",
+      "host": "skimdb.npmjs.com"
+    }
+  }
+}
