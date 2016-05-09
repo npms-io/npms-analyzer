@@ -1,6 +1,7 @@
 'use strict';
 
 const expect = require('chai').expect;
+const chronokinesis = require('chronokinesis');
 const loadJsonFile = require('load-json-file');
 const packageJsonFromData = require(`${process.cwd()}/lib/analyze/util/packageJsonFromData`);
 const metadata = require(`${process.cwd()}/lib/analyze/collect/metadata`);
@@ -12,7 +13,10 @@ describe('github', () => {
         const data = loadJsonFile.sync(`${fixturesDir}/cross-spawn/data.json`);
         const expected = loadJsonFile.sync(`${fixturesDir}/cross-spawn/expected.json`);
 
+        chronokinesis.travel('2016-05-08T10:00:00.000Z');
+
         return metadata(data, packageJsonFromData('cross-spawn', data))
+        .finally(() => chronokinesis.reset())
         // .then((expected) => require('fs').writeFileSync(`${fixturesDir}/cross-spawn/expected.json`, JSON.stringify(expected, null, 2)));
         .then((collected) => expect(collected).to.eql(expected));
     });
