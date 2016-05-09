@@ -8,7 +8,7 @@ const metadata = require(`${process.cwd()}/lib/analyze/collect/metadata`);
 
 const fixturesDir = `${process.cwd()}/test/fixtures/analyze/collect`;
 
-describe('github', () => {
+describe('metadata', () => {
     it('should collect cross-spawn metadata', () => {
         const data = loadJsonFile.sync(`${fixturesDir}/cross-spawn/data.json`);
         const expected = loadJsonFile.sync(`${fixturesDir}/cross-spawn/expected.json`);
