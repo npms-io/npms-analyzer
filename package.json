@@ -75,6 +75,7 @@
     "@satazor/eslint-config": "^2.0.0",
     "betray": "^1.3.0",
     "chai": "^3.5.0",
+    "chronokinesis": "^1.1.0",
     "coveralls": "^2.11.6",
     "eslint": "^2.2.0",
     "istanbul": "^0.4.2",
