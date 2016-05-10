@@ -29,6 +29,12 @@ describe('github', () => {
 
         download = github({ repository: { type: 'git', url: 'https://foo.com/IndigoUnited/node-cross-spawn.git' } });
         expect(download).to.equal(null);
+
+        download = github({ repository: null });
+        expect(download).to.equal(null);
+
+        download = github({});
+        expect(download).to.equal(null);
     });
 
     it('should download a specific commit hash', () => {

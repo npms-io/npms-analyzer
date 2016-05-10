@@ -17,7 +17,7 @@ function mock(mocks) {
             match: (command) => command.indexOf('clone') !== -1,
             handle: (command, options, callback) => {
                 try {
-                    mocks.clone && mocks.clone();
+                    mocks.clone && mocks.clone(command);
                 } catch (err) {
                     return callback(err, err.stdout || '', err.stderr || '');
                 }
@@ -30,7 +30,7 @@ function mock(mocks) {
             match: (command) => command.indexOf('checkout') !== -1,
             handle: (command, options, callback) => {
                 try {
-                    mocks.checkout && mocks.checkout();
+                    mocks.checkout && mocks.checkout(command);
                 } catch (err) {
                     return callback(err, err.stdout || '', err.stderr || '');
                 }
@@ -81,6 +81,12 @@ describe('git', () => {
         expect(download).to.be.a('function');
 
         download = git({ repository: { type: 'git', url: 'https://foo.com/IndigoUnited/node-cross-spawn.git' } });
+        expect(download).to.equal(null);
+
+        download = git({ repository: null });
+        expect(download).to.equal(null);
+
+        download = git({});
         expect(download).to.equal(null);
     });
 
@@ -215,7 +221,7 @@ describe('git', () => {
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
         });
 
-        return download(tmpDir, { refOverrides: { 'cross-spawn': 'foo' } })
+        return download(tmpDir)
         .then(() => {
             expect(betrayed.invoked).to.be.greaterThan(1);
             expect(() => fs.accessSync(`${tmpDir}/package.json`)).to.not.throw();
@@ -359,6 +365,26 @@ describe('git', () => {
             expect(downloaded.packageJson.name).to.equal('');
             expect(downloaded.packageJson.version).to.equal('1.0.0');
         })
+        .finally(() => betrayed.restore());
+    });
+
+    it('should override refs based on options.refOverrides', () => {
+        let command;
+        const betrayed = mock({
+            checkout: (command_) => { command = command_; },
+        });
+
+        const download = git({
+            name: 'cross-spawn',
+            version: '0.1.0',
+            repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
+            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad', // This is the ref for 1.0.0
+        }, {
+            refOverrides: { 'cross-spawn': 'foobar' },
+        });
+
+        return download(tmpDir)
+        .then(() => expect(command).to.contain('foobar'))
         .finally(() => betrayed.restore());
     });
 });
