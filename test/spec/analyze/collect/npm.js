@@ -3,6 +3,7 @@
 const expect = require('chai').expect;
 const sepia = require('sepia');
 const nock = require('nock');
+const betray = require('betray');
 const chronokinesis = require('chronokinesis');
 const nano = require('nano');
 const loadJsonFile = require('load-json-file');
@@ -13,21 +14,30 @@ const fixturesDir = `${process.cwd()}/test/fixtures/analyze/collect`;
 const npmNano = Promise.promisifyAll(nano('https://skimdb.npmjs.com/registry'));
 
 describe('npm', () => {
-    before(() => sepia.fixtureDir(`${fixturesDir}/recorded/npm`));
+    before(() => {
+        sepia.fixtureDir(`${fixturesDir}/recorded/npm`);
+        chronokinesis.travel('2016-05-09T18:00:00.000Z');
+    });
+    after(() => chronokinesis.reset());
 
     it('should collect cross-spawn correctly', () => {
         const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
         const expected = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/expected-npm.json`);
 
         sepia.enable();
-        chronokinesis.travel('2016-05-09T18:00:00.000Z');
 
         return npm(data, packageJsonFromData('cross-spawn', data), npmNano)
         .then((collected) => expect(collected).to.eql(expected))
-        .finally(() => {
-            sepia.disable();
-            chronokinesis.reset();
-        });
+        .finally(() => sepia.disable());
+    });
+
+    it('should handle no results when querying app/dependedUpon view', () => {
+        const betrayed = betray(npmNano, 'viewAsync', () => Promise.resolve({ rows: [] }));
+        const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
+
+        return npm(data, packageJsonFromData('cross-spawn', data), npmNano)
+        .then((collected) => expect(collected.dependentsCount).to.equal(0))
+        .finally(() => betrayed.restore());
     });
 
     it('should handle 200 OK error responses from api.npmjs.org', () => {

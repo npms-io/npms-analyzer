@@ -165,6 +165,25 @@ describe('metadata', () => {
             .then((collected) => expect(collected.license).to.equal('MIT'));
         });
 
+        it('should deal with weird licenses value types', () => {
+            // Empty string
+            return Promise.try(() => {
+                return metadata({}, {
+                    name: 'cross-spawn',
+                    license: { type: '', url: 'https://opensource.org/licenses/MIT' },
+                })
+                .then((collected) => expect(collected.license).to.equal(undefined));
+            })
+            // Nullish
+            .then(() => {
+                return metadata({}, {
+                    name: 'cross-spawn',
+                    license: { type: null, url: 'https://opensource.org/licenses/MIT' },
+                })
+                .then((collected) => expect(collected.license).to.equal(undefined));
+            });
+        });
+
         it('should preserve spdx expressions', () => {
             return metadata({}, {
                 name: 'cross-spawn',
@@ -174,11 +193,22 @@ describe('metadata', () => {
         });
 
         it('should correct to spdx licenses', () => {
-            return metadata({}, {
-                name: 'cross-spawn',
-                license: 'GPL',
+            // Test auto-correct
+            return Promise.try(() => {
+                return metadata({}, {
+                    name: 'cross-spawn',
+                    license: 'GPL',
+                })
+                .then((collected) => expect(collected.license).to.equal('GPL-3.0'));
             })
-            .then((collected) => expect(collected.license).to.equal('GPL-3.0'));
+            // Test invalid license
+            .then(() => {
+                return metadata({}, {
+                    name: 'cross-spawn',
+                    license: 'foobar',
+                })
+                .then((collected) => expect(collected.license).to.equal(undefined));
+            });
         });
     });
 });
