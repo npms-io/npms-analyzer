@@ -9,15 +9,15 @@ const metadata = require(`${process.cwd()}/lib/analyze/collect/metadata`);
 const fixturesDir = `${process.cwd()}/test/fixtures/analyze/collect`;
 
 describe('metadata', () => {
+    before(() => chronokinesis.travel('2016-05-08T10:00:00.000Z'));
+    after(() => chronokinesis.reset());
+
     it('should collect cross-spawn correctly', () => {
         const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
         const expected = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/expected-metadata.json`);
 
-        chronokinesis.travel('2016-05-08T10:00:00.000Z');
-
         return metadata(data, packageJsonFromData('cross-spawn', data))
-        .then((collected) => expect(collected).to.eql(expected))
-        .finally(() => chronokinesis.reset());
+        .then((collected) => expect(collected).to.eql(expected));
     });
 
     it('should do a best effort to extract the publisher', () => {
