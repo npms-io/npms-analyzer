@@ -90,8 +90,8 @@ module.exports.handler = (argv) => {
                 return queue.push(name);
             }, { concurrency: 15 })
             .then(() => log.info('Missing modules were enqueued!'));
-        })
-        .then(() => process.exit()); // Need to force exit because of queue
+        });
     })
+    .then(() => process.exit())
     .done();
 };

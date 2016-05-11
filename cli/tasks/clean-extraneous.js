@@ -95,5 +95,6 @@ module.exports.handler = (argv) => {
             .then(() => log.info('Extraneous modules were removed!'));
         });
     })
+    .then(() => process.exit())
     .done();
 };

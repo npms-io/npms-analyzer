@@ -76,5 +76,6 @@ module.exports.handler = (argv) => {
         })
         .then((count) => log.info(`Completed, processed a total of ${count} rows`));
     })
+    .then(() => process.exit())
     .done();
 };

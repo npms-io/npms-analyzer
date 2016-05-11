@@ -49,10 +49,11 @@ module.exports.handler = (argv) => {
         // Score the module
         .then((analysis) => {
             return score(analysis, npmsNano, esClient)
-            .catch(() => {})
-            .tap((analysis) => log.info({ analysis }, 'Score data'));
+            .tap((score) => log.info({ score }, 'Score data'))
+            .catch(() => {});
         })
         .catch({ code: 'MODULE_NOT_FOUND' }, (err) => score.remove(name, esClient).finally(() => { throw err; }));
     })
+    .then(() => process.exit())
     .done();
 };

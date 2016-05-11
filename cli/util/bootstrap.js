@@ -92,12 +92,12 @@ function bootstrapElasticsearch(elasticsearchHost, options) {
     });
 
     return promiseRetry((retry) => {
-        return esClient.get({
+        return Promise.resolve(esClient.get({
             index: 'someindexthatwillneverexist',
             type: 'sometypethatwillneverexist',
             id: 'someidthatwillneverexist',
             maxRetries: 0,
-        })
+        }))
         .catch((err) => get(err, 'body.error.type') === 'index_not_found_exception', () => {})
         .catch((err) => {
             log.warn({ err }, 'Check of Elasticsearch failed');

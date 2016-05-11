@@ -146,5 +146,6 @@ module.exports.handler = (argv) => {
         })
         .then(() => log.info('Optimization completed successfully!'));
     })
+    .then(() => process.exit())
     .done();
 };
