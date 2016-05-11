@@ -25,6 +25,7 @@ function disable() {
 
 disable();
 
+sepia.enable = enable;
+sepia.disable = disable;
+
 module.exports = sepia;
-module.exports.enable = enable;
-module.exports.disable = disable;
