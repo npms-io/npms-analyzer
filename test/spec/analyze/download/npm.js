@@ -127,4 +127,6 @@ describe('npm', () => {
         })
         .finally(() => sepia.disable());
     });
+
+    it('should retry on network errors');
 });

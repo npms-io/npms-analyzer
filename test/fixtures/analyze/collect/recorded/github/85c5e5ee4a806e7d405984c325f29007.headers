@@ -1,0 +1,38 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "server": "GitHub.com",
+    "date": "Wed, 11 May 2016 15:21:30 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "transfer-encoding": "chunked",
+    "status": "200 OK",
+    "x-ratelimit-limit": "60",
+    "x-ratelimit-remaining": "41",
+    "x-ratelimit-reset": "1462981369",
+    "cache-control": "public, max-age=60, s-maxage=60",
+    "vary": "Accept, Accept-Encoding",
+    "etag": "W/\"392df650e828b6f22819d9bf15011108\"",
+    "x-github-media-type": "github.v3",
+    "link": "<https://api.github.com/repositories/23718950/statuses/master?page=2>; rel=\"next\", <https://api.github.com/repositories/23718950/statuses/master?page=2>; rel=\"last\"",
+    "access-control-expose-headers": "ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
+    "access-control-allow-origin": "*",
+    "content-security-policy": "default-src 'none'",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "x-served-by": "bd82876e9bf04990f289ba22f246ee9b",
+    "content-encoding": "gzip",
+    "x-github-request-id": "9E6D5E21:2CB9:594AC52:57334DF9"
+  },
+  "url": "https://api.github.com:443/repos/strongloop-forks/strong-fork-syslog/commits/master/statuses",
+  "time": 473,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.3.0 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/json"
+    }
+  }
+}

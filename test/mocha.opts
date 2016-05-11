@@ -1,2 +1,2 @@
 --bail
---timeout 15000
+--timeout 60000

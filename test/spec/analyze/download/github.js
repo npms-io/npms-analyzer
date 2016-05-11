@@ -185,6 +185,8 @@ describe('github', () => {
         .finally(() => sepia.disable());
     });
 
+    it('should retry on network errors');
+
     it('should pass the correct options to token-dealer');
 
     it('should handle rate limit errors (wait/bail)');

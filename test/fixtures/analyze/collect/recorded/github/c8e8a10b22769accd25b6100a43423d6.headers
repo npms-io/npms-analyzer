@@ -1,0 +1,31 @@
+{
+  "statusCode": 204,
+  "headers": {
+    "server": "GitHub.com",
+    "date": "Wed, 11 May 2016 15:21:30 GMT",
+    "status": "204 No Content",
+    "x-ratelimit-limit": "60",
+    "x-ratelimit-remaining": "37",
+    "x-ratelimit-reset": "1462981369",
+    "access-control-expose-headers": "ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
+    "access-control-allow-origin": "*",
+    "content-security-policy": "default-src 'none'",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "vary": "Accept-Encoding",
+    "x-served-by": "76d9828c7e4f1d910f7ba069e90ce976",
+    "x-github-request-id": "9E6D5E21:2CBC:BB2127D:57334DFA"
+  },
+  "url": "http://api.github.com:443/repos/Cat4D/Cat4D/stats/contributors",
+  "time": 392,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.3.0 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/json"
+    }
+  }
+}

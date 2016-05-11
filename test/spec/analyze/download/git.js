@@ -387,4 +387,6 @@ describe('git', () => {
         .then(() => expect(command).to.contain('foobar'))
         .finally(() => betrayed.restore());
     });
+
+    it('should retry on network errors');
 });
