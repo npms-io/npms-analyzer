@@ -38,8 +38,7 @@ describe('untar', () => {
     });
 
     it('should deal with malformed archives', () => {
-        const log = logger.children['util/untar'];
-        const betrayed = betray(log, 'warn');
+        const betrayed = betray(logger.children['util/untar'], 'warn');
 
         fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/mocked/broken-archive.tgz`));
 
