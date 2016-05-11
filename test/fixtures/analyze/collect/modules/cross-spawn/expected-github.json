@@ -1,0 +1,86 @@
+{
+  "starsCount": 74,
+  "forksCount": 11,
+  "subscribersCount": 12,
+  "issues": {
+    "count": 31,
+    "openCount": 2,
+    "distribution": {
+      "3600": 9,
+      "10800": 2,
+      "32400": 3,
+      "97200": 6,
+      "291600": 4,
+      "874800": 0,
+      "2624400": 4,
+      "7873200": 2,
+      "23619600": 1,
+      "70858800": 0,
+      "212576400": 0
+    },
+    "isDisabled": false
+  },
+  "contributors": [
+    {
+      "username": "satazor",
+      "commitsCount": 111
+    },
+    {
+      "username": "BigstickCarpet",
+      "commitsCount": 4
+    },
+    {
+      "username": "kevva",
+      "commitsCount": 1
+    },
+    {
+      "username": "typicode",
+      "commitsCount": 1
+    },
+    {
+      "username": "greenkeeperio-bot",
+      "commitsCount": 1
+    },
+    {
+      "username": "knpwrs",
+      "commitsCount": 1
+    }
+  ],
+  "commits": [
+    {
+      "from": "2016-05-02T00:00:00.000Z",
+      "to": "2016-05-09T00:00:00.000Z",
+      "count": 0
+    },
+    {
+      "from": "2016-04-09T00:00:00.000Z",
+      "to": "2016-05-09T00:00:00.000Z",
+      "count": 3
+    },
+    {
+      "from": "2016-02-09T00:00:00.000Z",
+      "to": "2016-05-09T00:00:00.000Z",
+      "count": 9
+    },
+    {
+      "from": "2015-11-11T00:00:00.000Z",
+      "to": "2016-05-09T00:00:00.000Z",
+      "count": 38
+    },
+    {
+      "from": "2015-05-10T00:00:00.000Z",
+      "to": "2016-05-09T00:00:00.000Z",
+      "count": 61
+    }
+  ],
+  "statuses": [
+    {
+      "context": "continuous-integration/appveyor/branch",
+      "state": "success"
+    },
+    {
+      "context": "continuous-integration/travis-ci/push",
+      "state": "success"
+    }
+  ]
+}

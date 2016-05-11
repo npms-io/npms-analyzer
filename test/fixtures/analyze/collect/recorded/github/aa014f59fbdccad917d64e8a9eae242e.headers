@@ -1,0 +1,37 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "server": "GitHub.com",
+    "date": "Wed, 11 May 2016 12:50:47 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "transfer-encoding": "chunked",
+    "status": "200 OK",
+    "x-ratelimit-limit": "60",
+    "x-ratelimit-remaining": "57",
+    "x-ratelimit-reset": "1462973370",
+    "cache-control": "public, max-age=60, s-maxage=60",
+    "vary": "Accept, Accept-Encoding",
+    "etag": "W/\"005b455fe23290d9b711bf692b824f7e\"",
+    "x-github-media-type": "github.v3",
+    "access-control-expose-headers": "ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
+    "access-control-allow-origin": "*",
+    "content-security-policy": "default-src 'none'",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "x-served-by": "52437fedc85beec8da3449496900fb9a",
+    "content-encoding": "gzip",
+    "x-github-request-id": "9E6D5E21:CA11:AC07493:57332AA7"
+  },
+  "url": "http://api.github.com:443/repos/IndigoUnited/node-cross-spawn/stats/contributors",
+  "time": 557,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.3.0 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/json"
+    }
+  }
+}
