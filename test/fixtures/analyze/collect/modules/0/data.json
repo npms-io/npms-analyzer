@@ -1,0 +1,53 @@
+{
+   "name": "0",
+   "dist-tags": {
+       "latest": "0.0.0"
+   },
+   "versions": {
+       "0.0.0": {
+           "name": "0",
+           "version": "0.0.0",
+           "description": "",
+           "main": "index.js",
+           "scripts": {
+               "test": "echo \"Error: no test specified\" && exit 1"
+           },
+           "author": "",
+           "license": "BSD-2-Clause",
+           "_id": "0@0.0.0",
+           "dist": {
+               "shasum": "beabacb0a099c1dd215eaec15bb201318db7de6a",
+               "tarball": "http://registry.npmjs.org/0/-/0-0.0.0.tgz"
+           },
+           "_from": ".",
+           "_npmVersion": "1.3.14",
+           "_npmUser": {
+               "name": "zolmeister",
+               "email": "zolikahan@gmail.com"
+           },
+           "maintainers": [
+               {
+                   "name": "zolmeister",
+                   "email": "zolikahan@gmail.com"
+               }
+           ]
+       }
+   },
+   "readme": "ERROR: No README data found!",
+   "maintainers": [
+       {
+           "name": "zolmeister",
+           "email": "zolikahan@gmail.com"
+       }
+   ],
+   "time": {
+       "modified": "2014-06-17T06:38:43.495Z",
+       "created": "2014-04-01T22:51:09.131Z",
+       "0.0.0": "2014-04-01T22:51:11.871Z"
+   },
+   "readmeFilename": "",
+   "license": "BSD-2-Clause",
+   "users": {
+       "zolmeister": true
+   }
+}

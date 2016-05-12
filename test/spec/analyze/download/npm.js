@@ -9,9 +9,10 @@ const sepia = require(`${process.cwd()}/test/util/sepia`);
 const npm = require(`${process.cwd()}/lib/analyze/download/npm`);
 
 const tmpDir = `${process.cwd()}/test/tmp`;
+const fixturesDir = `${process.cwd()}/test/fixtures/analyze/download`;
 
 describe('npm', () => {
-    before(() => sepia.fixtureDir(`${process.cwd()}/test/fixtures/analyze/download/recorded/npm`));
+    before(() => sepia.fixtureDir(`${fixturesDir}/recorded/npm`));
     beforeEach(() => cp.execSync(`mkdir -p ${tmpDir}`));
     afterEach(() => cp.execSync(`rm -rf ${tmpDir}`));
 

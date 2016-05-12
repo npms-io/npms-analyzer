@@ -1,0 +1,587 @@
+{
+   "name": "planify",
+   "description": "Plan a series of steps and display the output in a beautiful way",
+   "dist-tags": {
+       "latest": "1.2.0"
+   },
+   "versions": {
+       "1.0.0": {
+           "name": "planify",
+           "version": "1.0.0",
+           "description": "Plan a series of steps and display the output in a beautiful way",
+           "main": "index.js",
+           "scripts": {
+               "test": "mocha --bail",
+               "test-cov": "istanbul cover --dir test/coverage _mocha -- --bail && echo Coverage lies in test/coverage/lcov-report/index.html",
+               "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+           },
+           "bugs": {
+               "url": "https://github.com/IndigoUnited/node-planify/issues/"
+           },
+           "repository": {
+               "type": "git",
+               "url": "git://github.com/IndigoUnited/node-planify.git"
+           },
+           "keywords": [
+               "plan",
+               "step",
+               "steps",
+               "phase",
+               "phases",
+               "cli",
+               "task",
+               "runner",
+               "run"
+           ],
+           "author": {
+               "name": "IndigoUnited",
+               "email": "hello@indigounited.com",
+               "url": "http://indigounited.com"
+           },
+           "license": "MIT",
+           "dependencies": {
+               "ansi-escapes": "^1.1.0",
+               "bluebird": "^3.1.1",
+               "chalk": "^1.1.1",
+               "cli-progress-bar": "^1.0.0",
+               "indent-string": "^2.1.0",
+               "lodash": "^4.0.0"
+           },
+           "devDependencies": {
+               "@satazor/eslint-config": "^1.0.6",
+               "chai": "^3.4.1",
+               "cli-character-set": "^0.1.0",
+               "coveralls": "^2.11.6",
+               "expect.js": "^0.3.1",
+               "glob": "^6.0.4",
+               "istanbul": "^0.4.1",
+               "mocha": "^2.3.4",
+               "require-directory": "^2.1.1"
+           },
+           "gitHead": "470398d0b5412ac3ee276e33498bf382748b8da1",
+           "homepage": "https://github.com/IndigoUnited/node-planify#readme",
+           "_id": "planify@1.0.0",
+           "_shasum": "85cc83912fd817992f1fe799c8a865f4d28e35ab",
+           "_from": ".",
+           "_npmVersion": "3.3.12",
+           "_nodeVersion": "5.4.1",
+           "_npmUser": {
+               "name": "satazor",
+               "email": "andremiguelcruz@msn.com"
+           },
+           "maintainers": [
+               {
+                   "name": "satazor",
+                   "email": "andremiguelcruz@msn.com"
+               }
+           ],
+           "dist": {
+               "shasum": "85cc83912fd817992f1fe799c8a865f4d28e35ab",
+               "tarball": "http://registry.npmjs.org/planify/-/planify-1.0.0.tgz"
+           }
+       },
+       "1.0.1": {
+           "name": "planify",
+           "version": "1.0.1",
+           "description": "Plan a series of steps and display the output in a beautiful way",
+           "main": "index.js",
+           "scripts": {
+               "test": "mocha --bail",
+               "test-cov": "istanbul cover --dir test/coverage _mocha -- --bail && echo Coverage lies in test/coverage/lcov-report/index.html",
+               "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+           },
+           "bugs": {
+               "url": "https://github.com/IndigoUnited/node-planify/issues/"
+           },
+           "repository": {
+               "type": "git",
+               "url": "git://github.com/IndigoUnited/node-planify.git"
+           },
+           "keywords": [
+               "plan",
+               "step",
+               "steps",
+               "phase",
+               "phases",
+               "cli",
+               "task",
+               "runner",
+               "run"
+           ],
+           "author": {
+               "name": "IndigoUnited",
+               "email": "hello@indigounited.com",
+               "url": "http://indigounited.com"
+           },
+           "license": "MIT",
+           "dependencies": {
+               "ansi-escapes": "^1.1.0",
+               "bluebird": "^3.1.1",
+               "chalk": "^1.1.1",
+               "cli-progress-bar": "^1.0.0",
+               "indent-string": "^2.1.0",
+               "lodash": "^4.0.0"
+           },
+           "devDependencies": {
+               "@satazor/eslint-config": "^1.0.6",
+               "chai": "^3.4.1",
+               "cli-character-set": "^0.1.0",
+               "coveralls": "^2.11.6",
+               "expect.js": "^0.3.1",
+               "glob": "^6.0.4",
+               "istanbul": "^0.4.1",
+               "mocha": "^2.3.4",
+               "require-directory": "^2.1.1"
+           },
+           "gitHead": "9c1c49af97f3210fad44fde3cde648705dc0c6a0",
+           "homepage": "https://github.com/IndigoUnited/node-planify#readme",
+           "_id": "planify@1.0.1",
+           "_shasum": "49dcd0cf4167331c294ee1c62d04c674fd4952b9",
+           "_from": ".",
+           "_npmVersion": "3.3.12",
+           "_nodeVersion": "5.4.1",
+           "_npmUser": {
+               "name": "satazor",
+               "email": "andremiguelcruz@msn.com"
+           },
+           "maintainers": [
+               {
+                   "name": "satazor",
+                   "email": "andremiguelcruz@msn.com"
+               }
+           ],
+           "dist": {
+               "shasum": "49dcd0cf4167331c294ee1c62d04c674fd4952b9",
+               "tarball": "http://registry.npmjs.org/planify/-/planify-1.0.1.tgz"
+           }
+       },
+       "1.0.2": {
+           "name": "planify",
+           "version": "1.0.2",
+           "description": "Plan a series of steps and display the output in a beautiful way",
+           "main": "index.js",
+           "scripts": {
+               "test": "mocha --bail",
+               "test-cov": "istanbul cover --dir test/coverage _mocha -- --bail && echo Coverage lies in test/coverage/lcov-report/index.html",
+               "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+           },
+           "bugs": {
+               "url": "https://github.com/IndigoUnited/node-planify/issues/"
+           },
+           "repository": {
+               "type": "git",
+               "url": "git://github.com/IndigoUnited/node-planify.git"
+           },
+           "keywords": [
+               "plan",
+               "step",
+               "steps",
+               "phase",
+               "phases",
+               "cli",
+               "task",
+               "runner",
+               "run"
+           ],
+           "author": {
+               "name": "IndigoUnited",
+               "email": "hello@indigounited.com",
+               "url": "http://indigounited.com"
+           },
+           "license": "MIT",
+           "dependencies": {
+               "ansi-escapes": "^1.1.0",
+               "bluebird": "^3.1.1",
+               "chalk": "^1.1.1",
+               "cli-progress-bar": "^1.0.0",
+               "indent-string": "^2.1.0",
+               "lodash": "^4.0.0"
+           },
+           "devDependencies": {
+               "@satazor/eslint-config": "^1.0.6",
+               "chai": "^3.4.1",
+               "cli-character-set": "^0.1.0",
+               "coveralls": "^2.11.6",
+               "expect.js": "^0.3.1",
+               "glob": "^6.0.4",
+               "istanbul": "^0.4.1",
+               "mocha": "^2.3.4",
+               "require-directory": "^2.1.1"
+           },
+           "gitHead": "20d855ddd29a8a8eb9c05042f927370a6207adc7",
+           "homepage": "https://github.com/IndigoUnited/node-planify#readme",
+           "_id": "planify@1.0.2",
+           "_shasum": "36258660b4a9dddc2f8c40d1ba18adc8d220ff67",
+           "_from": ".",
+           "_npmVersion": "2.14.7",
+           "_nodeVersion": "4.2.3",
+           "_npmUser": {
+               "name": "satazor",
+               "email": "andremiguelcruz@msn.com"
+           },
+           "maintainers": [
+               {
+                   "name": "satazor",
+                   "email": "andremiguelcruz@msn.com"
+               }
+           ],
+           "dist": {
+               "shasum": "36258660b4a9dddc2f8c40d1ba18adc8d220ff67",
+               "tarball": "http://registry.npmjs.org/planify/-/planify-1.0.2.tgz"
+           }
+       },
+       "1.0.3": {
+           "name": "planify",
+           "version": "1.0.3",
+           "description": "Plan a series of steps and display the output in a beautiful way",
+           "main": "index.js",
+           "scripts": {
+               "test": "mocha --bail",
+               "test-cov": "istanbul cover --dir test/coverage _mocha -- --bail && echo Coverage lies in test/coverage/lcov-report/index.html",
+               "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+           },
+           "bugs": {
+               "url": "https://github.com/IndigoUnited/node-planify/issues/"
+           },
+           "repository": {
+               "type": "git",
+               "url": "git://github.com/IndigoUnited/node-planify.git"
+           },
+           "keywords": [
+               "plan",
+               "step",
+               "steps",
+               "phase",
+               "phases",
+               "cli",
+               "task",
+               "runner",
+               "run"
+           ],
+           "author": {
+               "name": "IndigoUnited",
+               "email": "hello@indigounited.com",
+               "url": "http://indigounited.com"
+           },
+           "license": "MIT",
+           "dependencies": {
+               "ansi-escapes": "^1.1.0",
+               "bluebird": "^3.1.1",
+               "chalk": "^1.1.1",
+               "cli-progress-bar": "^1.0.0",
+               "indent-string": "^2.1.0",
+               "lodash": "^4.0.0"
+           },
+           "devDependencies": {
+               "@satazor/eslint-config": "^1.0.6",
+               "chai": "^3.4.1",
+               "cli-character-set": "^0.1.0",
+               "coveralls": "^2.11.6",
+               "expect.js": "^0.3.1",
+               "glob": "^6.0.4",
+               "istanbul": "^0.4.1",
+               "mocha": "^2.3.4",
+               "require-directory": "^2.1.1"
+           },
+           "gitHead": "6566da9cd1368ca81ffe5c720acec89659eb8696",
+           "homepage": "https://github.com/IndigoUnited/node-planify#readme",
+           "_id": "planify@1.0.3",
+           "_shasum": "892137251656b3244df039072d0d860a71fa395c",
+           "_from": ".",
+           "_npmVersion": "2.14.7",
+           "_nodeVersion": "4.2.3",
+           "_npmUser": {
+               "name": "satazor",
+               "email": "andremiguelcruz@msn.com"
+           },
+           "maintainers": [
+               {
+                   "name": "satazor",
+                   "email": "andremiguelcruz@msn.com"
+               }
+           ],
+           "dist": {
+               "shasum": "892137251656b3244df039072d0d860a71fa395c",
+               "tarball": "http://registry.npmjs.org/planify/-/planify-1.0.3.tgz"
+           }
+       },
+       "1.0.4": {
+           "name": "planify",
+           "version": "1.0.4",
+           "description": "Plan a series of steps and display the output in a beautiful way",
+           "main": "index.js",
+           "scripts": {
+               "test": "mocha --bail",
+               "test-cov": "istanbul cover --dir test/coverage _mocha -- --bail && echo Coverage lies in test/coverage/lcov-report/index.html",
+               "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+           },
+           "bugs": {
+               "url": "https://github.com/IndigoUnited/node-planify/issues/"
+           },
+           "repository": {
+               "type": "git",
+               "url": "git://github.com/IndigoUnited/node-planify.git"
+           },
+           "keywords": [
+               "plan",
+               "step",
+               "steps",
+               "phase",
+               "phases",
+               "cli",
+               "task",
+               "runner",
+               "run"
+           ],
+           "author": {
+               "name": "IndigoUnited",
+               "email": "hello@indigounited.com",
+               "url": "http://indigounited.com"
+           },
+           "license": "MIT",
+           "dependencies": {
+               "ansi-escapes": "^1.1.0",
+               "bluebird": "^3.1.1",
+               "chalk": "^1.1.1",
+               "cli-progress-bar": "^1.0.0",
+               "indent-string": "^2.1.0",
+               "lodash": "^4.0.0"
+           },
+           "devDependencies": {
+               "@satazor/eslint-config": "^1.0.6",
+               "chai": "^3.4.1",
+               "cli-character-set": "^0.1.0",
+               "coveralls": "^2.11.6",
+               "expect.js": "^0.3.1",
+               "glob": "^6.0.4",
+               "istanbul": "^0.4.1",
+               "mocha": "^2.3.4",
+               "require-directory": "^2.1.1"
+           },
+           "gitHead": "30092240bcb2d96bf13a76bca57234ff1265eef9",
+           "homepage": "https://github.com/IndigoUnited/node-planify#readme",
+           "_id": "planify@1.0.4",
+           "_shasum": "adc202bb1e3bda60a109bd98fbcdf6130c3a006b",
+           "_from": ".",
+           "_npmVersion": "2.14.7",
+           "_nodeVersion": "4.2.3",
+           "_npmUser": {
+               "name": "satazor",
+               "email": "andremiguelcruz@msn.com"
+           },
+           "maintainers": [
+               {
+                   "name": "satazor",
+                   "email": "andremiguelcruz@msn.com"
+               }
+           ],
+           "dist": {
+               "shasum": "adc202bb1e3bda60a109bd98fbcdf6130c3a006b",
+               "tarball": "http://registry.npmjs.org/planify/-/planify-1.0.4.tgz"
+           }
+       },
+       "1.0.5": {
+           "name": "planify",
+           "version": "1.0.5",
+           "description": "Plan a series of steps and display the output in a beautiful way",
+           "main": "index.js",
+           "scripts": {
+               "test": "mocha --bail",
+               "test-cov": "istanbul cover --dir test/coverage _mocha -- --bail && echo Coverage lies in test/coverage/lcov-report/index.html",
+               "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+           },
+           "bugs": {
+               "url": "https://github.com/IndigoUnited/node-planify/issues/"
+           },
+           "repository": {
+               "type": "git",
+               "url": "git://github.com/IndigoUnited/node-planify.git"
+           },
+           "keywords": [
+               "plan",
+               "step",
+               "steps",
+               "phase",
+               "phases",
+               "cli",
+               "task",
+               "runner",
+               "run"
+           ],
+           "author": {
+               "name": "IndigoUnited",
+               "email": "hello@indigounited.com",
+               "url": "http://indigounited.com"
+           },
+           "license": "MIT",
+           "dependencies": {
+               "ansi-escapes": "^1.1.0",
+               "bluebird": "^3.1.1",
+               "chalk": "^1.1.1",
+               "cli-progress-bar": "^1.0.0",
+               "indent-string": "^2.1.0",
+               "lodash": "^4.0.0"
+           },
+           "devDependencies": {
+               "@satazor/eslint-config": "^1.0.6",
+               "chai": "^3.4.1",
+               "cli-character-set": "^0.1.0",
+               "coveralls": "^2.11.6",
+               "expect.js": "^0.3.1",
+               "glob": "^6.0.4",
+               "istanbul": "^0.4.1",
+               "mocha": "^2.3.4",
+               "require-directory": "^2.1.1"
+           },
+           "engines": {
+               "node": ">=4.0.0"
+           },
+           "gitHead": "97172f2bba41b810956d914b6ba95510be45e4e7",
+           "homepage": "https://github.com/IndigoUnited/node-planify#readme",
+           "_id": "planify@1.0.5",
+           "_shasum": "59706be4632186ec97e87a88e811c40c55b998f1",
+           "_from": ".",
+           "_npmVersion": "2.14.7",
+           "_nodeVersion": "4.2.3",
+           "_npmUser": {
+               "name": "satazor",
+               "email": "andremiguelcruz@msn.com"
+           },
+           "maintainers": [
+               {
+                   "name": "satazor",
+                   "email": "andremiguelcruz@msn.com"
+               }
+           ],
+           "dist": {
+               "shasum": "59706be4632186ec97e87a88e811c40c55b998f1",
+               "tarball": "http://registry.npmjs.org/planify/-/planify-1.0.5.tgz"
+           }
+       },
+       "1.2.0": {
+           "name": "planify",
+           "version": "1.2.0",
+           "description": "Plan a series of steps and display the output in a beautiful way",
+           "main": "index.js",
+           "scripts": {
+               "test": "mocha --bail",
+               "test-cov": "istanbul cover --dir test/coverage _mocha -- --bail && echo Coverage lies in test/coverage/lcov-report/index.html",
+               "test-travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --bail && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+           },
+           "bugs": {
+               "url": "https://github.com/IndigoUnited/node-planify/issues/"
+           },
+           "repository": {
+               "type": "git",
+               "url": "git://github.com/IndigoUnited/node-planify.git"
+           },
+           "keywords": [
+               "plan",
+               "step",
+               "steps",
+               "phase",
+               "phases",
+               "cli",
+               "task",
+               "runner",
+               "run"
+           ],
+           "author": {
+               "name": "IndigoUnited",
+               "email": "hello@indigounited.com",
+               "url": "http://indigounited.com"
+           },
+           "license": "MIT",
+           "dependencies": {
+               "ansi-escapes": "^1.1.0",
+               "bluebird": "^3.1.1",
+               "chalk": "^1.1.1",
+               "cli-progress-bar": "^1.0.0",
+               "indent-string": "^2.1.0",
+               "lodash": "^4.0.0"
+           },
+           "devDependencies": {
+               "@satazor/eslint-config": "^1.0.6",
+               "chai": "^3.4.1",
+               "cli-character-set": "^0.1.0",
+               "coveralls": "^2.11.6",
+               "expect.js": "^0.3.1",
+               "glob": "^6.0.4",
+               "istanbul": "^0.4.1",
+               "mocha": "^2.3.4",
+               "require-directory": "^2.1.1"
+           },
+           "engines": {
+               "node": ">=4.0.0"
+           },
+           "gitHead": "b978ab1afd96cd9c5b41a642f2821c453ec35ba7",
+           "homepage": "https://github.com/IndigoUnited/node-planify",
+           "_id": "planify@1.2.0",
+           "_shasum": "235a622eadea1809e2232bab7bb0c1d11c69cc7f",
+           "_from": ".",
+           "_npmVersion": "2.14.12",
+           "_nodeVersion": "4.2.4",
+           "_npmUser": {
+               "name": "satazor",
+               "email": "andremiguelcruz@msn.com"
+           },
+           "maintainers": [
+               {
+                   "name": "satazor",
+                   "email": "andremiguelcruz@msn.com"
+               }
+           ],
+           "dist": {
+               "shasum": "235a622eadea1809e2232bab7bb0c1d11c69cc7f",
+               "tarball": "http://registry.npmjs.org/planify/-/planify-1.2.0.tgz"
+           }
+       }
+   },
+   "readme": "# planify\n\n[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependency status][david-dm-image]][david-dm-url] [![Dev Dependency status][david-dm-dev-image]][david-dm-dev-url]\n\n[npm-url]:https://npmjs.org/package/planify\n[downloads-image]:http://img.shields.io/npm/dm/planify.svg\n[npm-image]:http://img.shields.io/npm/v/planify.svg\n[travis-url]:https://travis-ci.org/IndigoUnited/node-planify\n[travis-image]:http://img.shields.io/travis/IndigoUnited/node-planify.svg\n[coveralls-url]:https://coveralls.io/r/IndigoUnited/node-planify\n[coveralls-image]:https://img.shields.io/coveralls/IndigoUnited/node-planify.svg\n[david-dm-url]:https://david-dm.org/IndigoUnited/node-planify\n[david-dm-image]:https://img.shields.io/david/IndigoUnited/node-planify.svg\n[david-dm-dev-url]:https://david-dm.org/IndigoUnited/node-planify#info=devDependencies\n[david-dm-dev-image]:https://img.shields.io/david/dev/IndigoUnited/node-planify.svg\n\nPlan a series of concrete steps and display their output in a beautiful way.\n\nEver wanted to write a simple CLI that run a series of tasks with beautiful output? I did and I always ended up doing a thin wrapper repeatedly. This library provides a concise way to define these tasks while offering a handful of reporters to output the progress in a variety of ways.\n\n\n## Installation\n\n`$ npm install planify`\n\n\n## Usage\n\nThe API is very simple, yet very powerful:\n\n```js\nconst planify = require('planify');\n\nplanify({ reporter: 'blocks' })  // 'blocks' is the default reporter\n.step('Synchronous step', (data) => {\n    console.log('A sync step in which data is', data);\n    data.foz = 'baz';  // Set some data to the next step\n})\n.step('Callback step', (data, done) => {\n    console.log('A callback step in which data is', data);\n    setTimeout(done, 500);\n})\n.step('Promise step', (data) => {\n    console.log('A promise step in which data is', data);\n    return new Promise((resolve) => {\n        setTimeout(resolve, 500);\n    });\n})\n.phase('Some group of steps', (phase) => {\n    phase.step('Synchronous step inside a phase', (data) => {\n        console.log('A sync step inside a phase in which data is', data);\n    });\n})\n.run({ foo: 'bar' })\n// Run returns a promise but callback style is also supported\n.then(() => process.exit(), (err) => process.exit(1));\n```\n\nYou can build as many nested phases as you wish. API is chainable to make it easier to build your plan.\n\nRunning this would look like this:\n\n<img src=\"./doc/example-blocks.png\" width=\"600\">\n\nBut changing the reporter to `spec` would look like this:\n\n<img src=\"./doc/example-spec.png\" width=\"600\">\n\nThis is very similar to the [mocha](https://github.com/mochajs/mocha)'s spec reporter isn't it? In fact a lot of the API was inspired in it. Finally, changing the reporter to `progress` would show a beautiful progress bar instead:\n\n<img src=\"./doc/example-progress.png\" width=\"600\">\n\nAs you can see, changing the appearance of the output is very easy. You may even allow your CLI users to choose the reporter by mapping `--reporter` to `options.reporter` by using [yargs](https://github.com/bcoe/yargs) or something similar. Cool huh?\n\n\n### Reporters\n\nThe are several built-in reporters:\n\n- `blocks`: blocks is the default reporter and it outputs everything, including stuff printed to the stdout and stderr.\n- `spec`: spec reporter is very similar to mocha's spec reporter but stuff written to the stdout and stderr are hidden.\n- `progress`: progress reporter shows a beautiful progress bar showing the overall progress of the plan; stuff written to the stdout and stderr are hidden.\n- `json`: json reporter outputs a machine readable object with all the plan lifecycle events.\n- `silent`: silent reporter which simply outputs nothing.\n- `spinner`: a simple reporter which prints errors or a spinner when the process is running.\n\nYou can easily make your own reporter. Take a look at the [json](./reporters/json.js) reporter implementation for an example. You may use a custom reporter like this:\n\n```js\n// my-reporter.js\nfunction myReporter(options) {\n    /* ... */\n\n    return {\n        plan: {\n            start() { /* ... */ },\n        },\n    };\n}\n\nmodule.exports = myReporter;\n\n// example.js\nconst planify = require('planify');\nconst myReporter = require('./my-reporter');\n\nconst plan = planify({\n    reporter: myReporter({ /* reporter options if any */ })\n});\n\n/* ... */\n```\n\nOne cool feature of the reporters is that they can be async. You may return promises or use callbacks to do async reporting (.e.g.: save stuff to a database).\n\nFeel free to make a PR to add your reporter to the built-in reporters.\n\n\n### Full API\n\n#### planify([options])\n\nCreates a plan with the `given` options.\n\nAvailable options:\n\n- `reporter`: The reporter to be used which can be a string or a reporter object, defaults to `blocks`.\n- `exit`: True to exit automatically after running, defaults to `false`. If the plan fails with an error that has `err.exitCode`, the program will exit with that code.\n\n\n```js\nconst planify = require('planify');\nconst plan = planify({ exit: true, reporter: 'spec' });\n```\n\n#### .step(label, [options], fn)\n\nAdds a step with `label`, executing `fn` when it's time for the step to run.\n\nThe `fn` function will receive the plan `data` as the first argument which allows you to pass data to other steps.\nAs show above, `fn` may return a promise or use callbacks to do asynchronous stuff.\n\nAvailable options:\n\n- `fatal`: False to continue executing if this step fails, defaults to `true`.\n- `mute`: True to mute stdout and stderr completely during the execution of this step independently of the reporter being used , defaults to `false`; stdout and stderr can be muted independently by passing an object, e.g.: `{ stdout: true, stderr: false }`.\n- `slow`: Amount of time in ms to consider this step slow, defaults to `200`.\n\n\n```js\nconst planify = require('planify');\nconst plan = planify();\n\nplan.step('Some cool step', { fatal: false }, (data) => {\n    throw new Error('This will fail but continue to the next step');\n});\nplan.step('Some cool step', { mute: true }, (data) => {\n    console.log('This will not be logged');\n});\nplan.step('Some cool step', { slow: 500 }, (data, done) => {\n    // Will be considered slow\n    setTimeout(done, 600);\n});\n```\n\n#### .phase(label, fn)\n\nAdds a phase with `label` to the plan, executing `fn` with a `phase` object to define the phase plan.\n\nThe `phase` object has the `step` and `phase` methods, allowing you to build a hierarchy of other phases and steps.\n\n\n```js\nconst planify = require('planify');\nconst plan = planify();\n\nplan.phase('Phase 1', (phase) => {\n    phase.step('Inner step', () => {});\n    phase.phase('Inner phase', () => {});\n});\n```\n\n#### .run([data])\n\nRuns the plan.\nReturns a promise that will be resolved when the plan succeeds or rejected if any of the steps failed.\nYou may pass a callback as the second argument instead.\n\n\n```js\nconst planify = require('planify');\nconst plan = planify();\n\nplan.step('Some cool step', (data) => {\n    /* ... */\n});\n\nplan.run({ initial: 'data' })\n.then(() => process.exit(0), () => process.exit(1));\n\n// or you may use callback style\nplan.run({ initial: 'data' }, (err) => {\n    process.exit(err ? 1 : 0);\n});\n```\n\n#### .getReporter()\n\nReturns the configured reporter.\n\n#### .getNode()\n\nReturns the plan node, giving access to the plan tree. Use this at your own risk.\n\n\n### Caveats\n\n`planify` hooks into `process.stdout.write` and `process.stderr.write` to allow reporters to style or mute output done inside steps.\nThought, it's impossible to do that when using `child_process#spawn` or `child_process#exec` with `options.stdio` set to `inherit`. Please avoid it and listen to `data` events from stdout and stderr instead:\n\n```js\n// Example using child_process#spawn\nconst spawn = require('cross-spawn-async');\nconst planify = require('planify');\n\nplanify({ exit: true })\n.step('Executing npm install', (done) => {\n    const npm = spawn('npm', ['install']);  // Use cross-spawn to make this work on Windows\n\n    npm.stdout.on('data', (buffer) => process.stdout.write(buffer));\n    npm.stderr.on('data', (buffer) => process.stderr.write(buffer));\n\n    npm.on('error', done);\n    npm.on('exit', (code) => {\n        done(code ? new Error('npm exited with code ' + code) : null);\n    });\n})\n.run();\n```\n\n```js\n// Example using child_process#exec\nconst cp = require('child_process');\nconst planify = require('planify');\n\nplanify({ exit: true })\n.step('Executing npm install', (done) => {\n    // Note that output is buffered :(\n    cp.exec('npm install', (err, stdout, stderr) => {\n        stdout && process.stdout.write(stdout);\n        stderr && process.stderr.write(stderr);\n        done(err);\n    });\n})\n.run();\n```\n\n\n## Tests\n\n`$ npm test`   \n`$ npm test-cov` to get coverage report\n\n\n## License\n\nReleased under the [MIT License](http://www.opensource.org/licenses/mit-license.php).\n",
+   "maintainers": [
+       {
+           "name": "satazor",
+           "email": "andremiguelcruz@msn.com"
+       }
+   ],
+   "time": {
+       "modified": "2016-02-01T10:30:32.605Z",
+       "created": "2016-01-14T01:31:14.599Z",
+       "1.0.0": "2016-01-14T01:31:14.599Z",
+       "1.0.1": "2016-01-14T02:03:52.483Z",
+       "1.0.2": "2016-01-14T08:18:46.400Z",
+       "1.0.3": "2016-01-14T09:15:01.124Z",
+       "1.0.4": "2016-01-15T09:34:54.510Z",
+       "1.0.5": "2016-01-15T23:05:49.134Z",
+       "1.2.0": "2016-02-01T10:30:32.605Z"
+   },
+   "homepage": "https://github.com/IndigoUnited/node-planify",
+   "keywords": [
+       "plan",
+       "step",
+       "steps",
+       "phase",
+       "phases",
+       "cli",
+       "task",
+       "runner",
+       "run"
+   ],
+   "repository": {
+       "type": "git",
+       "url": "git://github.com/IndigoUnited/node-planify.git"
+   },
+   "author": {
+       "name": "IndigoUnited",
+       "email": "hello@indigounited.com",
+       "url": "http://indigounited.com"
+   },
+   "bugs": {
+       "url": "https://github.com/IndigoUnited/node-planify/issues/"
+   },
+   "license": "MIT",
+   "readmeFilename": "README.md",
+   "users": {
+       "carsy": true
+   }
+}

@@ -1,0 +1,32 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "server": "nginx/1.4.6 (Ubuntu)",
+    "content-type": "application/octet-stream",
+    "last-modified": "Wed, 24 Feb 2016 06:36:50 GMT",
+    "etag": "\"56cd4f82-fa\"",
+    "expires": "Thu, 12 May 2016 17:35:42 GMT",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": "GET",
+    "cache-control": "max-age=21600",
+    "content-length": "250",
+    "accept-ranges": "bytes",
+    "date": "Thu, 12 May 2016 11:35:42 GMT",
+    "via": "1.1 varnish",
+    "age": "0",
+    "connection": "keep-alive",
+    "x-served-by": "cache-lhr6340-LHR",
+    "x-cache": "MISS",
+    "x-cache-hits": "0",
+    "x-timer": "S1463052942.858757,VS0,VE53"
+  },
+  "url": "http://registry.npmjs.org:80/0/-/0-0.0.0.tgz",
+  "time": 469,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.3.0 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate"
+    }
+  }
+}

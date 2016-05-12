@@ -1,0 +1,23 @@
+{
+  "files": {
+    "readmeSize": 2759,
+    "testsSize": 960570,
+    "hasNpmIgnore": false,
+    "hasShrinkwrap": true
+  },
+  "repositorySize": 1332866,
+  "badges": [
+    {
+      "urls": {
+        "original": "https://secure.travis-ci.org/hapijs/hapi.svg",
+        "service": "https://api.travis-ci.org/hapijs/hapi.svg",
+        "shields": "https://img.shields.io/travis/hapijs/hapi.svg",
+        "content": "https://img.shields.io/travis/hapijs/hapi.json"
+      },
+      "info": {
+        "service": "travis",
+        "type": "build"
+      }
+    }
+  ]
+}

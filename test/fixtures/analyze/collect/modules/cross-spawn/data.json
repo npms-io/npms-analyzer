@@ -1,6 +1,4 @@
 {
-	"_id": "cross-spawn",
-	"_rev": "29-a16c15d0209f8327c53306e6ae8184e5",
 	"name": "cross-spawn",
 	"description": "Cross platform child_process#spawn and child_process#spawnSync",
 	"dist-tags": {

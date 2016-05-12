@@ -1,0 +1,102 @@
+{
+  "files": {
+    "readmeSize": 2759,
+    "testsSize": 93090,
+    "hasNpmIgnore": false,
+    "hasShrinkwrap": false
+  },
+  "repositorySize": 284314,
+  "linters": {
+    "general": [
+      "editorconfig"
+    ],
+    "js": [
+      "eslint"
+    ]
+  },
+  "coverage": 1,
+  "badges": [
+    {
+      "urls": {
+        "original": "http://img.shields.io/npm/dm/planify.svg",
+        "shields": "https://img.shields.io/npm/dm/planify.svg",
+        "content": "https://img.shields.io/npm/dm/planify.json"
+      },
+      "info": {
+        "service": "npm",
+        "type": "downloads",
+        "modifiers": {
+          "type": "dm"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "http://img.shields.io/npm/v/planify.svg",
+        "shields": "https://img.shields.io/npm/v/planify.svg",
+        "content": "https://img.shields.io/npm/v/planify.json"
+      },
+      "info": {
+        "service": "npm",
+        "type": "version",
+        "modifiers": {
+          "type": "v"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "http://img.shields.io/travis/IndigoUnited/node-planify.svg",
+        "service": "https://api.travis-ci.org/IndigoUnited/node-planify.svg",
+        "shields": "https://img.shields.io/travis/IndigoUnited/node-planify.svg",
+        "content": "https://img.shields.io/travis/IndigoUnited/node-planify.json"
+      },
+      "info": {
+        "service": "travis",
+        "type": "build"
+      }
+    },
+    {
+      "urls": {
+        "original": "https://img.shields.io/coveralls/IndigoUnited/node-planify.svg",
+        "service": "https://coveralls.io/repos/IndigoUnited/node-planify/badge.svg",
+        "shields": "https://img.shields.io/coveralls/IndigoUnited/node-planify.svg",
+        "content": "https://img.shields.io/coveralls/IndigoUnited/node-planify.json"
+      },
+      "info": {
+        "service": "coveralls",
+        "type": "coverage"
+      }
+    },
+    {
+      "urls": {
+        "original": "https://img.shields.io/david/IndigoUnited/node-planify.svg",
+        "service": "https://david-dm.org/IndigoUnited/node-planify.svg",
+        "shields": "https://img.shields.io/david/IndigoUnited/node-planify.svg",
+        "content": "https://img.shields.io/david/IndigoUnited/node-planify.json"
+      },
+      "info": {
+        "service": "david",
+        "type": "dependencies",
+        "modifiers": {
+          "statusType": "normal"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "https://img.shields.io/david/dev/IndigoUnited/node-planify.svg",
+        "service": "https://david-dm.org/IndigoUnited/node-planify/dev-status.svg",
+        "shields": "https://img.shields.io/david/dev/IndigoUnited/node-planify.svg",
+        "content": "https://img.shields.io/david/dev/IndigoUnited/node-planify.json"
+      },
+      "info": {
+        "service": "david",
+        "type": "dependencies",
+        "modifiers": {
+          "statusType": "dev"
+        }
+      }
+    }
+  ]
+}

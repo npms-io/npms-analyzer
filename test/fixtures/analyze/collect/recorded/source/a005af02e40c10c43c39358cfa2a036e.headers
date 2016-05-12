@@ -1,0 +1,35 @@
+{
+  "statusCode": 302,
+  "headers": {
+    "server": "GitHub.com",
+    "date": "Thu, 12 May 2016 11:35:37 GMT",
+    "content-type": "text/html;charset=utf-8",
+    "content-length": "0",
+    "status": "302 Found",
+    "x-ratelimit-limit": "60",
+    "x-ratelimit-remaining": "60",
+    "x-ratelimit-reset": "1463056537",
+    "cache-control": "public, must-revalidate, max-age=0",
+    "expires": "Thu, 12 May 2016 11:35:37 GMT",
+    "location": "https://codeload.github.com/hapijs/hapi/legacy.tar.gz/faacf022488bc30748bb8f35aca71a24343dc0fc",
+    "access-control-expose-headers": "ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
+    "access-control-allow-origin": "*",
+    "content-security-policy": "default-src 'none'",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "vary": "Accept-Encoding",
+    "x-served-by": "ef96c2e493b28ffea49b891b085ed2dd",
+    "x-github-request-id": "C34D362B:2CB9:64AD1AA:57346A89"
+  },
+  "url": "http://api.github.com:443/repos/hapijs/hapi/tarball/faacf022488bc30748bb8f35aca71a24343dc0fc",
+  "time": 379,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.3.0 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate"
+    }
+  }
+}

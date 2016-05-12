@@ -1,0 +1,92 @@
+{
+  "files": {
+    "readmeSize": 2759,
+    "testsSize": 21629,
+    "hasNpmIgnore": true,
+    "hasShrinkwrap": false
+  },
+  "repositorySize": 31457,
+  "linters": {
+    "general": [
+      "editorconfig"
+    ],
+    "js": [
+      "jshint"
+    ]
+  },
+  "badges": [
+    {
+      "urls": {
+        "original": "http://img.shields.io/npm/dm/cross-spawn.svg",
+        "shields": "https://img.shields.io/npm/dm/cross-spawn.svg",
+        "content": "https://img.shields.io/npm/dm/cross-spawn.json"
+      },
+      "info": {
+        "service": "npm",
+        "type": "downloads",
+        "modifiers": {
+          "type": "dm"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "http://img.shields.io/npm/v/cross-spawn.svg",
+        "shields": "https://img.shields.io/npm/v/cross-spawn.svg",
+        "content": "https://img.shields.io/npm/v/cross-spawn.json"
+      },
+      "info": {
+        "service": "npm",
+        "type": "version",
+        "modifiers": {
+          "type": "v"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "http://img.shields.io/travis/IndigoUnited/node-cross-spawn/master.svg",
+        "service": "https://api.travis-ci.org/IndigoUnited/node-cross-spawn.svg?branch=master",
+        "shields": "https://img.shields.io/travis/IndigoUnited/node-cross-spawn/master.svg",
+        "content": "https://img.shields.io/travis/IndigoUnited/node-cross-spawn/master.json"
+      },
+      "info": {
+        "service": "travis",
+        "type": "build",
+        "modifiers": {
+          "branch": "master"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "https://img.shields.io/david/IndigoUnited/node-cross-spawn.svg",
+        "service": "https://david-dm.org/IndigoUnited/node-cross-spawn.svg",
+        "shields": "https://img.shields.io/david/IndigoUnited/node-cross-spawn.svg",
+        "content": "https://img.shields.io/david/IndigoUnited/node-cross-spawn.json"
+      },
+      "info": {
+        "service": "david",
+        "type": "dependencies",
+        "modifiers": {
+          "statusType": "normal"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "https://img.shields.io/david/dev/IndigoUnited/node-cross-spawn.svg",
+        "service": "https://david-dm.org/IndigoUnited/node-cross-spawn/dev-status.svg",
+        "shields": "https://img.shields.io/david/dev/IndigoUnited/node-cross-spawn.svg",
+        "content": "https://img.shields.io/david/dev/IndigoUnited/node-cross-spawn.json"
+      },
+      "info": {
+        "service": "david",
+        "type": "dependencies",
+        "modifiers": {
+          "statusType": "dev"
+        }
+      }
+    }
+  ]
+}
