@@ -40,7 +40,6 @@
     "detect-readme-badges": "^1.0.0",
     "detect-repo-linters": "^1.0.1",
     "elasticsearch": "^11.0.0",
-    "get-folder-size": "^1.0.0",
     "gh-issues-stats": "^2.0.0",
     "glob": "^7.0.0",
     "got": "^6.2.0",

@@ -5,7 +5,7 @@
     "hasNpmIgnore": true,
     "hasShrinkwrap": false
   },
-  "repositorySize": 31457,
+  "repositorySize": 28651,
   "linters": {
     "general": [
       "editorconfig"
