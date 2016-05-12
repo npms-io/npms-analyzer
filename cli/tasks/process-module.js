@@ -1,7 +1,6 @@
 'use strict';
 
 const config = require('config');
-const prettyjson = require('prettyjson');
 const analyze = require('../../lib/analyze');
 const score = require('../../lib/scoring/score');
 const bootstrap = require('../util/bootstrap');
@@ -17,7 +16,6 @@ Processes a single module, analyzing and scoring it.')
     .example('$0 tasks process-module analyze cross-spawn')
     .example('$0 tasks process-module analyze cross-spawn --no-analyze', 'Just score the module, do not analyze')
 
-    .default('log-level', 'debug')
     .option('analyze', {
         type: 'boolean',
         default: true,
@@ -27,7 +25,7 @@ Processes a single module, analyzing and scoring it.')
 
 module.exports.handler = (argv) => {
     process.title = 'npms-analyzer-process-module';
-    logger.level = argv.logLevel || 'debug';
+    logger.level = argv.logLevel || 'info';
 
     const name = argv._[2].toString();  // module 0 evaluates to number so we must cast to a string
 
