@@ -92,7 +92,7 @@ describe('git', () => {
 
     it('should clone a GitHub repository and checkout a specific ref', () => {
         const betrayed = mock({
-            checkout: () => fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ version: '0.1.0' })),
+            checkout: () => fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ name: 'cross-spawn', version: '0.1.0' })),
         });
 
         return Promise.each([
@@ -107,6 +107,12 @@ describe('git', () => {
             });
 
             return download(tmpDir)
+            .then((downloaded) => {
+                expect(downloaded.downloader).to.equal('git');
+                expect(downloaded.dir).to.equal(tmpDir);
+                expect(downloaded.packageJson.name).to.equal('cross-spawn');
+                expect(downloaded.gitRef).to.equal('5fb20ce2f44d9947fcf59e8809fe6cb1d767433b');
+            })
             .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
             .then((packageJson) => {
                 expect(betrayed.invoked).to.be.greaterThan(1);
@@ -121,7 +127,7 @@ describe('git', () => {
 
     it('should clone a Bitbucket repository and checkout a specific ref', () => {
         const betrayed = mock({
-            checkout: () => fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ version: '0.2.2' })),
+            checkout: () => fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ name: 'xml2json', version: '0.2.2' })),
         });
 
         return Promise.each([
@@ -135,6 +141,12 @@ describe('git', () => {
             });
 
             return download(tmpDir)
+            .then((downloaded) => {
+                expect(downloaded.downloader).to.equal('git');
+                expect(downloaded.dir).to.equal(tmpDir);
+                expect(downloaded.packageJson.name).to.equal('xml2json');
+                expect(downloaded.gitRef).to.equal('4c8dc5c636f7bbb746ed519a39bb1b183a27064d');
+            })
             .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
             .then((packageJson) => {
                 expect(betrayed.invoked).to.be.greaterThan(1);
@@ -150,7 +162,7 @@ describe('git', () => {
 
     it('should clone a GitLab repository and checkout a specific ref', () => {
         const betrayed = mock({
-            checkout: () => fs.writeFileSync(`${tmpDir}/bower.json`, JSON.stringify({ version: '0.2.0' })),
+            checkout: () => fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ name: 'angular-ui-select', version: '0.2.0' })),
         });
 
         return Promise.each([
@@ -164,7 +176,13 @@ describe('git', () => {
             });
 
             return download(tmpDir)
-            .then(() => loadJsonFile.sync(`${tmpDir}/bower.json`))
+            .then((downloaded) => {
+                expect(downloaded.downloader).to.equal('git');
+                expect(downloaded.dir).to.equal(tmpDir);
+                expect(downloaded.packageJson.name).to.equal('angular-ui-select');
+                expect(downloaded.gitRef).to.equal('560042cc9005e5f2c2889a3c7e64ea3ea0b80c88');
+            })
+            .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
             .then((packageJson) => {
                 expect(betrayed.invoked).to.be.greaterThan(1);
                 expect(packageJson.version).to.equal('0.2.0');
@@ -180,12 +198,12 @@ describe('git', () => {
     it('should not fail if the ref does not exist (commit hash)', () => {
         const betrayed = mock({
             clone: () => {
-                fs.writeFileSync(`${tmpDir}/packageJson.json`, JSON.stringify({}));
+                fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ name: 'cross-spawn' }));
                 fs.writeFileSync(`${tmpDir}/appveyor.yml`, '');
             },
             checkout: () => {
                 throw Object.assign(new Error('foo'),
-                    { stderr: 'fatal: reference is not a tree: somecommithashthatwillneverexist00000000' });
+                    { stderr: 'fatal: reference is not a tree: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' });
             },
         });
 
@@ -196,8 +214,14 @@ describe('git', () => {
         });
 
         return download(tmpDir)
-        .then(() => {
+        .then((downloaded) => {
             expect(betrayed.invoked).to.be.greaterThan(1);
+
+            expect(downloaded.downloader).to.equal('git');
+            expect(downloaded.dir).to.equal(tmpDir);
+            expect(downloaded.packageJson.name).to.equal('cross-spawn');
+            expect(downloaded.gitRef).to.equal(null);
+
             expect(() => fs.accessSync(`${tmpDir}/package.json`)).to.not.throw();
             expect(() => fs.accessSync(`${tmpDir}/appveyor.yml`)).to.not.throw();
         })
@@ -207,7 +231,7 @@ describe('git', () => {
     it('should not fail if the ref does not exist (branch)', () => {
         const betrayed = mock({
             clone: () => {
-                fs.writeFileSync(`${tmpDir}/packageJson.json`, JSON.stringify({}));
+                fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ name: 'cross-spawn' }));
                 fs.writeFileSync(`${tmpDir}/appveyor.yml`, '');
             },
             checkout: () => {
@@ -219,6 +243,7 @@ describe('git', () => {
         const download = git({
             name: 'cross-spawn',
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
+            gitHead: 'foo',
         });
 
         return download(tmpDir)

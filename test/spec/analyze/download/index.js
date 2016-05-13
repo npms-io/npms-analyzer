@@ -23,7 +23,7 @@ describe('index', () => {
             name: 'cross-spawn',
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
         }, options)
-        .then(() => {
+        .then((downloaded) => {
             expect(betrayed.invoked).to.equal(1);
 
             const invocation = betrayed.invocations[0];
@@ -34,6 +34,8 @@ describe('index', () => {
                 refOverrides: options.gitRefOverrides,
                 waitRateLimit: options.waitRateLimit,
             });
+
+            expect(downloaded).to.eql({});
         })
         .finally(() => betrayed.restore());
     });
@@ -53,13 +55,15 @@ describe('index', () => {
             name: 'angular-ui-select',
             repository: { type: 'git', url: 'git@gitlab.com:codium/angular-ui-select.git' },
         }, options)
-        .then(() => {
+        .then((downloaded) => {
             expect(betrayed.invoked).to.equal(1);
 
             const invocation = betrayed.invocations[0];
 
             expect(invocation[0].name).to.equal('angular-ui-select');
             expect(invocation[1]).to.eql({ refOverrides: options.gitRefOverrides });
+
+            expect(downloaded).to.eql({});
         })
         .finally(() => betrayed.restore());
     });
@@ -79,13 +83,15 @@ describe('index', () => {
             name: 'cross-spawn',
             dist: { tarball: 'https://registry.npmjs.org/cross-spawn/-/cross-spawn-0.1.0.tgz' },
         }, options)
-        .then(() => {
+        .then((downloaded) => {
             expect(betrayed.invoked).to.equal(1);
 
             const invocation = betrayed.invocations[0];
 
             expect(invocation[0].name).to.equal('cross-spawn');
             expect(invocation[1]).to.equal(undefined);
+
+            expect(downloaded).to.eql({});
         })
         .finally(() => betrayed.restore());
     });

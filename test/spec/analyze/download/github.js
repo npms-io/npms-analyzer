@@ -48,22 +48,33 @@ describe('github', () => {
         });
 
         return download(tmpDir)
+        .then((downloaded) => {
+            expect(downloaded.downloader).to.equal('github');
+            expect(downloaded.dir).to.equal(tmpDir);
+            expect(downloaded.packageJson.name).to.equal('cross-spawn');
+            expect(downloaded.gitRef).to.equal('b5239f25c0274feba89242b77d8f0ce57dce83ad');
+        })
         .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
         .then((packageJson) => expect(packageJson.version).to.equal('1.0.0'))
         .finally(() => sepia.disable());
     });
 
-    it('should fallback to master branch if the commit hash does not exist', () => {
+    it('should fallback to default branch if the commit hash does not exist', () => {
         sepia.enable();
 
         const download = github({
             name: 'cross-spawn',
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
-            gitHead: 'somecommithashthatwillneverexist00000000',
+            gitHead: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
         });
 
         return download(tmpDir)
-        .then(() => {
+        .then((downloaded) => {
+            expect(downloaded.downloader).to.equal('github');
+            expect(downloaded.dir).to.equal(tmpDir);
+            expect(downloaded.packageJson.name).to.equal('cross-spawn');
+            expect(downloaded.gitRef).to.equal(null);
+
             expect(() => fs.accessSync(`${tmpDir}/package.json`)).to.not.throw();
             expect(() => fs.accessSync(`${tmpDir}/appveyor.yml`)).to.not.throw();
         })
