@@ -101,6 +101,7 @@ describe('github', () => {
             expect(err.message).to.match(/too large/i);
             expect(err.unrecoverable).to.equal(true);
         })
+        .then(() => Promise.delay(2500))  // Wait some time because request.abort() might take a while
         .finally(() => nock.cleanAll());
     });
 
