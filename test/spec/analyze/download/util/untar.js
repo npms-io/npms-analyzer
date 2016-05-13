@@ -38,17 +38,34 @@ describe('untar', () => {
     });
 
     it('should deal with malformed archives', () => {
-        const betrayed = betray(logger.children['util/untar'], 'warn');
+        // Test malformed archive
+        return Promise.try(() => {
+            const betrayed = betray(logger.children['util/untar'], 'warn');
 
-        fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/mocked/broken-archive.tgz`));
+            fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/mocked/broken-archive.tgz`));
 
-        return untar(`${tmpDir}/test.tgz`)
-        .then(() => {
-            expect(betrayed.invoked).to.equal(1);
-            expect(betrayed.invocations[0][1]).to.match(/malformed/i);
-            expect(fs.readdirSync(tmpDir)).to.eql([]);
+            return untar(`${tmpDir}/test.tgz`)
+            .then(() => {
+                expect(betrayed.invoked).to.equal(1);
+                expect(betrayed.invocations[0][1]).to.match(/malformed/i);
+                expect(fs.readdirSync(tmpDir)).to.eql([]);
+            })
+            .finally(() => betrayed.restore());
         })
-        .finally(() => betrayed.restore());
+        // Test non-gzip archive (e.g.: testing233 module)
+        .then(() => {
+            const betrayed = betray(logger.children['util/untar'], 'warn');
+
+            fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/mocked/non-gzip-archive.tgz`));
+
+            return untar(`${tmpDir}/test.tgz`)
+            .then(() => {
+                expect(betrayed.invoked).to.equal(1);
+                expect(betrayed.invocations[0][1]).to.match(/malformed/i);
+                expect(fs.readdirSync(tmpDir)).to.eql([]);
+            })
+            .finally(() => betrayed.restore());
+        });
     });
 
     it('should deal with archives that have extended/unknown headers', () => {
