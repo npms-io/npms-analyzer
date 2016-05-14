@@ -65,6 +65,7 @@
     "spdx-correct": "^1.0.2",
     "token-dealer": "^1.2.0",
     "weighted-mean": "^1.0.0",
+    "which": "^1.2.8",
     "yargs": "^4.0.0"
   },
   "optionalDependencies": {

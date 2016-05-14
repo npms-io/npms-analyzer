@@ -3,3 +3,5 @@ node_js:
   - "4"
   - "5"
 script: "npm run test-travis"
+before_install:
+  - sudo apt-get install -y bsdtar

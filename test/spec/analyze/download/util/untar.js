@@ -82,6 +82,17 @@ describe('untar', () => {
         });
     });
 
+    it('should deal with "is out of uid_t range" errors by using bsdtar', () => {
+        fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/downloaded/citong-1.3.1.tgz`));
+
+        return untar(`${tmpDir}/test.tgz`)
+        .then(() => {
+            const files = fs.readdirSync(tmpDir);
+
+            expect(files).to.contain('package.json');
+        });
+    });
+
     it('should fail if extraction fails', () => {
         return untar(`${tmpDir}/archive-that-will-never-exist.tgz`)
         .then(() => {
@@ -90,7 +101,6 @@ describe('untar', () => {
             expect(err.stderr).to.match(/(error opening|no such file)/i);
         });
     });
-
 
     it('should delete the archive file, even if the extraction failed', () => {
         // Good tar

@@ -11,7 +11,8 @@ This project uses [config](https://www.npmjs.com/package/config) for configurati
 ## General utilities
 
 - `git` must be installed and available in the `$PATH`.
-- GNU coreutils (`rm`, `mkdir`, `chmod` and `tar`) must be available.
+- GNU coreutils (`rm`, `mkdir`, `chmod`) must be available.
+- `tar` or `bsdtar` must be available (BSD version is preferred.. on Debian install with `$ aptitude install bsdtar`)
 - Install the `pino` CLI to prettify logging output by running `$ npm install -g pino`
 
 
