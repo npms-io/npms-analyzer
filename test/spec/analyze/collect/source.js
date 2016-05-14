@@ -135,6 +135,8 @@ describe('source', () => {
         .finally(() => sepia.disable());
     });
 
+    it('should collect babbel correctly, working around NPM_TOKEN env var');
+
     it('should get tests size present in a variety of folders and files');
 
     describe('coverage', () => {
