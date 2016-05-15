@@ -290,6 +290,9 @@ describe('source', () => {
                 } else if (counter === 2) {
                     throw Object.assign(new Error('foo'),
                         { stderr: '53,48,52,32,71,97,116,101,119,97,121,32,84,105,109,101,45,111,117,116' });
+                } else if (counter === 3) {
+                    throw Object.assign(new Error('foo'),
+                        { stderr: 'Bad Gateway' });
                 } else {
                     return ['foo'];
                 }
