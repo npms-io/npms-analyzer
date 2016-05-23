@@ -180,6 +180,10 @@
                     "type": "string",
                     "index": "no"
                 },
+                "date": {
+                    "type": "date",
+                    "index": "no"
+                },
                 "publisher": {
                     "type": "object",
                     "properties": {
@@ -218,28 +222,28 @@
                         "quality": {
                             "type": "object",
                             "properties": {
-                                "carefulness": { "type": "double" },
-                                "tests": { "type": "double" },
-                                "dependenciesHealth": { "type": "double" },
-                                "branding": { "type": "double" }
+                                "carefulness": { "type": "double", "index": "no" },
+                                "tests": { "type": "double", "index": "no" },
+                                "dependenciesHealth": { "type": "double", "index": "no" },
+                                "branding": { "type": "double", "index": "no" }
                             }
                         },
                         "popularity": {
                             "type": "object",
                             "properties": {
-                                "communityInterest": { "type": "double" },
-                                "downloadsCount": { "type": "double" },
-                                "downloadsAcceleration": { "type": "double" },
-                                "dependentsCount": { "type": "double" }
+                                "communityInterest": { "type": "double", "index": "no" },
+                                "downloadsCount": { "type": "double", "index": "no" },
+                                "downloadsAcceleration": { "type": "double", "index": "no" },
+                                "dependentsCount": { "type": "double", "index": "no" }
                             }
                         },
                         "maintenance": {
                             "type": "object",
                             "properties": {
-                                "recentCommits": { "type": "double" },
-                                "commitsFrequency": { "type": "double" },
-                                "openIssues": { "type": "double" },
-                                "issuesDistribution": { "type": "double" }
+                                "recentCommits": { "type": "double", "index": "no" },
+                                "commitsFrequency": { "type": "double", "index": "no" },
+                                "openIssues": { "type": "double", "index": "no" },
+                                "issuesDistribution": { "type": "double", "index": "no" }
                             }
                         }
                     }
