@@ -81,10 +81,6 @@ describe('metadata', () => {
         .then((collected) => {
             expect(collected).to.eql({
                 name: 'cross-spawn',
-                releases: {
-                    first: { version: '0.0.1' },
-                    latest: { version: '0.0.1' },
-                },
                 hasTestScript: false,
             });
         });
