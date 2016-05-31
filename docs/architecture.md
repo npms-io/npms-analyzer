@@ -139,7 +139,7 @@ Below follows some of the points taken into consideration:
 
 ##### popularity
 
-Popularity attributes allows us to understand the module extend and adoption. These are the kind of attributes that a person looks when they are undecided on the module choice.
+Popularity attributes allows us to understand the module adoption and community size. These are the kind of attributes that a person looks when they are undecided on the module choice.
 
 Below follows some of the points taken into consideration:
 
@@ -153,7 +153,9 @@ Below follows some of the points taken into consideration:
 
 ##### personalities
 
-If two modules are similar, one tend to choose the one in which the author is well known in the community. Also, there are people that simply prefer to use a module over another because the author is popular. While this doesn't directly translate to quality, it's still a strong factor that we should account. Relationships between people are also important. If user X follows user Y, he might prefer user Y's modules over other people simply because of the bound they have.
+If two modules are similar, one tend to choose the one in which the author is well known in the community. While this doesn't directly translate to quality, it's still a strong factor that we should account.
+
+Relationships between people are also important. When an user follows another, there's a bound between them. We can infer that people prefer modules from the users they follow.
 
 I will not elaborate on this because this evaluator will NOT be developed nor used in the initial release.
 
