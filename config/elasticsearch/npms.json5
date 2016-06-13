@@ -136,10 +136,6 @@
                             "type": "string",
                             "analyzer": "identifier_edge_ngram"
                         },
-                        "identifier_edge_ngram": {
-                            "type": "string",
-                            "analyzer": "identifier_edge_ngram"
-                        },
                         "raw": {
                             "type": "string",
                             "analyzer": "raw",
