@@ -98,10 +98,6 @@
                 "name": {
                     "type": "string",
                     "fields": {
-                        "identifier_english": {
-                            "type": "string",
-                            "analyzer": "identifier_english"
-                        },
                         "identifier_english_docs": {
                             "type": "string",
                             "analyzer": "identifier_english",
@@ -126,10 +122,6 @@
                 "description": {
                     "type": "string",
                     "fields": {
-                        "identifier_english": {
-                            "type": "string",
-                            "analyzer": "identifier_english"
-                        },
                         "identifier_english_docs": {
                             "type": "string",
                             "analyzer": "identifier_english",
@@ -158,10 +150,6 @@
                 "keywords": {
                     "type": "string",
                     "fields": {
-                        "identifier_english": {
-                            "type": "string",
-                            "analyzer": "identifier_english"
-                        },
                         "identifier_english_docs": {
                             "type": "string",
                             "analyzer": "identifier_english",
