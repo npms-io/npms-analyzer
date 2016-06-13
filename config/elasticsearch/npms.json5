@@ -136,11 +136,6 @@
                             "type": "string",
                             "analyzer": "identifier_edge_ngram"
                         },
-                        "raw": {
-                            "type": "string",
-                            "analyzer": "raw",
-                            "index_options": "docs"
-                        }
                     }
                 },
                 "keywords": {
@@ -160,11 +155,6 @@
                             "type": "string",
                             "analyzer": "identifier_edge_ngram"
                         },
-                        "raw": {
-                            "type": "string",
-                            "analyzer": "raw",
-                            "index_options": "docs"
-                        }
                     }
                 },
                 "version": {
