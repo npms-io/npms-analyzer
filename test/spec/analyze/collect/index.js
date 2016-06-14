@@ -91,7 +91,36 @@ describe('index', () => {
             });
         });
 
-        it('should detect empty package.json\'s (download failed)', () => {
+        it('should detect repositories belong to the same org', () => {
+            const data = {
+                name: 'bower-canary',
+                maintainers: [{ name: 'André Cruz', email: 'andremiguelcruz@msn.com' }],
+            };
+            const packageJson = {
+                name: 'bower-canary',
+                repository: { type: 'git', url: 'git://github.com/bower/bower-canary.git' },
+            };
+            const downloadedPackageJson = {
+                name: 'bower',
+                repository: { type: 'git', url: 'git://github.com/bower/bower.git' },
+            };
+            const downloaded = { downloader: 'github', dir: tmpDir, packageJson: downloadedPackageJson, gitRef: null };
+
+            const betrayedMetadata = betray(collect.collectors, 'metadata', () => Promise.resolve());
+            const betrayedNpm = betray(collect.collectors, 'npm', () => Promise.resolve());
+            const betrayedGithub = betray(collect.collectors, 'github', () => Promise.resolve());
+            const betrayedSource = betray(collect.collectors, 'source', () => Promise.resolve());
+
+            return collect(data, packageJson, downloaded, npmNano)
+            .then(() => {
+                expect(betrayedMetadata.invoked).to.equal(1);
+                expect(betrayedNpm.invoked).to.equal(1);
+                expect(betrayedGithub.invoked).to.equal(1);
+                expect(betrayedSource.invoked).to.equal(1);
+            });
+        });
+
+        it('should detect empty downloaded package.json\'s (download failed)', () => {
             const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
             const packageJson = packageJsonFromData('cross-spawn', data);
             const downloaded = { downloader: 'github', dir: tmpDir, packageJson: {}, gitRef: packageJson.gitHead };
@@ -110,14 +139,16 @@ describe('index', () => {
             });
         });
 
-        it('should detect if publisher is a maintainer', () => {
+        it('should detect if any of maintainers are the same', () => {
             sepia.enable();
 
-            const data = { name: 'bower-canary' };
+            const data = {
+                name: 'bower-fork',
+                maintainers: [{ name: 'André Cruz', email: 'andremiguelcruz@msn.com' }],
+            };
             const packageJson = {
-                name: 'bower-canary',
-                repository: { type: 'git', url: 'git://github.com/bower/bower.git' },
-                _npmUser: { name: 'satazor', email: 'andremiguelcruz@msn.com' },
+                name: 'bower-fork',
+                repository: { type: 'git', url: 'git://github.com/user/bower.git' },
             };
             const downloadedPackageJson = {
                 name: 'bower',
@@ -143,13 +174,12 @@ describe('index', () => {
         it('should not assume ownership for malicious modules', () => {
             sepia.enable();
 
-            // Complete data
+            // Complete example
             return Promise.try(() => {
-                const data = { name: 'bower-fork' };
+                const data = { name: 'bower-fork', maintainers: [] };
                 const packageJson = {
                     name: 'bower-fork',
-                    repository: { type: 'git', url: 'git://github.com/bower/bower.git' },
-                    _npmUser: { name: 'foo', email: 'foo@bar.com' },
+                    repository: { type: 'git', url: 'git://github.com/user/bower.git' },
                 };
                 const downloadedPackageJson = {
                     name: 'bower',
@@ -193,43 +223,16 @@ describe('index', () => {
                     expect(betrayedSource.invoked).to.equal(0);
                 });
             })
-            // Without publisher
-            .then(() => {
-                const data = { name: 'bower-fork' };
-                const packageJson = {
-                    name: 'bower-fork',
-                    repository: { type: 'git', url: 'git://github.com/bower/bower.git' },
-                };
-                const downloadedPackageJson = {
-                    name: 'bower',
-                    repository: { type: 'git', url: 'git://github.com/bower/bower.git' },
-                };
-                const downloaded = { downloader: 'github', dir: tmpDir, packageJson: downloadedPackageJson, gitRef: null };
-
-                const betrayedMetadata = betray(collect.collectors, 'metadata', () => Promise.resolve('metadata'));
-                const betrayedNpm = betray(collect.collectors, 'npm', () => Promise.resolve('npm'));
-                const betrayedGithub = betray(collect.collectors, 'github', () => Promise.resolve('github'));
-                const betrayedSource = betray(collect.collectors, 'source', () => Promise.resolve('source'));
-
-                return collect(data, packageJson, downloaded, npmNano)
-                .then(() => {
-                    expect(betrayedMetadata.invoked).to.equal(1);
-                    expect(betrayedNpm.invoked).to.equal(1);
-                    expect(betrayedGithub.invoked).to.equal(0);
-                    expect(betrayedSource.invoked).to.equal(0);
-                });
-            })
             // Without maintainers
             .then(() => {
                 const data = { name: 'graphql-shorthand-parser-fork' };
                 const packageJson = {
                     name: 'graphql-shorthand-parser-fork',
-                    repository: { type: 'git', url: 'git://github.com/some-user/graphql-shorthand-parser.git' },
-                    _npmUser: { name: 'foo', email: 'foo@bar.com' },
+                    repository: { type: 'git', url: 'git://github.com/user/graphql-shorthand-parser.git' },
                 };
                 const downloadedPackageJson = {
                     name: 'graphql-shorthand-parser',
-                    repository: { type: 'git', url: 'git://github.com/some-user/graphql-shorthand-parser.git' },
+                    repository: { type: 'git', url: 'git://github.com/other-user/graphql-shorthand-parser.git' },
                 };
                 const downloaded = { downloader: 'github', dir: tmpDir, packageJson: downloadedPackageJson, gitRef: null };
 
@@ -252,7 +255,7 @@ describe('index', () => {
         it('should still call the source collector if the downloaded source was not from a repository', () => {
             const data = {
                 name: 'bower-fork',
-                repository: { type: 'git', url: 'git://github.com/bower/bower.git' },
+                repository: { type: 'git', url: 'git://github.com/user/bower.git' },
             };
             const packageJson = data;
             const downloadedPackageJson = {
@@ -281,8 +284,7 @@ describe('index', () => {
             const data = { name: 'bower-fork' };
             const packageJson = {
                 name: 'bower-fork',
-                repository: { type: 'git', url: 'git://github.com/bower/bower.git' },
-                _npmUser: { name: 'foo', email: 'foo@bar.com' },
+                repository: { type: 'git', url: 'git://github.com/user/bower.git' },
             };
             const downloadedPackageJson = {
                 name: 'some-module-that-will-never-exist',
