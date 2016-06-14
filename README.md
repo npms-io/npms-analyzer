@@ -7,18 +7,16 @@ The npms-analyzer analyzes the npm ecosystem, collecting info, evaluating and sc
 
 ## Usage
 
-This project exposes all its functionality through a CLI.
+This project offers all its functionality through a CLI.
 
 ![Demo](https://i.imgur.com/nz9CzVR.gif)
 (output might be outdated)
 
-Note that you must [setup](./docs/setup.md) the project before using the CLI. Keep reading to learn more about the CLI and its commands.
-
-The most important commands will be described below. To discover the other ones run `$ npms-analyzer -h`.
+Note that you must [setup](./docs/setup.md) the project before using the CLI. The most important commands will be described below. To discover the other ones run `$ npms-analyzer -h`.
 
 ### npms-analyzer observe
 
-The `observe` command starts observing changes that occur in the `npm` registry as well as modules that were not analyzed for a while. Each reported module will be pushed into a queue to be analyzed by the queue consumers.
+The `observe` command starts observing changes that occur in the `npm` registry as well as modules that were not analyzed for a while. Each reported module will be pushed into a queue to be processed by the queue consumers.
 
 ```bash
 $ npms-analyzer observe --log-level debug | pino
@@ -28,7 +26,7 @@ For more information about the command, run `$ npms-analyzer observe -h`
 
 ### npms-analyzer consume
 
-The `consume` command starts consuming the queue, running the analysis process for each module.
+The `consume` command starts consuming the queue, running the analysis process for queued module.
 
 ```bash
 $ npms-analyzer consume --log-level debug --concurrency 5 | pino
@@ -38,7 +36,7 @@ For more information about the command, run `$ npms-analyzer consume -h`
 
 ### npms-analyzer scoring
 
-The `scoring` command, continuously iterates over the analysis results and calculates a score for all the `npm` modules, storing the result in `elasticsearch`.
+The `scoring` command, continuously iterates over the analysis results and calculates a score for all the `npm` modules, storing its result in `elasticsearch`.
 
 ```bash
 $ npms-analyzer scoring

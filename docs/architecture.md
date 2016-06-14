@@ -19,7 +19,7 @@ By looking at the diagram above, you get an idea of how the analysis process wor
 Observers continuously push modules to the queue whenever they see fit.
 
 - realtime - Observes the replicated `npm` registry for changes, pushing new or updated modules into the analyze queue.
-- stale - Fetches modules that were not analyzed recently, pushing them to the queue.
+- stale - Fetches modules that were not analyzed for some time, pushing them to the queue.
 
 ### Queue
 
@@ -82,7 +82,7 @@ Items signaled with * are not yet done.
 
 ##### github
 
-The github collector uses GitHub and [Issue Stats](http://issuestats.com/) to collect useful data and statistics present there.
+The github collector uses GitHub to collect useful data and statistics present there.
 
 - Get number of stars, subscribers and forks
 - Fetch the repository activity in terms of commits
@@ -91,7 +91,7 @@ The github collector uses GitHub and [Issue Stats](http://issuestats.com/) to co
 - Fetch contributors
 - Check the build status
 
-This collector is susceptible to the GitHub [rate limit](https://developer.github.com/v3/rate_limit/) policy. To fight against this limit, you may define several GitHub keys to be used in a round-robin fashion.
+This collector is susceptible to the GitHub [rate limit](https://developer.github.com/v3/rate_limit/) policy. To fight against this limit, you may define several GitHub keys in the config to be used in a round-robin fashion.
 
 ##### npm
 
