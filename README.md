@@ -10,7 +10,7 @@ The npms-analyzer analyzes the npm ecosystem, collecting info, evaluating and sc
 This project offers all its functionality through a CLI.
 
 ![Demo](https://i.imgur.com/nz9CzVR.gif)
-(output might be outdated)
+*(output might be outdated)*
 
 Note that you must [setup](./docs/setup.md) the project before using the CLI. The most important commands will be described below. To discover the other ones run `$ npms-analyzer -h`.
 
