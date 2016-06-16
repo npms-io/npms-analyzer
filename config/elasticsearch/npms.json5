@@ -182,10 +182,13 @@
                     }
                 },
                 "links": {
-                    "npm": { "type": "string", "index": "no" },
-                    "homepage": { "type": "string", "index": "no" },
-                    "repository": { "type": "string", "index": "no" },
-                    "bugs": { "type": "string", "index": "no" },
+                    "type": "object",
+                    "properties": {
+                        "npm": { "type": "string", "index": "no" },
+                        "homepage": { "type": "string", "index": "no" },
+                        "repository": { "type": "string", "index": "no" },
+                        "bugs": { "type": "string", "index": "no" }
+                    }
                 },
                 "maintainers": {
                     "type": "object",
