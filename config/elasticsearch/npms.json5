@@ -181,6 +181,15 @@
                         "email": { "type": "string", "index": "no" }
                     }
                 },
+                "links": {
+                    "type": "object",
+                    "properties": {
+                        "npm": { "type": "string", "index": "no" },
+                        "homepage": { "type": "string", "index": "no" },
+                        "repository": { "type": "string", "index": "no" },
+                        "bugs": { "type": "string", "index": "no" }
+                    }
+                },
                 "maintainers": {
                     "type": "object",
                     "properties": {

@@ -78,12 +78,7 @@ describe('metadata', () => {
 
     it('should not fail if there are no versions nor time properties', () => {
         return metadata({}, { name: 'cross-spawn' })
-        .then((collected) => {
-            expect(collected).to.eql({
-                name: 'cross-spawn',
-                hasTestScript: false,
-            });
-        });
+        .then((collected) => expect(collected.name).to.equal('cross-spawn'));
     });
 
     it('should delete README if it is `No README data`', () => {
