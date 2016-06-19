@@ -91,35 +91,6 @@ describe('index', () => {
             });
         });
 
-        it('should detect repositories belong to the same org', () => {
-            const data = {
-                name: 'bower-canary',
-                maintainers: [{ name: 'André Cruz', email: 'andremiguelcruz@msn.com' }],
-            };
-            const packageJson = {
-                name: 'bower-canary',
-                repository: { type: 'git', url: 'git://github.com/bower/bower-canary.git' },
-            };
-            const downloadedPackageJson = {
-                name: 'bower',
-                repository: { type: 'git', url: 'git://github.com/bower/bower.git' },
-            };
-            const downloaded = { downloader: 'github', dir: tmpDir, packageJson: downloadedPackageJson, gitRef: null };
-
-            const betrayedMetadata = betray(collect.collectors, 'metadata', () => Promise.resolve());
-            const betrayedNpm = betray(collect.collectors, 'npm', () => Promise.resolve());
-            const betrayedGithub = betray(collect.collectors, 'github', () => Promise.resolve());
-            const betrayedSource = betray(collect.collectors, 'source', () => Promise.resolve());
-
-            return collect(data, packageJson, downloaded, npmNano)
-            .then(() => {
-                expect(betrayedMetadata.invoked).to.equal(1);
-                expect(betrayedNpm.invoked).to.equal(1);
-                expect(betrayedGithub.invoked).to.equal(1);
-                expect(betrayedSource.invoked).to.equal(1);
-            });
-        });
-
         it('should detect empty downloaded package.json\'s (download failed)', () => {
             const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
             const packageJson = packageJsonFromData('cross-spawn', data);
