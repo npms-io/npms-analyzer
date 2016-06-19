@@ -18,8 +18,6 @@ This project uses [config](https://www.npmjs.com/package/config) for configurati
 
 ## CouchDB
 
-**NOTE**: You may put the `CouchDB` app into the gitignored `dev` folder while developing!
-
 - Install [CouchDB](http://couchdb.apache.org/) and run it (tested with `v1.6.1`).
 - Add user `admin` with `admin` as password by executing `curl -X PUT http://localhost:5984/_config/admins/admin -d '"admin"'`. After doing this, operations done in the [web interface](http://localhost:5984/_utils/) require you to login (login is at bottom right corner).
 - Create database named `npms` by executing `curl -X PUT http://admin:admin@localhost:5984/npms`

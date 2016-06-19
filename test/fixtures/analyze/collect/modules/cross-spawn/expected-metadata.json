@@ -38,7 +38,12 @@
     "type": "git",
     "url": "git://github.com/IndigoUnited/node-cross-spawn.git"
   },
-  "homepage": "https://github.com/IndigoUnited/node-cross-spawn#readme",
+  "links": {
+    "bugs": "https://github.com/IndigoUnited/node-cross-spawn/issues/",
+    "homepage": "https://github.com/IndigoUnited/node-cross-spawn#readme",
+    "npm": "https://www.npmjs.com/package/cross-spawn",
+    "repository": "https://github.com/IndigoUnited/node-cross-spawn"
+  },
   "license": "MIT",
   "dependencies": {
     "cross-spawn-async": "^2.2.2",
