@@ -230,7 +230,7 @@
                         "maintenance": {
                             "type": "object",
                             "properties": {
-                                "recentCommits": { "type": "double", "index": "no" },
+                                "releasesFrequency": { "type": "double", "index": "no" },
                                 "commitsFrequency": { "type": "double", "index": "no" },
                                 "openIssues": { "type": "double", "index": "no" },
                                 "issuesDistribution": { "type": "double", "index": "no" }

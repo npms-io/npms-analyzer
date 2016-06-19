@@ -57,7 +57,7 @@
     "rimraf": "^2.5.0",
     "which": "^1.2.4"
   },
-  "releasesFrequency": [
+  "releases": [
     {
       "from": "2016-04-08T00:00:00.000Z",
       "to": "2016-05-08T00:00:00.000Z",

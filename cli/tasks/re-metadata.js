@@ -3,7 +3,7 @@
 const couchdbIterator = require('couchdb-iterator');
 const metadata = require('../../lib/analyze/collect/metadata');
 const packageJsonFromData = require('../../lib/analyze/util/packageJsonFromData');
-const save = require('../../lib/analyze').save;
+const analyze = require('../../lib/analyze');
 const bootstrap = require('../util/bootstrap');
 
 const log = logger.child({ module: 'cli/re-metadata' });
@@ -49,7 +49,9 @@ module.exports.handler = (argv) => {
                         throw err;
                     }
 
-                    return;
+                    // Remove the module if an unrecoverable error happened
+                    // We do this to prevent old metadata to stay around, which will probably cause issues further ahead
+                    return analyze.remove(name, npmsNano);
                 }
 
                 // Re-run metadata
@@ -58,15 +60,15 @@ module.exports.handler = (argv) => {
                 .then((metadata) => {
                     row.doc.collected.metadata = metadata;
 
-                    return save(row.doc, npmsNano);
+                    return analyze.save(row.doc, npmsNano);
                 })
                 .catch((err) => {
                     log.error({ err }, `Failed to process ${name}`);
                     throw err;
                 });
             })
-            // Ignore if the module does not exist in npm (e.g.: was deleted)
-            .catch({ error: 'not_found' }, () => {});
+            // Delete the analisis if the module does not exist in npm (e.g.: was deleted)
+            .catch({ error: 'not_found' }, () => analyze.remove(name, npmsNano));
         }, {
             startkey: 'module!',
             endkey: 'module!\ufff0',
