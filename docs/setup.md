@@ -40,4 +40,5 @@ This project uses [config](https://www.npmjs.com/package/config) for configurati
 **NOTE**: You may put the `Elasticsearch` app into the gitignored `dev` folder while developing!
 
 - Install [Elasticsearch](https://www.elastic.co/downloads/elasticsearch) (tested with `v2.3.1`)
+- Install the [head](https://github.com/mobz/elasticsearch-head) plugin to perform various manual operations in a web GUI
 - Add these two configurations to the `elasticsearch.yml`: `script.engine.groovy.inline.search: on`, `script.engine.groovy.inline.update: on`
