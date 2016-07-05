@@ -14,14 +14,12 @@ const log = logger.child({ module: 'bootstrap' });
  * Bootstrap several dependencies, waiting for them to be ready: CouchDB, Elasticsearch and Queue.
  * Tries several times before failing.
  *
- * @param {object} deps      The dependencies to check
- * @param {object} [options] The options; read bellow to get to know each available option
+ * @param {object}  deps  The dependencies to setup
+ * @param {boolean} wait True to wait for the dependencies to be ready
  *
  * @return {Promise} The promise that resolves when they are ready
  */
-function bootstrap(deps, options) {
-    options = Object.assign({ wait: true }, options);
-
+function bootstrap(deps, wait) {
     // Log uncaught exceptions
     process.on('uncaughtException', (err) => {
         log.fatal({ err }, `Uncaught exception: ${err.message}`);
@@ -32,11 +30,11 @@ function bootstrap(deps, options) {
         switch (dep) {
         case 'couchdbNpm':
         case 'couchdbNpms':
-            return bootstrapCouchdb(config.get(dep === 'couchdbNpm' ? 'couchdbNpmAddr' : 'couchdbNpmsAddr'), options);
+            return bootstrapCouchdb(config.get(dep), wait);
         case 'elasticsearch':
-            return bootstrapElasticsearch(config.get('elasticsearchHost'), options);
+            return bootstrapElasticsearch(config.get('elasticsearch'), wait);
         case 'queue':
-            return bootstrapQueue(config.get('rabbitmqQueue'), config.get('rabbitmqAddr'), options);
+            return bootstrapQueue(config.get('queue'), wait);
         default:
             throw new Error(`Unknown dependency: ${dep}`);
         }
@@ -48,20 +46,19 @@ function bootstrap(deps, options) {
 /**
  * Bootstraps a CouchDB database client, returning a nano instance.
  *
- * @param {string}  couchAddr The CouchDB address
- * @param {options} options   The options inferred from bootstrap()
+ * @param {object}  config The CouchDB config
+ * @param {boolean} wait   True to wait for it to be ready
  *
  * @return {Promise} The promise that resolves when done
  */
-function bootstrapCouchdb(couchAddr, options) {
-    const nanoOptions = { requestDefaults: { timeout: 15000 } };
-    const nanoClient = Promise.promisifyAll(nano(couchAddr, nanoOptions));
+function bootstrapCouchdb(config, wait) {
+    const nanoClient = Promise.promisifyAll(nano(config));
 
     if (!nanoClient.config.db) {
-        throw new Error('Expected CouchDB address to point to a DB');
+        throw new Error('Expected CouchDB URL to point to a DB');
     }
 
-    nanoClient.serverScope = Promise.promisifyAll(nano(nanoClient.config.url, nanoOptions));
+    nanoClient.serverScope = Promise.promisifyAll(nano(Object.assign({}, config, { url: nanoClient.config.url })));
 
     return promiseRetry((retry) => {
         return nanoClient.getAsync('somedocthatwillneverexist')
@@ -70,7 +67,7 @@ function bootstrapCouchdb(couchAddr, options) {
             log.warn({ err }, `Check of ${nanoClient.config.db} failed`);
             retry(err);
         });
-    }, options.wait ? retriesOption : { retries: 0 })
+    }, wait ? retriesOption : { retries: 0 })
     .then(() => log.debug(`CouchDB for ${nanoClient.config.db} is ready`))
     .return(nanoClient);
 }
@@ -78,18 +75,13 @@ function bootstrapCouchdb(couchAddr, options) {
 /**
  * Bootstraps a Elasticsearch client.
  *
- * @param {string|array} elasticsearchHost The Elasticsearch host(s)
- * @param {options}      options           The options inferred from bootstrap()
+ * @param {object}  config The Elasticsearch config
+ * @param {boolean} wait   True to wait for it to be ready
  *
  * @return {Promise} The promise that resolves when done
  */
-function bootstrapElasticsearch(elasticsearchHost, options) {
-    const esClient = new elasticsearch.Client({
-        host: elasticsearchHost,
-        apiVersion: '2.3',
-        log: null,
-        requestTimeout: 15000,
-    });
+function bootstrapElasticsearch(config, wait) {
+    const esClient = new elasticsearch.Client(config);
 
     return promiseRetry((retry) => {
         return Promise.resolve(esClient.get({
@@ -103,7 +95,7 @@ function bootstrapElasticsearch(elasticsearchHost, options) {
             log.warn({ err }, 'Check of Elasticsearch failed');
             retry(err);
         });
-    }, options.wait ? retriesOption : { retries: 0 })
+    }, wait ? retriesOption : { retries: 0 })
     .then(() => log.debug('Elasticsearch is ready'))
     .return(esClient);
 }
@@ -111,14 +103,13 @@ function bootstrapElasticsearch(elasticsearchHost, options) {
 /**
  * Bootstraps the analysis queue.
  *
- * @param {string}  rabbitmqAddr  The RabbitMQ address
- * @param {string}  rabbitmqQueue The RabbitMQ queue name
- * @param {options} options       The options inferred from bootstrap()
+ * @param {object}  config The queue config
+ * @param {boolean} wait   True to wait for it to be ready
  *
  * @return {Promise} The promise that resolves when done
  */
-function bootstrapQueue(rabbitmqAddr, rabbitmqQueue, options) {
-    const analysisQueue = queue(config.get('rabbitmqQueue'), config.get('rabbitmqAddr'));
+function bootstrapQueue(config, wait) {
+    const analysisQueue = queue(config.name, config.addr, config.options);
 
     return promiseRetry((retry) => {
         return analysisQueue.stat()
@@ -126,7 +117,7 @@ function bootstrapQueue(rabbitmqAddr, rabbitmqQueue, options) {
             log.warn({ err }, 'Check of Queue failed');
             retry(err);
         });
-    }, options.wait ? retriesOption : { retries: 0 })
+    }, wait ? retriesOption : { retries: 0 })
     .then(() => log.debug('Queue is ready'))
     .return(analysisQueue);
 }

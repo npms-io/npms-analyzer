@@ -1,11 +1,23 @@
 {
-    // Databases related stuff
-    couchdbNpmAddr: 'http://admin:admin@127.0.0.1:5984/npm',
-    couchdbNpmsAddr: 'http://admin:admin@127.0.0.1:5984/npms',
-    rabbitmqAddr: 'amqp://guest:guest@127.0.0.1',
-    rabbitmqQueue: 'npms',
-    elasticsearchHost: '127.0.0.1:9200',
-    elasticsearchIndex: 'npms',
+    // Databases & similar stuff
+    couchdbNpm: {
+        url: 'http://admin:admin@127.0.0.1:5984/npm',
+        requestDefaults: { timeout: 15000 }
+    },
+    couchdbNpms: {
+        url: 'http://admin:admin@127.0.0.1:5984/npms',
+        requestDefaults: { timeout: 15000 }
+    },
+    elasticsearch: {
+        host: 'http://127.0.0.1:9200',
+        requestTimeout: 15000,
+        apiVersion: '2.3',
+        log: null,
+    },
+    queue: {
+        name: 'npms',
+        addr: 'amqp://guest:guest@127.0.0.1',
+    },
 
     // List of modules that will be ignored by the CLI consume command (analysis process)
     blacklist: {
