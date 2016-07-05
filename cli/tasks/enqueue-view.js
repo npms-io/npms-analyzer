@@ -58,7 +58,7 @@ module.exports.handler = (argv) => {
     const view = argv._[2];
 
     // Bootstrap dependencies on external services
-    bootstrap(['couchdbNpm', 'couchdbNpms', 'queue'], { wait: false })
+    bootstrap(['couchdbNpm', 'couchdbNpms', 'queue'])
     .spread((npmNano, npmsNano, queue) => {
         // Stats
         stats.process();
