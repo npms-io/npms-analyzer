@@ -30,6 +30,19 @@
                     "min_gram": "4",
                     "max_gram": "15"
                 },
+
+                // Edge ngram to enable provide fallback to stemming
+                "identifier_autocomplete": {
+                    "type": "edgeNGram",
+                    "min_gram": "2",
+                    "max_gram": "15"
+                },
+
+                // Remove duplicate tokens
+                "unique_on_same_position": {
+                   "type": "unique",
+                   "only_on_same_position": false
+                }
             },
 
             // Custom analyzers
@@ -39,7 +52,8 @@
                     "tokenizer": "standard",
                     "filter": [
                         "split_word",
-                        "lowercase"
+                        "lowercase",
+                        "unique_on_same_position"
                     ],
                 },
 
@@ -48,7 +62,8 @@
                     "filter": [
                         "split_word",
                         "lowercase",
-                        "kstem"        // Non-aggressive english stemmer
+                        "kstem",        // Non-aggressive english stemmer
+                        "unique_on_same_position"
                     ]
                 },
 
@@ -57,7 +72,8 @@
                     "filter": [
                         "split_word",
                         "lowercase",
-                        "porter_stem"  // Aggressive english stemmer
+                        "porter_stem",  // Aggressive english stemmer
+                        "unique_on_same_position"
                     ]
                 },
 
@@ -67,7 +83,19 @@
                     "filter": [
                         "split_word",
                         "lowercase",
-                        "identifier_edge_ngram"
+                        "identifier_edge_ngram",
+                        "unique_on_same_position"
+                    ]
+                },
+
+                // Analyzer used exclusively for autocompletion
+                "identifier_autocomplete": {
+                    "tokenizer": "standard",
+                    "filter": [
+                        "split_word",
+                        "lowercase",
+                        "identifier_autocomplete",
+                        "unique_on_same_position"
                     ]
                 },
 
@@ -93,117 +121,126 @@
             },
 
             "properties" : {
-                // The `name`, `description` and `keywords` fields all have `norms` disabled because we don't care about the fields length
-                // Also they have additional fields beyond the `standard` analyzer, such as `identifier_english`, `identifier_english_docs` etc
-                "name": {
-                    "type": "string",
-                    "fields": {
-                        "identifier_english_docs": {
+                "module": {
+                    "type": "object",
+                    "properties": {
+                        // The `name`, `description` and `keywords` fields all have `norms` disabled because we don't care about the fields length
+                        // Also they have additional fields beyond the `standard` analyzer, such as `identifier_english`, `identifier_english_docs` etc
+                        "name": {
                             "type": "string",
-                            "analyzer": "identifier_english",
-                            "index_options": "docs"
+                            "fields": {
+                                "identifier_english_docs": {
+                                    "type": "string",
+                                    "analyzer": "identifier_english",
+                                    "index_options": "docs"
+                                },
+                                "identifier_english_aggressive_docs": {
+                                    "type": "string",
+                                    "analyzer": "identifier_english_aggressive",
+                                    "index_options": "docs"
+                                },
+                                "identifier_edge_ngram": {
+                                    "type": "string",
+                                    "analyzer": "identifier_edge_ngram"
+                                },
+                                "identifier_autocomplete": {
+                                    "type": "string",
+                                    "analyzer": "identifier_autocomplete"
+                                },
+                                "raw": {
+                                    "type": "string",
+                                    "analyzer": "raw",
+                                    "index_options": "docs"
+                                }
+                            }
                         },
-                        "identifier_english_aggressive_docs": {
+                        "description": {
                             "type": "string",
-                            "analyzer": "identifier_english_aggressive",
-                            "index_options": "docs"
+                            "fields": {
+                                "identifier_english_docs": {
+                                    "type": "string",
+                                    "analyzer": "identifier_english",
+                                    "index_options": "docs"
+                                },
+                                "identifier_english_aggressive_docs": {
+                                    "type": "string",
+                                    "analyzer": "identifier_english_aggressive",
+                                    "index_options": "docs"
+                                },
+                                "identifier_edge_ngram": {
+                                    "type": "string",
+                                    "analyzer": "identifier_edge_ngram"
+                                },
+                            }
                         },
-                        "identifier_edge_ngram": {
+                        "keywords": {
                             "type": "string",
-                            "analyzer": "identifier_edge_ngram"
+                            "fields": {
+                                "identifier_english_docs": {
+                                    "type": "string",
+                                    "analyzer": "identifier_english",
+                                    "index_options": "docs"
+                                },
+                                "identifier_english_aggressive_docs": {
+                                    "type": "string",
+                                    "analyzer": "identifier_english_aggressive",
+                                    "index_options": "docs"
+                                },
+                                "identifier_edge_ngram": {
+                                    "type": "string",
+                                    "analyzer": "identifier_edge_ngram"
+                                },
+                            }
                         },
-                        "raw": {
+                        "version": {
                             "type": "string",
-                            "analyzer": "raw",
-                            "index_options": "docs"
+                            "index": "no"
+                        },
+                        "date": {
+                            "type": "date",
+                            "index": "no"
+                        },
+                        "publisher": {
+                            "type": "object",
+                            "properties": {
+                                "username": {
+                                    "type": "string",
+                                    "fields": {
+                                        "raw": {
+                                            "type": "string",
+                                            "analyzer": "raw",
+                                            "index_options": "docs"
+                                        }
+                                    }
+                                },
+                                "email": { "type": "string", "index": "no" }
+                            }
+                        },
+                        "links": {
+                            "type": "object",
+                            "properties": {
+                                "npm": { "type": "string", "index": "no" },
+                                "homepage": { "type": "string", "index": "no" },
+                                "repository": { "type": "string", "index": "no" },
+                                "bugs": { "type": "string", "index": "no" }
+                            }
+                        },
+                        "maintainers": {
+                            "type": "object",
+                            "properties": {
+                                "username": {
+                                    "type": "string",
+                                    "fields": {
+                                        "raw": {
+                                            "type": "string",
+                                            "analyzer": "raw",
+                                            "index_options": "docs"
+                                        }
+                                    }
+                                },
+                                "email": { "type": "string", "index": "no" }
+                            }
                         }
-                    }
-                },
-                "description": {
-                    "type": "string",
-                    "fields": {
-                        "identifier_english_docs": {
-                            "type": "string",
-                            "analyzer": "identifier_english",
-                            "index_options": "docs"
-                        },
-                        "identifier_english_aggressive_docs": {
-                            "type": "string",
-                            "analyzer": "identifier_english_aggressive",
-                            "index_options": "docs"
-                        },
-                        "identifier_edge_ngram": {
-                            "type": "string",
-                            "analyzer": "identifier_edge_ngram"
-                        },
-                    }
-                },
-                "keywords": {
-                    "type": "string",
-                    "fields": {
-                        "identifier_english_docs": {
-                            "type": "string",
-                            "analyzer": "identifier_english",
-                            "index_options": "docs"
-                        },
-                        "identifier_english_aggressive_docs": {
-                            "type": "string",
-                            "analyzer": "identifier_english_aggressive",
-                            "index_options": "docs"
-                        },
-                        "identifier_edge_ngram": {
-                            "type": "string",
-                            "analyzer": "identifier_edge_ngram"
-                        },
-                    }
-                },
-                "version": {
-                    "type": "string",
-                    "index": "no"
-                },
-                "date": {
-                    "type": "date",
-                    "index": "no"
-                },
-                "publisher": {
-                    "type": "object",
-                    "properties": {
-                        "username": {
-                            "type": "string",
-                            "fields": {
-                                "raw": {
-                                    "type": "string",
-                                    "analyzer": "raw",
-                                    "index_options": "docs"
-                                }
-                            }
-                        },
-                        "email": { "type": "string", "index": "no" }
-                    }
-                },
-                "links": {
-                    "type": "object",
-                    "properties": {
-                        "npm": { "type": "string", "index": "no" },
-                        "homepage": { "type": "string", "index": "no" },
-                        "repository": { "type": "string", "index": "no" },
-                        "bugs": { "type": "string", "index": "no" }
-                    }
-                },
-                "maintainers": {
-                    "type": "object",
-                    "properties": {
-                        "username": {
-                            "type": "string",
-                            "fields": {
-                                "raw": {
-                                    "type": "string",
-                                    "analyzer": "raw",
-                                    "index_options": "docs"
-                                }
-                            }
-                        },
-                        "email": { "type": "string", "index": "no" }
                     }
                 },
                 "evaluation": {
