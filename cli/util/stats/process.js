@@ -10,7 +10,7 @@ const log = logger.child({ module: 'stats/process' });
  */
 function statProcess() {
     // Do nothing if loglevel is higher than info
-    if (log.levelVal >= pino.levels.values.info) {
+    if (log.levelVal > pino.levels.values.info) {
         return;
     }
 
