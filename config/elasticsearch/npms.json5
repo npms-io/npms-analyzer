@@ -7,6 +7,15 @@
         "number_of_replicas": 0,
 
         "analysis": {
+            // Custom char filters
+            "char_filter" : {
+                "non_alfanum_to_space": {
+                    "type": "pattern_replace",
+                    "pattern": "(?i)[^a-z0-9]+",
+                    "replacement": " "
+                }
+            },
+
             // Custom filters
             "filter": {
                 // Split word filter, which takes tokens, such as es6_promise or lodash.foreach, and splits them
@@ -25,16 +34,16 @@
                 },
 
                 // Edge ngram to enable provide fallback to stemming
-                "identifier_edge_ngram": {
+                "edge_ngram": {
                     "type": "edgeNGram",
                     "min_gram": "4",
                     "max_gram": "15"
                 },
 
-                // Edge ngram to enable provide fallback to stemming
-                "identifier_autocomplete": {
+                // Exclusive tokenizer used for autocompletion
+                "autocomplete": {
                     "type": "edgeNGram",
-                    "min_gram": "2",
+                    "min_gram": "1",
                     "max_gram": "15"
                 },
 
@@ -47,8 +56,8 @@
 
             // Custom analyzers
             "analyzer": {
-                // The identifier_* series produces good results for the `name` and `keywords` fields
-                "identifier": {
+                // The module_* series produces good results for the `name` and `keywords` fields
+                "module": {
                     "tokenizer": "standard",
                     "filter": [
                         "split_word",
@@ -57,7 +66,7 @@
                     ],
                 },
 
-                "identifier_english": {
+                "module_english": {
                     "tokenizer": "standard",
                     "filter": [
                         "split_word",
@@ -67,7 +76,7 @@
                     ]
                 },
 
-                "identifier_english_aggressive": {
+                "module_english_aggressive": {
                     "tokenizer": "standard",
                     "filter": [
                         "split_word",
@@ -77,25 +86,44 @@
                     ]
                 },
 
-                // This analyzer provides fallbacks in which the stemmer is not efficient, e.g.: searching for "glob" should match "globby"
-                "identifier_edge_ngram": {
+                "module_edge_ngram": {
+                    // This analyzer provides fallbacks in which the stemmer is not efficient, e.g.: searching for "glob" should match "globby"
                     "tokenizer": "standard",
                     "filter": [
                         "split_word",
                         "lowercase",
-                        "identifier_edge_ngram",
+                        "edge_ngram",
                         "unique_on_same_position"
                     ]
                 },
 
-                // Analyzer used exclusively for autocompletion
-                "identifier_autocomplete": {
+                // The module_autocomplete_* series produces good results for the `name` and `keywords` fields
+                "module_autocomplete": {
                     "tokenizer": "standard",
                     "filter": [
                         "split_word",
                         "lowercase",
-                        "identifier_autocomplete",
+                        "autocomplete",
                         "unique_on_same_position"
+                    ]
+                },
+                "module_autocomplete_keyword": {
+                    // This analyzer emits the whole string but replaces non-alfanum with spaces
+                    // so that we can use it boost exact prefix matches higher
+                    "tokenizer": "keyword",
+                    "char_filter": "non_alfanum_to_space",
+                    "filter": [
+                        "lowercase",
+                        "autocomplete",
+                        "unique_on_same_position"
+                    ]
+                },
+                "module_autocomplete_keyword_search": {
+                    // This analyzer is the "search_analyzer" for "module_autocomplete_keyword"
+                    "tokenizer": "keyword",
+                    "char_filter": "non_alfanum_to_space",
+                    "filter": [
+                        "lowercase"
                     ]
                 },
 
@@ -125,27 +153,34 @@
                     "type": "object",
                     "properties": {
                         // The `name`, `description` and `keywords` fields all have `norms` disabled because we don't care about the fields length
-                        // Also they have additional fields beyond the `standard` analyzer, such as `identifier_english`, `identifier_english_docs` etc
+                        // Also they have additional fields beyond the `standard` analyzer, such as `module_english`, `module_english_docs` etc
                         "name": {
                             "type": "string",
                             "fields": {
-                                "identifier_english_docs": {
+                                "english_docs": {
                                     "type": "string",
-                                    "analyzer": "identifier_english",
+                                    "analyzer": "module_english",
                                     "index_options": "docs"
                                 },
-                                "identifier_english_aggressive_docs": {
+                                "english_aggressive_docs": {
                                     "type": "string",
-                                    "analyzer": "identifier_english_aggressive",
+                                    "analyzer": "module_english_aggressive",
                                     "index_options": "docs"
                                 },
-                                "identifier_edge_ngram": {
+                                "edge_ngram": {
                                     "type": "string",
-                                    "analyzer": "identifier_edge_ngram"
+                                    "analyzer": "module_edge_ngram",
+                                    "search_analyzer": "module"
                                 },
-                                "identifier_autocomplete": {
+                                "autocomplete": {
                                     "type": "string",
-                                    "analyzer": "identifier_autocomplete"
+                                    "analyzer": "module_autocomplete",
+                                    "search_analyzer": "module"
+                                },
+                                "autocomplete_keyword": {
+                                    "type": "string",
+                                    "analyzer": "module_autocomplete_keyword",
+                                    "search_analyzer": "module_autocomplete_keyword_search"
                                 },
                                 "raw": {
                                     "type": "string",
@@ -157,38 +192,40 @@
                         "description": {
                             "type": "string",
                             "fields": {
-                                "identifier_english_docs": {
+                                "english_docs": {
                                     "type": "string",
-                                    "analyzer": "identifier_english",
+                                    "analyzer": "module_english",
                                     "index_options": "docs"
                                 },
-                                "identifier_english_aggressive_docs": {
+                                "english_aggressive_docs": {
                                     "type": "string",
-                                    "analyzer": "identifier_english_aggressive",
+                                    "analyzer": "module_english_aggressive",
                                     "index_options": "docs"
                                 },
-                                "identifier_edge_ngram": {
+                                "edge_ngram": {
                                     "type": "string",
-                                    "analyzer": "identifier_edge_ngram"
+                                    "analyzer": "module_edge_ngram",
+                                    "search_analyzer": "module"
                                 },
                             }
                         },
                         "keywords": {
                             "type": "string",
                             "fields": {
-                                "identifier_english_docs": {
+                                "english_docs": {
                                     "type": "string",
-                                    "analyzer": "identifier_english",
+                                    "analyzer": "module_english",
                                     "index_options": "docs"
                                 },
-                                "identifier_english_aggressive_docs": {
+                                "english_aggressive_docs": {
                                     "type": "string",
-                                    "analyzer": "identifier_english_aggressive",
+                                    "analyzer": "module_english_aggressive",
                                     "index_options": "docs"
                                 },
-                                "identifier_edge_ngram": {
+                                "edge_ngram": {
                                     "type": "string",
-                                    "analyzer": "identifier_edge_ngram"
+                                    "analyzer": "module_edge_ngram",
+                                    "search_analyzer": "module"
                                 },
                             }
                         },
