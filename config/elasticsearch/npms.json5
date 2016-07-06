@@ -7,17 +7,26 @@
         "number_of_replicas": 0,
 
         "analysis": {
-            // Custom char filters
-            "char_filter" : {
-                "non_alfanum_to_space": {
-                    "type": "pattern_replace",
-                    "pattern": "(?i)[^a-z0-9]+",
-                    "replacement": " "
+            // Custom tokenizers
+            "tokenizer": {
+                // Exclusive tokenizer used for autocompletion highlight so that it correctly highlights partial words..
+                // See: https://github.com/elastic/elasticsearch/issues/3137#issuecomment-22116469
+                "autocomplete": {
+                    "type": "edgeNGram",
+                    "min_gram": "1",
+                    "max_gram": "15",
+                    "token_chars": ["letter", "digit"]
                 }
             },
 
             // Custom filters
             "filter": {
+                "non_alfanum_to_space": {
+                    "type": "pattern_replace",
+                    "pattern": "(?i)[^a-z0-9]+",
+                    "replacement": " "
+                },
+
                 // Split word filter, which takes tokens, such as es6_promise or lodash.foreach, and splits them
                 // into several other tokens
                 "split_word": {
@@ -40,7 +49,7 @@
                     "max_gram": "15"
                 },
 
-                // Exclusive tokenizer used for autocompletion
+                // Dedicated filter for autocompletion
                 "autocomplete": {
                     "type": "edgeNGram",
                     "min_gram": "1",
@@ -60,6 +69,7 @@
                 "module": {
                     "tokenizer": "standard",
                     "filter": [
+                        "asciifolding",
                         "split_word",
                         "lowercase",
                         "unique_on_same_position"
@@ -69,6 +79,7 @@
                 "module_english": {
                     "tokenizer": "standard",
                     "filter": [
+                        "asciifolding",
                         "split_word",
                         "lowercase",
                         "kstem",        // Non-aggressive english stemmer
@@ -79,6 +90,7 @@
                 "module_english_aggressive": {
                     "tokenizer": "standard",
                     "filter": [
+                        "asciifolding",
                         "split_word",
                         "lowercase",
                         "porter_stem",  // Aggressive english stemmer
@@ -90,6 +102,7 @@
                     // This analyzer provides fallbacks in which the stemmer is not efficient, e.g.: searching for "glob" should match "globby"
                     "tokenizer": "standard",
                     "filter": [
+                        "asciifolding",
                         "split_word",
                         "lowercase",
                         "edge_ngram",
@@ -101,29 +114,49 @@
                 "module_autocomplete": {
                     "tokenizer": "standard",
                     "filter": [
+                        "asciifolding",
                         "split_word",
                         "lowercase",
                         "autocomplete",
                         "unique_on_same_position"
                     ]
                 },
+
                 "module_autocomplete_keyword": {
                     // This analyzer emits the whole string but replaces non-alfanum with spaces
                     // so that we can use it boost exact prefix matches higher
                     "tokenizer": "keyword",
-                    "char_filter": "non_alfanum_to_space",
                     "filter": [
+                        "asciifolding",
+                        "non_alfanum_to_space",
                         "lowercase",
                         "autocomplete",
+                        "trim",
                         "unique_on_same_position"
                     ]
                 },
+
                 "module_autocomplete_keyword_search": {
                     // This analyzer is the "search_analyzer" for "module_autocomplete_keyword"
                     "tokenizer": "keyword",
-                    "char_filter": "non_alfanum_to_space",
                     "filter": [
-                        "lowercase"
+                        "asciifolding",
+                        "non_alfanum_to_space",
+                        "lowercase",
+                        "trim"
+                    ]
+                },
+
+                "module_autocomplete_highlight": {
+                    // This analyzer is necessary to perform proper highlighting
+                    // See: https://github.com/elastic/elasticsearch/issues/3137#issuecomment-22116469
+                    // Can't use split_word which may lead to "strange" highlighting in some edge cases :(
+                    "tokenizer": "autocomplete",
+                    "filter": [
+                        "asciifolding",
+                        "non_alfanum_to_space",
+                        "lowercase",
+                        "trim"
                     ]
                 },
 
@@ -156,6 +189,7 @@
                         // Also they have additional fields beyond the `standard` analyzer, such as `module_english`, `module_english_docs` etc
                         "name": {
                             "type": "string",
+                            "term_vector": "with_positions_offsets",
                             "fields": {
                                 "english_docs": {
                                     "type": "string",
@@ -176,6 +210,12 @@
                                     "type": "string",
                                     "analyzer": "module_autocomplete",
                                     "search_analyzer": "module"
+                                },
+                                "autocomplete_highlight": {
+                                    "type": "string",
+                                    "analyzer": "module_autocomplete_highlight",
+                                    "search_analyzer": "module",
+                                    "index_options": "offsets"
                                 },
                                 "autocomplete_keyword": {
                                     "type": "string",
