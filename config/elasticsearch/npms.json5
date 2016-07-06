@@ -189,7 +189,6 @@
                         // Also they have additional fields beyond the `standard` analyzer, such as `module_english`, `module_english_docs` etc
                         "name": {
                             "type": "string",
-                            "term_vector": "with_positions_offsets",
                             "fields": {
                                 "english_docs": {
                                     "type": "string",
