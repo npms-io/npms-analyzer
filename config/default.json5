@@ -41,5 +41,5 @@
     },
 
     // Github tokens to be used by token-dealer
-    githubTokens: [],
+    githubTokens: []
 }
