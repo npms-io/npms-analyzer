@@ -21,7 +21,7 @@ module.exports.handler = (argv) => {
     logger.level = argv.logLevel || 'info';
 
     // Bootstrap dependencies on external services
-    bootstrap(['couchdbNpms'], { wait: false })
+    bootstrap(['couchdbNpms'])
     .spread((npmsNano) => {
         log.info('Starting modules re-evaluation');
 

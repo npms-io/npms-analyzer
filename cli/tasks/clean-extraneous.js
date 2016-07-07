@@ -60,7 +60,7 @@ module.exports.handler = (argv) => {
     process.title = 'npms-analyzer-clean-extraneous';
     logger.level = argv.logLevel || 'info';
 
-    bootstrap(['couchdbNpm', 'couchdbNpms'], { wait: false })
+    bootstrap(['couchdbNpm', 'couchdbNpms'])
     .spread((npmNano, npmsNano) => {
         // Stats
         stats.process();

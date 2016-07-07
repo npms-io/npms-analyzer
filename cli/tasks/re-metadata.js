@@ -22,7 +22,7 @@ module.exports.handler = (argv) => {
     logger.level = argv.logLevel || 'info';
 
     // Bootstrap dependencies on external services
-    bootstrap(['couchdbNpm', 'couchdbNpms'], { wait: false })
+    bootstrap(['couchdbNpm', 'couchdbNpms'])
     .spread((npmNano, npmsNano) => {
         log.info('Starting modules re-metadata');
 

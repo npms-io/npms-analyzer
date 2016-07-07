@@ -30,7 +30,7 @@ module.exports.handler = (argv) => {
     const name = argv._[2].toString();  // module 0 evaluates to number so we must cast to a string
 
     // Bootstrap dependencies on external services
-    bootstrap(['couchdbNpm', 'couchdbNpms', 'elasticsearch'], { wait: false })
+    bootstrap(['couchdbNpm', 'couchdbNpms', 'elasticsearch'])
     .spread((npmNano, npmsNano, esClient) => {
         // Analyze the module
         return Promise.try(() => {

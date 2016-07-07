@@ -14,13 +14,15 @@ const log = logger.child({ module: 'bootstrap' });
  * Bootstrap several dependencies, waiting for them to be ready: CouchDB, Elasticsearch and Queue.
  * Tries several times before failing.
  *
- * @param {object} deps      The dependencies to check
+ * @param {object} deps      The dependencies to setup
  * @param {object} [options] The options; read bellow to get to know each available option
  *
  * @return {Promise} The promise that resolves when they are ready
  */
 function bootstrap(deps, options) {
-    options = Object.assign({ wait: true }, options);
+    options = Object.assign({
+        wait: false,  // True to wait for the dependencies to be ready (in case they are unavailable)
+    }, options);
 
     // Log uncaught exceptions
     process.on('uncaughtException', (err) => {
@@ -32,11 +34,11 @@ function bootstrap(deps, options) {
         switch (dep) {
         case 'couchdbNpm':
         case 'couchdbNpms':
-            return bootstrapCouchdb(config.get(dep === 'couchdbNpm' ? 'couchdbNpmAddr' : 'couchdbNpmsAddr'), options);
+            return bootstrapCouchdb(config.get(dep), options);
         case 'elasticsearch':
-            return bootstrapElasticsearch(config.get('elasticsearchHost'), options);
+            return bootstrapElasticsearch(config.get('elasticsearch'), options);
         case 'queue':
-            return bootstrapQueue(config.get('rabbitmqQueue'), config.get('rabbitmqAddr'), options);
+            return bootstrapQueue(config.get('queue'), options);
         default:
             throw new Error(`Unknown dependency: ${dep}`);
         }
@@ -48,20 +50,19 @@ function bootstrap(deps, options) {
 /**
  * Bootstraps a CouchDB database client, returning a nano instance.
  *
- * @param {string}  couchAddr The CouchDB address
- * @param {options} options   The options inferred from bootstrap()
+ * @param {object}  config  The CouchDB config
+ * @param {options} options The options inferred from bootstrap()
  *
  * @return {Promise} The promise that resolves when done
  */
-function bootstrapCouchdb(couchAddr, options) {
-    const nanoOptions = { requestDefaults: { timeout: 15000 } };
-    const nanoClient = Promise.promisifyAll(nano(couchAddr, nanoOptions));
+function bootstrapCouchdb(config, options) {
+    const nanoClient = Promise.promisifyAll(nano(config));
 
     if (!nanoClient.config.db) {
-        throw new Error('Expected CouchDB address to point to a DB');
+        throw new Error('Expected CouchDB URL to point to a DB');
     }
 
-    nanoClient.serverScope = Promise.promisifyAll(nano(nanoClient.config.url, nanoOptions));
+    nanoClient.serverScope = Promise.promisifyAll(nano(Object.assign({}, config, { url: nanoClient.config.url })));
 
     return promiseRetry((retry) => {
         return nanoClient.getAsync('somedocthatwillneverexist')
@@ -78,18 +79,13 @@ function bootstrapCouchdb(couchAddr, options) {
 /**
  * Bootstraps a Elasticsearch client.
  *
- * @param {string|array} elasticsearchHost The Elasticsearch host(s)
- * @param {options}      options           The options inferred from bootstrap()
+ * @param {object}  config  The Elasticsearch config
+ * @param {options} options The options inferred from bootstrap()
  *
  * @return {Promise} The promise that resolves when done
  */
-function bootstrapElasticsearch(elasticsearchHost, options) {
-    const esClient = new elasticsearch.Client({
-        host: elasticsearchHost,
-        apiVersion: '2.3',
-        log: null,
-        requestTimeout: 15000,
-    });
+function bootstrapElasticsearch(config, options) {
+    const esClient = new elasticsearch.Client(config);
 
     return promiseRetry((retry) => {
         return Promise.resolve(esClient.get({
@@ -111,14 +107,13 @@ function bootstrapElasticsearch(elasticsearchHost, options) {
 /**
  * Bootstraps the analysis queue.
  *
- * @param {string}  rabbitmqAddr  The RabbitMQ address
- * @param {string}  rabbitmqQueue The RabbitMQ queue name
- * @param {options} options       The options inferred from bootstrap()
+ * @param {object}  config  The queue config
+ * @param {options} options The options inferred from bootstrap()
  *
  * @return {Promise} The promise that resolves when done
  */
-function bootstrapQueue(rabbitmqAddr, rabbitmqQueue, options) {
-    const analysisQueue = queue(config.get('rabbitmqQueue'), config.get('rabbitmqAddr'));
+function bootstrapQueue(config, options) {
+    const analysisQueue = queue(config.name, config.addr, config.options);
 
     return promiseRetry((retry) => {
         return analysisQueue.stat()
