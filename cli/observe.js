@@ -54,7 +54,7 @@ module.exports.handler = (argv) => {
     logger.level = argv.logLevel || 'warn';
 
     // Bootstrap dependencies on external services
-    bootstrap(['couchdbNpm', 'couchdbNpms', 'queue'])
+    bootstrap(['couchdbNpm', 'couchdbNpms', 'queue'], { wait: true })
     .spread((npmNano, npmsNano, queue) => {
         // Stats
         stats.process();
