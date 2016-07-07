@@ -98,7 +98,7 @@ exports.handler = (argv) => {
     logger.level = argv.logLevel || 'warn';
 
     // Bootstrap dependencies on external services
-    bootstrap(['couchdbNpms', 'elasticsearch'], true)
+    bootstrap(['couchdbNpms', 'elasticsearch'], { wait: true })
     .spread((npmsNano, esClient) => {
         // Stats
         stats.process();

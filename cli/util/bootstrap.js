@@ -14,12 +14,16 @@ const log = logger.child({ module: 'bootstrap' });
  * Bootstrap several dependencies, waiting for them to be ready: CouchDB, Elasticsearch and Queue.
  * Tries several times before failing.
  *
- * @param {object}  deps  The dependencies to setup
- * @param {boolean} wait True to wait for the dependencies to be ready
+ * @param {object}  deps     The dependencies to setup
+ * @param {object} [options] The options; read bellow to get to know each available option
  *
  * @return {Promise} The promise that resolves when they are ready
  */
-function bootstrap(deps, wait) {
+function bootstrap(deps, options) {
+    options = Object.assign({
+        wait: false,  // True to wait for the dependencies to be ready (in case they are unavailable)
+    }, options);
+
     // Log uncaught exceptions
     process.on('uncaughtException', (err) => {
         log.fatal({ err }, `Uncaught exception: ${err.message}`);
@@ -46,12 +50,12 @@ function bootstrap(deps, wait) {
 /**
  * Bootstraps a CouchDB database client, returning a nano instance.
  *
- * @param {object}  config The CouchDB config
- * @param {boolean} wait   True to wait for it to be ready
+ * @param {object}  config  The CouchDB config
+ * @param {options} options The options inferred from bootstrap()
  *
  * @return {Promise} The promise that resolves when done
  */
-function bootstrapCouchdb(config, wait) {
+function bootstrapCouchdb(config, options) {
     const nanoClient = Promise.promisifyAll(nano(config));
 
     if (!nanoClient.config.db) {
@@ -67,7 +71,7 @@ function bootstrapCouchdb(config, wait) {
             log.warn({ err }, `Check of ${nanoClient.config.db} failed`);
             retry(err);
         });
-    }, wait ? retriesOption : { retries: 0 })
+    }, options.wait ? retriesOption : { retries: 0 })
     .then(() => log.debug(`CouchDB for ${nanoClient.config.db} is ready`))
     .return(nanoClient);
 }
@@ -75,12 +79,12 @@ function bootstrapCouchdb(config, wait) {
 /**
  * Bootstraps a Elasticsearch client.
  *
- * @param {object}  config The Elasticsearch config
- * @param {boolean} wait   True to wait for it to be ready
+ * @param {object}  config  The Elasticsearch config
+ * @param {options} options The options inferred from bootstrap()
  *
  * @return {Promise} The promise that resolves when done
  */
-function bootstrapElasticsearch(config, wait) {
+function bootstrapElasticsearch(config, options) {
     const esClient = new elasticsearch.Client(config);
 
     return promiseRetry((retry) => {
@@ -95,7 +99,7 @@ function bootstrapElasticsearch(config, wait) {
             log.warn({ err }, 'Check of Elasticsearch failed');
             retry(err);
         });
-    }, wait ? retriesOption : { retries: 0 })
+    }, options.wait ? retriesOption : { retries: 0 })
     .then(() => log.debug('Elasticsearch is ready'))
     .return(esClient);
 }
@@ -103,12 +107,12 @@ function bootstrapElasticsearch(config, wait) {
 /**
  * Bootstraps the analysis queue.
  *
- * @param {object}  config The queue config
- * @param {boolean} wait   True to wait for it to be ready
+ * @param {object}  config  The queue config
+ * @param {options} options The options inferred from bootstrap()
  *
  * @return {Promise} The promise that resolves when done
  */
-function bootstrapQueue(config, wait) {
+function bootstrapQueue(config, options) {
     const analysisQueue = queue(config.name, config.addr, config.options);
 
     return promiseRetry((retry) => {
@@ -117,7 +121,7 @@ function bootstrapQueue(config, wait) {
             log.warn({ err }, 'Check of Queue failed');
             retry(err);
         });
-    }, wait ? retriesOption : { retries: 0 })
+    }, options.wait ? retriesOption : { retries: 0 })
     .then(() => log.debug('Queue is ready'))
     .return(analysisQueue);
 }
