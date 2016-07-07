@@ -42,7 +42,7 @@
                     "stem_english_possessive": true
                 },
 
-                // Edge ngram to enable provide fallback to stemming
+                // Edge ngram to provide fallback to stemming
                 "edge_ngram": {
                     "type": "edgeNGram",
                     "min_gram": "4",
