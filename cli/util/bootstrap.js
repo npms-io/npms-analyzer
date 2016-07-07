@@ -14,7 +14,7 @@ const log = logger.child({ module: 'bootstrap' });
  * Bootstrap several dependencies, waiting for them to be ready: CouchDB, Elasticsearch and Queue.
  * Tries several times before failing.
  *
- * @param {object}  deps     The dependencies to setup
+ * @param {object} deps      The dependencies to setup
  * @param {object} [options] The options; read bellow to get to know each available option
  *
  * @return {Promise} The promise that resolves when they are ready
@@ -34,11 +34,11 @@ function bootstrap(deps, options) {
         switch (dep) {
         case 'couchdbNpm':
         case 'couchdbNpms':
-            return bootstrapCouchdb(config.get(dep), wait);
+            return bootstrapCouchdb(config.get(dep), options);
         case 'elasticsearch':
-            return bootstrapElasticsearch(config.get('elasticsearch'), wait);
+            return bootstrapElasticsearch(config.get('elasticsearch'), options);
         case 'queue':
-            return bootstrapQueue(config.get('queue'), wait);
+            return bootstrapQueue(config.get('queue'), options);
         default:
             throw new Error(`Unknown dependency: ${dep}`);
         }
