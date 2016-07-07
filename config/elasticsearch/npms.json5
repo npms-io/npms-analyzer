@@ -110,7 +110,7 @@
                     ]
                 },
 
-                // The module_autocomplete_* series produces good results for the `name` and `keywords` fields
+                // The module_autocomplete_* series produces good results for autocompletion
                 "module_autocomplete": {
                     "tokenizer": "standard",
                     "filter": [
