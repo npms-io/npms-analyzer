@@ -7,7 +7,7 @@
             args: 'observe',
             instances: 1,
             env : { NODE_ENV: 'production' },
-            max_memory_restart: '1.5GB'
+            max_memory_restart: '1500MB',
         },
         {
             name: 'npms-analyzer-consume',
@@ -15,7 +15,7 @@
             args: 'consume --concurrency 3',
             instances: 2,
             env : { NODE_ENV: 'production' },
-            max_memory_restart: '1.5GB'
+            max_memory_restart: '1500MB',
         },
         {
             name: 'npms-analyzer-scoring',
@@ -23,7 +23,7 @@
             args: 'scoring',
             instances: 1,
             env : { NODE_ENV: 'production' },
-            max_memory_restart: '1.5GB'
+            max_memory_restart: '1500MB',
         },
     ],
     deploy: {
