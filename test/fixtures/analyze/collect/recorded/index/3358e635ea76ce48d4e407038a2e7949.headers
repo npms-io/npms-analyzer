@@ -1,0 +1,32 @@
+{
+  "statusCode": 404,
+  "headers": {
+    "server": "GitHub.com",
+    "date": "Mon, 11 Jul 2016 13:15:42 GMT",
+    "content-type": "text/html; charset=utf-8",
+    "transfer-encoding": "chunked",
+    "status": "404 Not Found",
+    "cache-control": "no-cache",
+    "vary": "X-PJAX",
+    "x-ua-compatible": "IE=Edge,chrome=1",
+    "x-request-id": "d4c9029ecfa076bbb3a06f63f851e93a",
+    "x-runtime": "0.011734",
+    "content-security-policy": "default-src 'none'; base-uri 'self'; connect-src 'self'; form-action 'self'; img-src data:; script-src 'self'; style-src 'unsafe-inline'",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "public-key-pins": "max-age=5184000; pin-sha256=\"WoiWRyIOVNa9ihaBciRSC7XHjliYS9VwUGOIud4PB18=\"; pin-sha256=\"RRM1dGqnDFsCJXBTHky16vi1obOlCgFFn/yOhI/y+ho=\"; pin-sha256=\"k2v657xBsOVe1PQRwOsHsw3bsGT2VzIqz5K+59sNQws=\"; pin-sha256=\"K87oWBWM9UZfyddvDfoxL+8lpNyoUB2ptGtn0fv6G2Q=\"; pin-sha256=\"IQBnNBEiFuhj+8x6X8XLgh01V9Ic5/V3IRQLNFFc7v4=\"; pin-sha256=\"iie1VXtL7HzAMF+/PVPR9xzT80kQxdZeJ+zduCB3uj0=\"; pin-sha256=\"LvRiGEjRqfzurezaWuj8Wie2gyHMrW5Q06LspMnox7A=\"; includeSubDomains",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "content-encoding": "gzip",
+    "x-github-request-id": "5E3CA7B7:27DE:1096C149:57839BFE"
+  },
+  "url": "http://github.com:443/some-org/some-module-that-will-never-exist",
+  "time": 800,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "is-link-working/1.0.0 (https://github.com/IndigoUnited/is-link-working)",
+      "accept-encoding": "gzip,deflate"
+    }
+  }
+}

@@ -131,6 +131,15 @@ describe('metadata', () => {
         });
     });
 
+    it('should detect & remove broken links', () => {
+        return metadata({}, {
+            name: 'broken-link',
+            repository: { type: 'git', url: 'git+https://github.com/some-org/some-module-that-will-never-exist.git' },
+            homepage: 'http://somedomainthatwillneverexist.org',
+        })
+        .then((collected) => expect(Object.keys(collected.links)).to.eql(['npm']));
+    });
+
     describe('license', () => {
         it('should deal with licenses as arrays of strings', () => {
             return metadata({}, { name: 'cross-spawn', license: ['MIT'] })
