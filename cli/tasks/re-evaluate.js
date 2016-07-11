@@ -4,6 +4,7 @@ const couchdbIterator = require('couchdb-iterator');
 const evaluate = require('../../lib/analyze/evaluate');
 const save = require('../../lib/analyze').save;
 const bootstrap = require('../util/bootstrap');
+const stats = require('../util/stats');
 
 const log = logger.child({ module: 'cli/re-evaluate' });
 
@@ -24,6 +25,9 @@ module.exports.handler = (argv) => {
     bootstrap(['couchdbNpms'])
     .spread((npmsNano) => {
         log.info('Starting modules re-evaluation');
+
+        // Stats
+        stats.process();
 
         // Iterate over all modules, re-evaluating them
         return couchdbIterator(npmsNano, (row) => {

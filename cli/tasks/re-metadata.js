@@ -5,6 +5,7 @@ const metadata = require('../../lib/analyze/collect/metadata');
 const packageJsonFromData = require('../../lib/analyze/util/packageJsonFromData');
 const analyze = require('../../lib/analyze');
 const bootstrap = require('../util/bootstrap');
+const stats = require('../util/stats');
 
 const log = logger.child({ module: 'cli/re-metadata' });
 
@@ -25,6 +26,9 @@ module.exports.handler = (argv) => {
     bootstrap(['couchdbNpm', 'couchdbNpms'])
     .spread((npmNano, npmsNano) => {
         log.info('Starting modules re-metadata');
+
+        // Stats
+        stats.process();
 
         // Iterate over all modules
         return couchdbIterator(npmsNano, (row) => {
