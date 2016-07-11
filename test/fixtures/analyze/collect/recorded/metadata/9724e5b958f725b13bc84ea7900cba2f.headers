@@ -2,7 +2,7 @@
   "statusCode": 200,
   "headers": {
     "server": "GitHub.com",
-    "date": "Mon, 11 Jul 2016 12:32:06 GMT",
+    "date": "Mon, 11 Jul 2016 18:46:57 GMT",
     "content-type": "text/html; charset=utf-8",
     "transfer-encoding": "chunked",
     "status": "200 OK",
@@ -10,28 +10,28 @@
     "vary": "X-PJAX, Accept-Encoding",
     "x-ua-compatible": "IE=Edge,chrome=1",
     "set-cookie": [
-      "_octo=GH1.1.1138642135.1468240326; domain=.github.com; path=/; expires=Wed, 11 Jul 2018 12:32:06 -0000",
-      "logged_in=no; domain=.github.com; path=/; expires=Fri, 11 Jul 2036 12:32:06 -0000; secure; HttpOnly",
-      "_gh_sess=eyJzZXNzaW9uX2lkIjoiOWQ3MTkyNzM3ZTA0ZjAyYzBjMTkwZWE5OGI3MWI4NDkiLCJzcHlfcmVwbyI6IkluZGlnb1VuaXRlZC9ub2RlLWNyb3NzLXNwYXduIiwic3B5X3JlcG9fYXQiOjE0NjgyNDAzMjYsIl9jc3JmX3Rva2VuIjoiSXMzNktEVWxUSXZWQVNZenBxb3A3QTZML2NMTk4wVUlPRVZCbmtTK0FkTT0iLCJmbGFzaCI6eyJkaXNjYXJkIjpbImFuYWx5dGljc19sb2NhdGlvbiJdLCJmbGFzaGVzIjp7ImFuYWx5dGljc19sb2NhdGlvbiI6Ii88dXNlci1uYW1lPi88cmVwby1uYW1lPiJ9fX0%3D--71909490d49873f1df098239d9c76b819cf076b5; path=/; secure; HttpOnly"
+      "_octo=GH1.1.434931439.1468262817; domain=.github.com; path=/; expires=Wed, 11 Jul 2018 18:46:57 -0000",
+      "logged_in=no; domain=.github.com; path=/; expires=Fri, 11 Jul 2036 18:46:57 -0000; secure; HttpOnly",
+      "_gh_sess=eyJzZXNzaW9uX2lkIjoiNjFjYTc3OWU5NzJhNmJjZjc0ZjdjOTE1OTRkN2M1ZDQiLCJzcHlfcmVwbyI6IkluZGlnb1VuaXRlZC9ub2RlLWNyb3NzLXNwYXduIiwic3B5X3JlcG9fYXQiOjE0NjgyNjI4MTcsIl9jc3JmX3Rva2VuIjoiWER0OUZKbVkwQ3pQQWhaQUlCY1N2eTh3YXRHcWUyK1lMZi9xblNoRFdFbz0iLCJmbGFzaCI6eyJkaXNjYXJkIjpbImFuYWx5dGljc19sb2NhdGlvbiJdLCJmbGFzaGVzIjp7ImFuYWx5dGljc19sb2NhdGlvbiI6Ii88dXNlci1uYW1lPi88cmVwby1uYW1lPiJ9fX0%3D--bc7f374e216723ef08e491c4ac822538cbb0b7d7; path=/; secure; HttpOnly"
     ],
-    "x-request-id": "84eed5316da6fa6059821c2ad489a091",
-    "x-runtime": "0.060539",
+    "x-request-id": "6fa3104ed109cca5d1f900d978ff6b2c",
+    "x-runtime": "0.102346",
     "content-security-policy": "default-src 'none'; base-uri 'self'; block-all-mixed-content; child-src render.githubusercontent.com; connect-src 'self' uploads.github.com status.github.com api.github.com www.google-analytics.com github-cloud.s3.amazonaws.com wss://live.github.com; font-src assets-cdn.github.com; form-action 'self' github.com gist.github.com; frame-ancestors 'none'; frame-src render.githubusercontent.com; img-src 'self' data: assets-cdn.github.com identicons.github.com www.google-analytics.com collector.githubapp.com *.gravatar.com *.wp.com *.githubusercontent.com; media-src 'none'; object-src assets-cdn.github.com; plugin-types application/x-shockwave-flash; script-src assets-cdn.github.com; style-src 'unsafe-inline' assets-cdn.github.com",
     "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
     "public-key-pins": "max-age=5184000; pin-sha256=\"WoiWRyIOVNa9ihaBciRSC7XHjliYS9VwUGOIud4PB18=\"; pin-sha256=\"RRM1dGqnDFsCJXBTHky16vi1obOlCgFFn/yOhI/y+ho=\"; pin-sha256=\"k2v657xBsOVe1PQRwOsHsw3bsGT2VzIqz5K+59sNQws=\"; pin-sha256=\"K87oWBWM9UZfyddvDfoxL+8lpNyoUB2ptGtn0fv6G2Q=\"; pin-sha256=\"IQBnNBEiFuhj+8x6X8XLgh01V9Ic5/V3IRQLNFFc7v4=\"; pin-sha256=\"iie1VXtL7HzAMF+/PVPR9xzT80kQxdZeJ+zduCB3uj0=\"; pin-sha256=\"LvRiGEjRqfzurezaWuj8Wie2gyHMrW5Q06LspMnox7A=\"; includeSubDomains",
     "x-content-type-options": "nosniff",
     "x-frame-options": "deny",
     "x-xss-protection": "1; mode=block",
-    "x-served-by": "353c3e3783cd5fa717715b8bdf83c23b",
+    "x-served-by": "44f77bef9757b092723b0a6870733b02",
     "content-encoding": "gzip",
-    "x-github-request-id": "5E3CA7B7:27DF:13CC3301:578391C6"
+    "x-github-request-id": "5E3CA7B7:27E0:1713CCFE:5783E9A0"
   },
-  "url": "http://github.com:443/IndigoUnited/node-cross-spawn",
-  "time": 711,
+  "url": "https://github.com:443/IndigoUnited/node-cross-spawn",
+  "time": 757,
   "request": {
     "method": "GET",
     "headers": {
-      "user-agent": "is-link-working/1.0.0 (https://github.com/IndigoUnited/is-link-working)",
+      "user-agent": "is-link-working/2.0.1 (https://github.com/IndigoUnited/is-link-working)",
       "accept-encoding": "gzip,deflate"
     }
   }

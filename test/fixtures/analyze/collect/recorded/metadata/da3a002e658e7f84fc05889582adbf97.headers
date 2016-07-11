@@ -10,11 +10,11 @@
     "port": 80
   },
   "url": "http://somedomainthatwillneverexist.org:80/",
-  "time": 49,
+  "time": 17,
   "request": {
     "method": "GET",
     "headers": {
-      "user-agent": "is-link-working/1.0.0 (https://github.com/IndigoUnited/is-link-working)",
+      "user-agent": "is-link-working/2.0.1 (https://github.com/IndigoUnited/is-link-working)",
       "accept-encoding": "gzip,deflate"
     }
   }

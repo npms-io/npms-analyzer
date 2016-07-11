@@ -1,6 +1,7 @@
 'use strict';
 
 const expect = require('chai').expect;
+const sepia = require('sepia');
 const chronokinesis = require('chronokinesis');
 const loadJsonFile = require('load-json-file');
 const packageJsonFromData = require(`${process.cwd()}/lib/analyze/util/packageJsonFromData`);
@@ -9,7 +10,10 @@ const metadata = require(`${process.cwd()}/lib/analyze/collect/metadata`);
 const fixturesDir = `${process.cwd()}/test/fixtures/analyze/collect`;
 
 describe('metadata', () => {
-    before(() => chronokinesis.travel('2016-05-08T10:00:00.000Z'));
+    before(() => {
+        sepia.fixtureDir(`${fixturesDir}/recorded/metadata`);
+        chronokinesis.travel('2016-05-08T10:00:00.000Z');
+    });
     after(() => chronokinesis.reset());
 
     it('should collect cross-spawn correctly', () => {
@@ -132,12 +136,29 @@ describe('metadata', () => {
     });
 
     it('should detect & remove broken links', () => {
-        return metadata({}, {
-            name: 'broken-link',
-            repository: { type: 'git', url: 'git+https://github.com/some-org/some-module-that-will-never-exist.git' },
-            homepage: 'http://somedomainthatwillneverexist.org',
+        // Test all broken
+        return Promise.resolve()
+        .then(() => {
+            return metadata({}, {
+                name: 'broken-link',
+                homepage: 'http://somedomainthatwillneverexist.org',
+                repository: { type: 'git', url: 'git://github.com/some-org/some-module-that-will-never-exist.git' },
+                bugs: 'http://somedomainthatwillneverexist.org',
+            })
+            .then((collected) => expect(Object.keys(collected.links)).to.eql(['npm']));
         })
-        .then((collected) => expect(Object.keys(collected.links)).to.eql(['npm']));
+        // Test broken homepage (should fallback to repository)
+        .then(() => {
+            return metadata({}, {
+                name: 'broken-link',
+                homepage: 'http://somedomainthatwillneverexist.org',
+                repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
+            })
+            .then((collected) => {
+                expect(Object.keys(collected.links)).to.eql(['npm', 'homepage', 'repository', 'bugs']);
+                expect(collected.links.homepage).to.equal('https://github.com/IndigoUnited/node-cross-spawn#readme');
+            });
+        });
     });
 
     describe('license', () => {
