@@ -28,7 +28,7 @@ module.exports.handler = (argv) => {
 
         // Iterate over all modules
         return couchdbIterator(npmsNano, (row) => {
-            row.index && row.index % 10000 === 0 && log.info(`Processed ${row.index} rows`);
+            row.index && row.index % 2500 === 0 && log.info(`Processed ${row.index} rows`);
 
             if (!row.doc) {
                 return;
