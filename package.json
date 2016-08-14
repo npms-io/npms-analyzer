@@ -35,7 +35,7 @@
     "config": "^1.19.0",
     "couchdb-force": "^1.0.1",
     "couchdb-iterator": "^2.0.0",
-    "david": "^7.0.1",
+    "david": "^8.0.0",
     "deep-compact": "^1.0.2",
     "detect-readme-badges": "^1.0.0",
     "detect-repo-linters": "^1.0.1",
