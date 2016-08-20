@@ -26,7 +26,7 @@
     "module",
     "package"
   ],
-  "author": "IndigoUnited <hello@indigounited.com> (http://indigounited.com)",
+  "author": "André Cruz <amdfcruz@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "amqplib": "^0.4.0",
