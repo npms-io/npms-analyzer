@@ -88,6 +88,6 @@
     "node": ">=4.0.0"
   },
   "bin": {
-    "npms-analyzer": "./cli.js"
+    "npms-analyzer": "cli.js"
   }
 }
