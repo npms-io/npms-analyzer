@@ -15,7 +15,7 @@ module.exports.builder = (yargs) => {
     .usage('Usage: $0 tasks re-metadata [options]\n\n\
 Iterates over all analyzed modules, running the metadata collector again.\nThis command is useful if there was a bug in the \
 metadata collector. Note that the modules score won\'t be updated.')
-    .demand(2, 2);
+    .demand(0, 0);
 };
 
 module.exports.handler = (argv) => {

@@ -83,7 +83,7 @@ exports.builder = (yargs) => {
     .strict()
     .usage('Usage: $0 scoring [options]\n\n\
 Continuously iterate over the analyzed modules, scoring them.')
-    .demand(1, 1)
+    .demand(0, 0)
 
     .option('cycle-delay', {
         type: 'number',

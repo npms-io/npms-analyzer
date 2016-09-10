@@ -63,7 +63,7 @@ module.exports.builder = (yargs) => {
     .strict()
     .usage('Usage: $0 consume [options]\n\n\
 Consumes modules that are queued, triggering the analysis process for each module.')
-    .demand(1, 1)
+    .demand(0, 0)
     .option('concurrency', {
         type: 'number',
         default: 5,
