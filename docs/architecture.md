@@ -174,12 +174,12 @@ By looking at the diagram above, you get an idea of how the continuous scoring p
 
 One important detail is that the continuous scoring process creates and maintains two [aliases](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-aliases.html):
 
-- `npms-read`: Should be used to query the score data
-- `npms-write`: Should be used to write score data
+- `npms-current`: The index with the full data from the last completed scoring process
+- `npms-new`: The index that the current scoring process is writing to
 
 ### Prepare
 
-The prepare step creates a new index and updates the `npms-write` alias to point to that index. It also removes extraneous indices from previous failed cycles (if any).
+The prepare step creates a new index and updates the `npms-new` alias to point to that index. It also removes extraneous indices from previous failed cycles (if any).
 
 ### Aggregate
 
@@ -193,8 +193,8 @@ The module evaluation and aggregation `mean` are normalized ([0, 1]), using the 
 
 ![bezier](./diagrams/bezier.png)
 
-The score data for each module is stored in `Elasticsearch` into the index referenced by the `npms-write` alias.
+The score data for each module are stored in `Elasticsearch` into both `npms-current` and `npms-new` indices.
 
 ### Finalize
 
-The finalize step updates the `npms-read` alias to point to the newly populated index and deletes the previous index.
+The finalize step updates the `npms-current` alias to point to the newly populated index and deletes the `npms-new` alias and previous index.
