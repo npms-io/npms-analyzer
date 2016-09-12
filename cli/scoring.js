@@ -20,7 +20,7 @@ const log = logger.child({ module: 'cli/scoring' });
  */
 function waitRemaining(delay, esClient) {
     // Need to use Promise.resolve() because elasticsearch doesn't use the global promise
-    return Promise.resolve(esClient.indices.getAlias({ name: 'npms-read' }))
+    return Promise.resolve(esClient.indices.getAlias({ name: 'npms-current' }))
     .then((response) => {
         const index = Object.keys(response)[0];
         const timestamp = Number(index.replace(/^npms\-/, ''));
