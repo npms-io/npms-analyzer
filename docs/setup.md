@@ -41,4 +41,7 @@ This project uses [config](https://www.npmjs.com/package/config) for configurati
 
 - Install [Elasticsearch](https://www.elastic.co/downloads/elasticsearch) (tested with `v2.3.1`)
 - Install the [head](https://github.com/mobz/elasticsearch-head) plugin to perform various manual operations in a web GUI
-- Add these two configurations to the `elasticsearch.yml`: `script.engine.groovy.inline.search: on`, `script.engine.groovy.inline.update: on`
+- Add these configurations to the `elasticsearch.yml`:
+  - `action.auto_create_index: -npms-current,-npms-new,+*``
+  - `script.engine.groovy.inline.search: on`
+  - `script.engine.groovy.inline.update: on`
