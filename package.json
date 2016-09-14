@@ -7,7 +7,7 @@
     "lint": "eslint '{*.js,lib/**/*.js,test/**/*.js}' --ignore-pattern=test/coverage",
     "test": "test/download && VCR_MODE=cache mocha",
     "test-cov": "test/download && VCR_MODE=cache istanbul cover --dir test/coverage _mocha && echo Coverage lies in test/coverage/lcov-report/index.html",
-    "test-travis": "test/download && VCR_MODE=playback istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "test-travis": "test/download && VCR_MODE=playback istanbul cover _mocha --report lcovonly && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "bugs": {
     "url": "https://github.com/npms-io/npms-analyzer/issues/"
@@ -26,7 +26,7 @@
     "module",
     "package"
   ],
-  "author": "IndigoUnited <hello@indigounited.com> (http://indigounited.com)",
+  "author": "André Cruz <amdfcruz@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "amqplib": "^0.4.0",
@@ -35,7 +35,7 @@
     "config": "^1.19.0",
     "couchdb-force": "^1.0.1",
     "couchdb-iterator": "^2.0.0",
-    "david": "^7.0.1",
+    "david": "^9.0.0",
     "deep-compact": "^1.0.2",
     "detect-readme-badges": "^1.0.0",
     "detect-repo-linters": "^1.0.1",
@@ -45,6 +45,7 @@
     "got": "^6.2.0",
     "hosted-git-info": "^2.1.4",
     "humanize-duration": "^3.6.1",
+    "is-link-working": "^2.1.0",
     "is-regular-file": "^1.0.1",
     "json5": "^0.5.0",
     "load-json-file": "^2.0.0",
@@ -66,7 +67,7 @@
     "token-dealer": "^1.2.0",
     "weighted-mean": "^1.0.0",
     "which": "^1.2.8",
-    "yargs": "^4.0.0"
+    "yargs": "^5.0.0"
   },
   "optionalDependencies": {
     "heapdump": "^0.3.7"
@@ -79,7 +80,7 @@
     "coveralls": "^2.11.6",
     "eslint": "^3.0.0",
     "istanbul": "^0.4.2",
-    "mocha": "^2.4.5",
+    "mocha": "^3.0.1",
     "nock": "^8.0.0",
     "sepia": "^2.0.1"
   },
@@ -87,6 +88,6 @@
     "node": ">=4.0.0"
   },
   "bin": {
-    "npms-analyzer": "./cli.js"
+    "npms-analyzer": "cli.js"
   }
 }

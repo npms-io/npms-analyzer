@@ -8,7 +8,7 @@ module.exports = (yargs) => {
     return yargs
     .strict()
     .usage('Group of task commands, choose one of the available commands.\n\nUsage: $0 tasks <command> [options]')
-    .demand(2, 'Please supply a valid command')
+    .demand(1, 'Please supply a valid command')
     .default('log-level', 'info')
 
     .check((argv) => {

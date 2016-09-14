@@ -15,7 +15,7 @@ const log = logger.child({ module: 'cli/consume' });
  * @param {object}  msg      The message
  * @param {Nano}    npmNano  The npm nano instance
  * @param {Nano}    npmsNano The npms nano instance
- * @param {Elastic} esClient The elasticsearch instance
+ * @param {Elastic} esClient The Elasticsearch instance
  *
  * @return {Promise} A promise that fulfills when consumed
  */
@@ -63,7 +63,7 @@ module.exports.builder = (yargs) => {
     .strict()
     .usage('Usage: $0 consume [options]\n\n\
 Consumes modules that are queued, triggering the analysis process for each module.')
-    .demand(1, 1)
+    .demand(0, 0)
     .option('concurrency', {
         type: 'number',
         default: 5,

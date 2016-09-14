@@ -4,6 +4,7 @@ const couchdbIterator = require('couchdb-iterator');
 const evaluate = require('../../lib/analyze/evaluate');
 const save = require('../../lib/analyze').save;
 const bootstrap = require('../util/bootstrap');
+const stats = require('../util/stats');
 
 const log = logger.child({ module: 'cli/re-evaluate' });
 
@@ -13,7 +14,7 @@ module.exports.builder = (yargs) => {
     .usage('Usage: $0 tasks re-evaluate [options]\n\n\
 Iterates over all analyzed modules, evaluating them again.\nThis command is useful if the evaluation algorithm has changed and \
 the evaluation needs to be re-calculated for all modules. Note that the modules score won\'t be updated.')
-    .demand(2, 2);
+    .demand(0, 0);
 };
 
 module.exports.handler = (argv) => {
@@ -24,6 +25,9 @@ module.exports.handler = (argv) => {
     bootstrap(['couchdbNpms'])
     .spread((npmsNano) => {
         log.info('Starting modules re-evaluation');
+
+        // Stats
+        stats.process();
 
         // Iterate over all modules, re-evaluating them
         return couchdbIterator(npmsNano, (row) => {

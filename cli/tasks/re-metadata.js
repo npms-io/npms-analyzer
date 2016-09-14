@@ -5,6 +5,7 @@ const metadata = require('../../lib/analyze/collect/metadata');
 const packageJsonFromData = require('../../lib/analyze/util/packageJsonFromData');
 const analyze = require('../../lib/analyze');
 const bootstrap = require('../util/bootstrap');
+const stats = require('../util/stats');
 
 const log = logger.child({ module: 'cli/re-metadata' });
 
@@ -14,7 +15,7 @@ module.exports.builder = (yargs) => {
     .usage('Usage: $0 tasks re-metadata [options]\n\n\
 Iterates over all analyzed modules, running the metadata collector again.\nThis command is useful if there was a bug in the \
 metadata collector. Note that the modules score won\'t be updated.')
-    .demand(2, 2);
+    .demand(0, 0);
 };
 
 module.exports.handler = (argv) => {
@@ -26,9 +27,12 @@ module.exports.handler = (argv) => {
     .spread((npmNano, npmsNano) => {
         log.info('Starting modules re-metadata');
 
+        // Stats
+        stats.process();
+
         // Iterate over all modules
         return couchdbIterator(npmsNano, (row) => {
-            row.index && row.index % 10000 === 0 && log.info(`Processed ${row.index} rows`);
+            row.index && row.index % 2500 === 0 && log.info(`Processed ${row.index} rows`);
 
             if (!row.doc) {
                 return;

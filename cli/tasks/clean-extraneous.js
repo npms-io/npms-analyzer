@@ -46,7 +46,7 @@ module.exports.builder = (yargs) => {
     .usage('Usage: $0 tasks clean-extraneous [options]\n\n\
 Finds modules that are analyzed but no longer exist in npm.\nThis command is useful if operations were lost due to repeated \
 errors, e.g.: RabbitMQ or CouchDB were down or unstable.')
-    .demand(2, 2)
+    .demand(0, 0)
 
     .option('dry-run', {
         alias: 'dr',

@@ -97,7 +97,7 @@ module.exports.builder = (yargs) => {
     return yargs
     .strict()
     .usage('Usage: $0 tasks db-optimize [options]\n\nOptimizes the CouchDB database, compacting itself and its views.')
-    .demand(2, 2)
+    .demand(0, 0)
     .example('$0 tasks db-optimize ')
     .example('$0 tasks db-optimize --no-compact', 'Just cleanup old views, do not compact')
 

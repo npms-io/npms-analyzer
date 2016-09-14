@@ -14,13 +14,13 @@ const log = logger.child({ module: 'cli/scoring' });
  * Waits the time needed before running the first cycle.
  *
  * @param {Number}  delay    The delay between each cycle
- * @param {Elastic} esClient The elasticsearch instance
+ * @param {Elastic} esClient The Elasticsearch instance
  *
  * @return {Promise} The promise to be waited
  */
 function waitRemaining(delay, esClient) {
-    // Need to use Promise.resolve() because elasticsearch doesn't use the global promise
-    return Promise.resolve(esClient.indices.getAlias({ name: 'npms-read' }))
+    // Need to use Promise.resolve() because Elasticsearch doesn't use the global promise
+    return Promise.resolve(esClient.indices.getAlias({ name: 'npms-current' }))
     .then((response) => {
         const index = Object.keys(response)[0];
         const timestamp = Number(index.replace(/^npms\-/, ''));
@@ -40,7 +40,7 @@ function waitRemaining(delay, esClient) {
  *
  * @param {Number}  delay    The delay between each cycle
  * @param {Nano}    npmsNano The npm nano instance
- * @param {Elastic} esClient The elasticsearch instance
+ * @param {Elastic} esClient The Elasticsearch instance
  */
 function cycle(delay, npmsNano, esClient) {
     const startedAt = Date.now();
@@ -83,7 +83,7 @@ exports.builder = (yargs) => {
     .strict()
     .usage('Usage: $0 scoring [options]\n\n\
 Continuously iterate over the analyzed modules, scoring them.')
-    .demand(1, 1)
+    .demand(0, 0)
 
     .option('cycle-delay', {
         type: 'number',
