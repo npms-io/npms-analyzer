@@ -79,6 +79,7 @@
     "chronokinesis": "^1.1.0",
     "coveralls": "^2.11.6",
     "eslint": "^3.0.0",
+    "fetch-coverage": "^1.0.3",
     "istanbul": "^0.4.2",
     "mocha": "^3.0.1",
     "nock": "^8.0.0",
