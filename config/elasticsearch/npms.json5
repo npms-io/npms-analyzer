@@ -276,6 +276,10 @@
                             "type": "date",
                             "index": "no"
                         },
+                        "deprecated": {
+                            "type": "string",
+                            "index": "no"
+                        },
                         "publisher": {
                             "type": "object",
                             "properties": {
