@@ -176,7 +176,7 @@
     // ------------------------------------------------------------------------------
     "mappings" : {
         "module" : {
-            "dynamic": "strict",
+            "dynamic": false,
             "_all": {
                 "enabled": false
             },
@@ -274,6 +274,10 @@
                         },
                         "date": {
                             "type": "date",
+                            "index": "no"
+                        },
+                        "deprecated": {
+                            "type": "string",
                             "index": "no"
                         },
                         "publisher": {
