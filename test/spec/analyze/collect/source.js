@@ -5,7 +5,6 @@ const cp = require('child_process');
 const loadJsonFile = require('load-json-file');
 const expect = require('chai').expect;
 const betray = require('betray');
-const nock = require('nock');
 const sepia = require(`${process.cwd()}/test/util/sepia`);
 const packageJsonFromData = require(`${process.cwd()}/lib/analyze/util/packageJsonFromData`);
 const githubDownloader = require(`${process.cwd()}/lib/analyze/download/github`);
@@ -139,87 +138,21 @@ describe('source', () => {
 
     it('should get tests size present in a variety of folders and files');
 
-    describe('coverage', () => {
-        it('should handle "unknown" coverage badge values', () => {
-            nock('https://img.shields.io')
-            .get('/coveralls/IndigoUnited/node-planify.json')
-            .reply(200, { value: 'unknown' });
+    it('should fetch coverage', () => {
+        sepia.enable();
 
-            sepia.enable();
+        const data = loadJsonFile.sync(`${fixturesDir}/modules/planify/data.json`);
+        const packageJson = packageJsonFromData('planify', data);
 
-            const data = loadJsonFile.sync(`${fixturesDir}/modules/planify/data.json`);
-            const packageJson = packageJsonFromData('planify', data);
+        return githubDownloader(packageJson)(tmpDir)
+        .then((downloaded) => {
+            const betrayed = mockExternal();
 
-            return githubDownloader(packageJson)(tmpDir)
-            .then((downloaded) => {
-                const betrayed = mockExternal();
-
-                return source(data, packageJson, downloaded)
-                .then((collected) => {
-                    expect(nock.isDone()).to.equal(true);
-                    expect(collected.coverage).to.equal(undefined);
-                })
-                .finally(() => betrayed.restore());
-            })
-            .finally(() => {
-                nock.cleanAll();
-                sepia.disable();
-            });
-        });
-
-        it('should handle invalid coverage badge values', () => {
-            nock('https://img.shields.io')
-            .get('/coveralls/IndigoUnited/node-planify.json')
-            .reply(200, { value: 'foobar' });
-
-            sepia.enable();
-
-            const data = loadJsonFile.sync(`${fixturesDir}/modules/planify/data.json`);
-            const packageJson = packageJsonFromData('planify', data);
-
-            return githubDownloader(packageJson)(tmpDir)
-            .then((downloaded) => {
-                const betrayed = mockExternal();
-
-                return source(data, packageJson, downloaded)
-                .then((collected) => {
-                    expect(nock.isDone()).to.equal(true);
-                    expect(collected.coverage).to.equal(undefined);
-                })
-                .finally(() => betrayed.restore());
-            })
-            .finally(() => {
-                nock.cleanAll();
-                sepia.disable();
-            });
-        });
-
-        it('should handle non-string coverage badge values', () => {
-            nock('https://img.shields.io')
-            .get('/coveralls/IndigoUnited/node-planify.json')
-            .reply(200, { value: 1 });
-
-            sepia.enable();
-
-            const data = loadJsonFile.sync(`${fixturesDir}/modules/planify/data.json`);
-            const packageJson = packageJsonFromData('planify', data);
-
-            return githubDownloader(packageJson)(tmpDir)
-            .then((downloaded) => {
-                const betrayed = mockExternal();
-
-                return source(data, packageJson, downloaded)
-                .then((collected) => {
-                    expect(nock.isDone()).to.equal(true);
-                    expect(collected.coverage).to.equal(undefined);
-                })
-                .finally(() => betrayed.restore());
-            })
-            .finally(() => {
-                nock.cleanAll();
-                sepia.disable();
-            });
-        });
+            return source(data, packageJson, downloaded)
+            .then((collected) => expect(collected.coverage).to.equal(1))
+            .finally(() => betrayed.restore());
+        })
+        .finally(() => sepia.disable());
     });
 
     it('should handle broken dependencies when checking outdated with david', () => {
