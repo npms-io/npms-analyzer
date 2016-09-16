@@ -1,0 +1,32 @@
+{
+  "files": {
+    "readmeSize": 11287,
+    "testsSize": 27463,
+    "hasNpmIgnore": false,
+    "hasShrinkwrap": false,
+    "hasChangelog": true
+  },
+  "repositorySize": 529376,
+  "linters": {
+    "js": [
+      "jshint"
+    ]
+  },
+  "badges": [
+    {
+      "urls": {
+        "original": "https://secure.travis-ci.org/MathieuTurcotte/node-backoff.png?branch=master",
+        "service": "https://api.travis-ci.org/MathieuTurcotte/node-backoff.svg?branch=master",
+        "shields": "https://img.shields.io/travis/MathieuTurcotte/node-backoff/master.svg",
+        "content": "https://img.shields.io/travis/MathieuTurcotte/node-backoff/master.json"
+      },
+      "info": {
+        "service": "travis",
+        "type": "build",
+        "modifiers": {
+          "branch": "master"
+        }
+      }
+    }
+  ]
+}

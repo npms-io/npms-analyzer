@@ -1,9 +1,10 @@
 {
   "files": {
     "readmeSize": 1213,
-    "testsSize": 959346,
+    "testsSize": 959339,
     "hasNpmIgnore": false,
-    "hasShrinkwrap": true
+    "hasShrinkwrap": true,
+    "hasChangelog": false
   },
   "repositorySize": 1330384,
   "badges": [

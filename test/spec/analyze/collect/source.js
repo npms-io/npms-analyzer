@@ -61,99 +61,33 @@ describe('source', () => {
     beforeEach(() => cp.execSync(`mkdir -p ${tmpDir}`));
     afterEach(() => cp.execSync(`rm -rf ${tmpDir}`));
 
-    it('should collect cross-spawn correctly', () => {
-        sepia.enable();
+    [
+        { name: 'cross-spawn', downloader: githubDownloader },
+        { name: 'planify', downloader: githubDownloader },
+        { name: 'hapi', downloader: githubDownloader },
+        { name: '0', downloader: npmDownloader },
+        { name: 'backoff', downloader: githubDownloader },
+    ].forEach((entry) => {
+        it(`should collect \`${entry.name}\` correctly`, () => {
+            sepia.enable();
 
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
-        const packageJson = packageJsonFromData('cross-spawn', data);
-        const expected = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/expected-source.json`);
+            const data = loadJsonFile.sync(`${fixturesDir}/modules/${entry.name}/data.json`);
+            const packageJson = packageJsonFromData(entry.name, data);
+            const expected = loadJsonFile.sync(`${fixturesDir}/modules/${entry.name}/expected-source.json`);
 
-        return githubDownloader(packageJson)(tmpDir)
-        .then((downloaded) => {
-            const betrayed = mockExternal();
+            return entry.downloader(packageJson)(tmpDir)
+            .then((downloaded) => {
+                const betrayed = mockExternal();
 
-            return source(data, packageJson, downloaded)
-            .then((collected) => expect(collected).to.eql(expected))
-            .finally(() => betrayed.restore());
-        })
-        .finally(() => sepia.disable());
+                return source(data, packageJson, downloaded)
+                .then((collected) => expect(collected).to.eql(expected))
+                .finally(() => betrayed.restore());
+            })
+            .finally(() => sepia.disable());
+        });
     });
 
-    it('should collect planify correctly', () => {
-        sepia.enable();
-
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/planify/data.json`);
-        const packageJson = packageJsonFromData('planify', data);
-        const expected = loadJsonFile.sync(`${fixturesDir}/modules/planify/expected-source.json`);
-
-        return githubDownloader(packageJson)(tmpDir)
-        .then((downloaded) => {
-            const betrayed = mockExternal();
-
-            return source(data, packageJson, downloaded)
-            .then((collected) => expect(collected).to.eql(expected))
-            .finally(() => betrayed.restore());
-        })
-        .finally(() => sepia.disable());
-    });
-
-    it('should collect hapi correctly', () => {
-        sepia.enable();
-
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/hapi/data.json`);
-        const packageJson = packageJsonFromData('hapi', data);
-        const expected = loadJsonFile.sync(`${fixturesDir}/modules/hapi/expected-source.json`);
-
-        return githubDownloader(packageJson)(tmpDir)
-        .then((downloaded) => {
-            const betrayed = mockExternal();
-
-            return source(data, packageJson, downloaded)
-            .then((collected) => expect(collected).to.eql(expected))
-            .finally(() => betrayed.restore());
-        })
-        .finally(() => sepia.disable());
-    });
-
-    it('should collect 0 correctly', () => {
-        sepia.enable();
-
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/0/data.json`);
-        const packageJson = packageJsonFromData('0', data);
-        const expected = loadJsonFile.sync(`${fixturesDir}/modules/0/expected-source.json`);
-
-        return npmDownloader(packageJson)(tmpDir)
-        .then((downloaded) => {
-            const betrayed = mockExternal();
-
-            return source(data, packageJson, downloaded)
-            .tap((collected) => fs.writeFileSync(`${fixturesDir}/modules/0/expected-source.json`, JSON.stringify(collected, null, 2)))
-            .then((collected) => expect(collected).to.eql(expected))
-            .finally(() => betrayed.restore());
-        })
-        .finally(() => sepia.disable());
-    });
-
-    it('should collect babbel correctly, working around NPM_TOKEN env var');
-
-    it('should get tests size present in a variety of folders and files');
-
-    it('should fetch coverage', () => {
-        sepia.enable();
-
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/planify/data.json`);
-        const packageJson = packageJsonFromData('planify', data);
-
-        return githubDownloader(packageJson)(tmpDir)
-        .then((downloaded) => {
-            const betrayed = mockExternal();
-
-            return source(data, packageJson, downloaded)
-            .then((collected) => expect(collected.coverage).to.equal(1))
-            .finally(() => betrayed.restore());
-        })
-        .finally(() => sepia.disable());
-    });
+    it('should work around NPM_TOKEN env var, e.g.: `babbel`');
 
     it('should handle broken dependencies when checking outdated with david', () => {
         sepia.enable();

@@ -3,7 +3,8 @@
     "readmeSize": 2709,
     "testsSize": 20813,
     "hasNpmIgnore": true,
-    "hasShrinkwrap": false
+    "hasShrinkwrap": false,
+    "hasChangelog": false
   },
   "repositorySize": 30199,
   "linters": {
