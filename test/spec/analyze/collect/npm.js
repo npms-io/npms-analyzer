@@ -20,18 +20,20 @@ describe('npm', () => {
     });
     after(() => chronokinesis.reset());
 
-    it('should collect cross-spawn correctly', () => {
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
-        const expected = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/expected-npm.json`);
+    ['cross-spawn'].forEach((name) => {
+        it(`should collect \`${name}\` correctly`, () => {
+            const data = loadJsonFile.sync(`${fixturesDir}/modules/${name}/data.json`);
+            const expected = loadJsonFile.sync(`${fixturesDir}/modules/${name}/expected-npm.json`);
 
-        sepia.enable();
+            sepia.enable();
 
-        return npm(data, packageJsonFromData('cross-spawn', data), npmNano)
-        .then((collected) => expect(collected).to.eql(expected))
-        .finally(() => sepia.disable());
+            return npm(data, packageJsonFromData(name, data), npmNano)
+            .then((collected) => expect(collected).to.eql(expected))
+            .finally(() => sepia.disable());
+        });
     });
 
-    it('should handle no results when querying app/dependedUpon view', () => {
+    it('should handle no results when querying `app/dependedUpon` view', () => {
         const betrayed = betray(npmNano, 'viewAsync', () => Promise.resolve({ rows: [] }));
         const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
 

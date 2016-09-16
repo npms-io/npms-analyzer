@@ -18,6 +18,19 @@ describe('github', () => {
     });
     after(() => chronokinesis.reset());
 
+    ['cross-spawn'].forEach((name) => {
+        it(`should collect \`${name}\` correctly`, () => {
+            const data = loadJsonFile.sync(`${fixturesDir}/modules/${name}/data.json`);
+            const expected = loadJsonFile.sync(`${fixturesDir}/modules/${name}/expected-github.json`);
+
+            sepia.enable();
+
+            return github(packageJsonFromData(name, data), {})
+            .then((collected) => expect(collected).to.eql(expected))
+            .finally(() => sepia.disable());
+        });
+    });
+
     it('should skip if there\'s no repository or if it\'s not hosted on github', () => {
         return Promise.try(() => {
             return github({ name: 'cross-spawn' }, {})
@@ -30,17 +43,6 @@ describe('github', () => {
             }, {})
             .then((collected) => expect(collected).to.equal(null));
         });
-    });
-
-    it('should collect cross-spawn correctly', () => {
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
-        const expected = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/expected-github.json`);
-
-        sepia.enable();
-
-        return github(packageJsonFromData('cross-spawn', data), {})
-        .then((collected) => expect(collected).to.eql(expected))
-        .finally(() => sepia.disable());
     });
 
     it('should detect forks', () => {

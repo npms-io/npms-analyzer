@@ -16,12 +16,14 @@ describe('metadata', () => {
     });
     after(() => chronokinesis.reset());
 
-    it('should collect cross-spawn correctly', () => {
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
-        const expected = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/expected-metadata.json`);
+    ['cross-spawn'].forEach((name) => {
+        it(`should collect \`${name}\` correctly`, () => {
+            const data = loadJsonFile.sync(`${fixturesDir}/modules/${name}/data.json`);
+            const expected = loadJsonFile.sync(`${fixturesDir}/modules/${name}/expected-metadata.json`);
 
-        return metadata(data, packageJsonFromData('cross-spawn', data))
-        .then((collected) => expect(collected).to.eql(expected));
+            return metadata(data, packageJsonFromData(name, data))
+            .then((collected) => expect(collected).to.eql(expected));
+        });
     });
 
     it('should do a best effort to extract the publisher', () => {

@@ -1,0 +1,35 @@
+{
+  "statusCode": 302,
+  "headers": {
+    "server": "GitHub.com",
+    "date": "Fri, 16 Sep 2016 02:21:50 GMT",
+    "content-type": "text/html;charset=utf-8",
+    "content-length": "0",
+    "status": "302 Found",
+    "x-ratelimit-limit": "60",
+    "x-ratelimit-remaining": "0",
+    "x-ratelimit-reset": "1473994238",
+    "cache-control": "public, must-revalidate, max-age=0",
+    "expires": "Fri, 16 Sep 2016 02:21:50 GMT",
+    "location": "https://codeload.github.com/MathieuTurcotte/node-backoff/legacy.tar.gz/811118fd1f89e9ca4e6b67292b9ef5da6c4f60e9",
+    "access-control-expose-headers": "ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
+    "access-control-allow-origin": "*",
+    "content-security-policy": "default-src 'none'",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "vary": "Accept-Encoding",
+    "x-served-by": "52437fedc85beec8da3449496900fb9a",
+    "x-github-request-id": "D98186F0:C7B3:11B1813:57DB573E"
+  },
+  "url": "http://api.github.com:443/repos/MathieuTurcotte/node-backoff/tarball/811118fd1f89e9ca4e6b67292b9ef5da6c4f60e9",
+  "time": 558,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.5.0 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate"
+    }
+  }
+}
