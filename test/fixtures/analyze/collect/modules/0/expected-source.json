@@ -3,7 +3,8 @@
     "readmeSize": 0,
     "testsSize": 0,
     "hasNpmIgnore": false,
-    "hasShrinkwrap": false
+    "hasShrinkwrap": false,
+    "hasChangelog": false
   },
   "repositorySize": 629
 }

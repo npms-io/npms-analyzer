@@ -136,25 +136,6 @@ describe('source', () => {
 
     it('should collect babbel correctly, working around NPM_TOKEN env var');
 
-    it('should get tests size present in a variety of folders and files');
-
-    it('should fetch coverage', () => {
-        sepia.enable();
-
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/planify/data.json`);
-        const packageJson = packageJsonFromData('planify', data);
-
-        return githubDownloader(packageJson)(tmpDir)
-        .then((downloaded) => {
-            const betrayed = mockExternal();
-
-            return source(data, packageJson, downloaded)
-            .then((collected) => expect(collected.coverage).to.equal(1))
-            .finally(() => betrayed.restore());
-        })
-        .finally(() => sepia.disable());
-    });
-
     it('should handle broken dependencies when checking outdated with david', () => {
         sepia.enable();
         const betrayed = mockExternal({
