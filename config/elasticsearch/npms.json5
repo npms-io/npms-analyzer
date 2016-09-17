@@ -286,18 +286,21 @@
                             },
                         },
                         "author": {
-                            "name": { "type": "string", "index": "no" },
-                            "username": {
-                                "type": "string",
-                                "analyzer": "raw",
-                                "index_options": "docs",
+                            "type": "object",
+                            "properties": {
+                                "name": { "type": "string", "index": "no" },
+                                "username": {
+                                    "type": "string",
+                                    "analyzer": "raw",
+                                    "index_options": "docs",
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "analyzer": "raw",
+                                    "index_options": "docs",
+                                },
+                                "url": { "type": "string", "index": "no" },
                             },
-                            "email": {
-                                "type": "string",
-                                "analyzer": "raw",
-                                "index_options": "docs",
-                            },
-                            "url": { "type": "string", "index": "no" },
                         },
                         "publisher": {
                             "type": "object",
