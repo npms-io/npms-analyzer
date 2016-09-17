@@ -15,8 +15,8 @@
                     "type": "edgeNGram",
                     "min_gram": "1",
                     "max_gram": "15",
-                    "token_chars": ["letter", "digit"]
-                }
+                    "token_chars": ["letter", "digit"],
+                },
             },
 
             // Custom filters
@@ -24,7 +24,7 @@
                 "non_alfanum_to_space": {
                     "type": "pattern_replace",
                     "pattern": "(?i)[^a-z0-9]+",
-                    "replacement": " "
+                    "replacement": " ",
                 },
 
                 // Split word filter, which takes tokens, such as es6_promise or lodash.foreach, and splits them
@@ -39,28 +39,28 @@
                     "split_on_case_change": true,
                     "preserve_original": true,
                     "split_on_numerics": true,
-                    "stem_english_possessive": true
+                    "stem_english_possessive": true,
                 },
 
                 // Edge ngram to provide fallback to stemming
                 "edge_ngram": {
                     "type": "edgeNGram",
                     "min_gram": "4",
-                    "max_gram": "15"
+                    "max_gram": "15",
                 },
 
                 // Dedicated filter for autocompletion
                 "autocomplete": {
                     "type": "edgeNGram",
                     "min_gram": "1",
-                    "max_gram": "15"
+                    "max_gram": "15",
                 },
 
                 // Remove duplicate tokens
                 "unique_on_same_position": {
                    "type": "unique",
-                   "only_on_same_position": false
-                }
+                   "only_on_same_position": false,
+                },
             },
 
             // Custom analyzers
@@ -72,7 +72,7 @@
                         "asciifolding",
                         "split_word",
                         "lowercase",
-                        "unique_on_same_position"
+                        "unique_on_same_position",
                     ],
                 },
 
@@ -83,8 +83,8 @@
                         "split_word",
                         "lowercase",
                         "kstem",        // Non-aggressive english stemmer
-                        "unique_on_same_position"
-                    ]
+                        "unique_on_same_position",
+                    ],
                 },
 
                 "module_english_aggressive": {
@@ -94,8 +94,8 @@
                         "split_word",
                         "lowercase",
                         "porter_stem",  // Aggressive english stemmer
-                        "unique_on_same_position"
-                    ]
+                        "unique_on_same_position",
+                    ],
                 },
 
                 "module_edge_ngram": {
@@ -106,8 +106,8 @@
                         "split_word",
                         "lowercase",
                         "edge_ngram",
-                        "unique_on_same_position"
-                    ]
+                        "unique_on_same_position",
+                    ],
                 },
 
                 // The module_autocomplete_* series produces good results for autocompletion
@@ -118,8 +118,8 @@
                         "split_word",
                         "lowercase",
                         "autocomplete",
-                        "unique_on_same_position"
-                    ]
+                        "unique_on_same_position",
+                    ],
                 },
 
                 "module_autocomplete_keyword": {
@@ -132,8 +132,8 @@
                         "lowercase",
                         "autocomplete",
                         "trim",
-                        "unique_on_same_position"
-                    ]
+                        "unique_on_same_position",
+                    ],
                 },
 
                 "module_autocomplete_keyword_search": {
@@ -143,8 +143,8 @@
                         "asciifolding",
                         "non_alfanum_to_space",
                         "lowercase",
-                        "trim"
-                    ]
+                        "trim",
+                    ],
                 },
 
                 "module_autocomplete_highlight": {
@@ -156,19 +156,19 @@
                         "asciifolding",
                         "non_alfanum_to_space",
                         "lowercase",
-                        "trim"
-                    ]
+                        "trim",
+                    ],
                 },
 
                 // The raw analyzer simply does no transformation besides lowercasing
                 "raw": {
                     "tokenizer": "keyword",
                     "filter": [
-                        "lowercase"
-                    ]
-                }
-            }
-        }
+                        "lowercase",
+                    ],
+                },
+            },
+        },
     },
 
     // ------------------------------------------------------------------------------
@@ -178,7 +178,7 @@
         "module" : {
             "dynamic": false,
             "_all": {
-                "enabled": false
+                "enabled": false,
             },
 
             "properties" : {
@@ -193,40 +193,40 @@
                                 "english_docs": {
                                     "type": "string",
                                     "analyzer": "module_english",
-                                    "index_options": "docs"
+                                    "index_options": "docs",
                                 },
                                 "english_aggressive_docs": {
                                     "type": "string",
                                     "analyzer": "module_english_aggressive",
-                                    "index_options": "docs"
+                                    "index_options": "docs",
                                 },
                                 "edge_ngram": {
                                     "type": "string",
                                     "analyzer": "module_edge_ngram",
-                                    "search_analyzer": "module"
+                                    "search_analyzer": "module",
                                 },
                                 "autocomplete": {
                                     "type": "string",
                                     "analyzer": "module_autocomplete",
-                                    "search_analyzer": "module"
+                                    "search_analyzer": "module",
                                 },
                                 "autocomplete_highlight": {
                                     "type": "string",
                                     "analyzer": "module_autocomplete_highlight",
                                     "search_analyzer": "module",
-                                    "index_options": "offsets"
+                                    "index_options": "offsets",
                                 },
                                 "autocomplete_keyword": {
                                     "type": "string",
                                     "analyzer": "module_autocomplete_keyword",
-                                    "search_analyzer": "module_autocomplete_keyword_search"
+                                    "search_analyzer": "module_autocomplete_keyword_search",
                                 },
                                 "raw": {
                                     "type": "string",
                                     "analyzer": "raw",
-                                    "index_options": "docs"
-                                }
-                            }
+                                    "index_options": "docs",
+                                },
+                            },
                         },
                         "description": {
                             "type": "string",
@@ -234,19 +234,19 @@
                                 "english_docs": {
                                     "type": "string",
                                     "analyzer": "module_english",
-                                    "index_options": "docs"
+                                    "index_options": "docs",
                                 },
                                 "english_aggressive_docs": {
                                     "type": "string",
                                     "analyzer": "module_english_aggressive",
-                                    "index_options": "docs"
+                                    "index_options": "docs",
                                 },
                                 "edge_ngram": {
                                     "type": "string",
                                     "analyzer": "module_edge_ngram",
-                                    "search_analyzer": "module"
+                                    "search_analyzer": "module",
                                 },
-                            }
+                            },
                         },
                         "keywords": {
                             "type": "string",
@@ -254,47 +254,27 @@
                                 "english_docs": {
                                     "type": "string",
                                     "analyzer": "module_english",
-                                    "index_options": "docs"
+                                    "index_options": "docs",
                                 },
                                 "english_aggressive_docs": {
                                     "type": "string",
                                     "analyzer": "module_english_aggressive",
-                                    "index_options": "docs"
+                                    "index_options": "docs",
                                 },
                                 "edge_ngram": {
                                     "type": "string",
                                     "analyzer": "module_edge_ngram",
-                                    "search_analyzer": "module"
+                                    "search_analyzer": "module",
                                 },
-                            }
+                            },
                         },
                         "version": {
                             "type": "string",
-                            "index": "no"
+                            "index": "no",
                         },
                         "date": {
                             "type": "date",
-                            "index": "no"
-                        },
-                        "deprecated": {
-                            "type": "string",
-                            "index": "no"
-                        },
-                        "publisher": {
-                            "type": "object",
-                            "properties": {
-                                "username": {
-                                    "type": "string",
-                                    "fields": {
-                                        "raw": {
-                                            "type": "string",
-                                            "analyzer": "raw",
-                                            "index_options": "docs"
-                                        }
-                                    }
-                                },
-                                "email": { "type": "string", "index": "no" }
-                            }
+                            "index": "no",
                         },
                         "links": {
                             "type": "object",
@@ -302,27 +282,48 @@
                                 "npm": { "type": "string", "index": "no" },
                                 "homepage": { "type": "string", "index": "no" },
                                 "repository": { "type": "string", "index": "no" },
-                                "bugs": { "type": "string", "index": "no" }
-                            }
+                                "bugs": { "type": "string", "index": "no" },
+                            },
+                        },
+                        "author": {
+                            "name": { "type": "string", "index": "no" },
+                            "username": {
+                                "type": "string",
+                                "analyzer": "raw",
+                                "index_options": "docs",
+                            },
+                            "email": {
+                                "type": "string",
+                                "analyzer": "raw",
+                                "index_options": "docs",
+                            },
+                            "url": { "type": "string", "index": "no" },
+                        },
+                        "publisher": {
+                            "type": "object",
+                            "properties": {
+                                "username": { "type": "string", "index": "no" },
+                                "email": { "type": "string", "index": "no" },
+                            },
                         },
                         "maintainers": {
                             "type": "object",
                             "properties": {
                                 "username": {
                                     "type": "string",
-                                    "fields": {
-                                        "raw": {
-                                            "type": "string",
-                                            "analyzer": "raw",
-                                            "index_options": "docs"
-                                        }
-                                    }
+                                    "analyzer": "raw",
+                                    "index_options": "docs",
                                 },
-                                "email": { "type": "string", "index": "no" }
-                            }
-                        }
-                    }
+                                "email": {
+                                    "type": "string",
+                                    "analyzer": "raw",
+                                    "index_options": "docs",
+                                },
+                            },
+                        },
+                    },
                 },
+                "flags": { "type": "string", "index": "not_analyzed" },
                 "evaluation": {
                     "type": "object",
                     "properties": {
@@ -332,8 +333,8 @@
                                 "carefulness": { "type": "double", "index": "no" },
                                 "tests": { "type": "double", "index": "no" },
                                 "dependenciesHealth": { "type": "double", "index": "no" },
-                                "branding": { "type": "double", "index": "no" }
-                            }
+                                "branding": { "type": "double", "index": "no" },
+                            },
                         },
                         "popularity": {
                             "type": "object",
@@ -341,8 +342,8 @@
                                 "communityInterest": { "type": "double", "index": "no" },
                                 "downloadsCount": { "type": "double", "index": "no" },
                                 "downloadsAcceleration": { "type": "double", "index": "no" },
-                                "dependentsCount": { "type": "double", "index": "no" }
-                            }
+                                "dependentsCount": { "type": "double", "index": "no" },
+                            },
                         },
                         "maintenance": {
                             "type": "object",
@@ -350,10 +351,10 @@
                                 "releasesFrequency": { "type": "double", "index": "no" },
                                 "commitsFrequency": { "type": "double", "index": "no" },
                                 "openIssues": { "type": "double", "index": "no" },
-                                "issuesDistribution": { "type": "double", "index": "no" }
-                            }
-                        }
-                    }
+                                "issuesDistribution": { "type": "double", "index": "no" },
+                            },
+                        },
+                    },
                 },
                 "score": {
                     "type": "object",
@@ -364,12 +365,12 @@
                             "properties": {
                                 "quality": { "type": "double" },
                                 "popularity": { "type": "double" },
-                                "maintenance": { "type": "double" }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+                                "maintenance": { "type": "double" },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    },
 }
