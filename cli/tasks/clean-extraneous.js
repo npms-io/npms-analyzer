@@ -9,13 +9,13 @@ const blacklisted = config.get('blacklist');
 const log = logger.child({ module: 'cli/clean-extraneous' });
 
 /**
- * Fetches the npm modules.
+ * Fetches the npm packages.
  *
  * @param {Nano} npmNano The npm nano instance
  *
  * @return {Promise} The promise that fulfills when done
  */
-function fetchNpmModules(npmNano) {
+function fetchNpmPackages(npmNano) {
     return npmNano.listAsync()
     .then((response) => {
         return response.rows
@@ -25,14 +25,14 @@ function fetchNpmModules(npmNano) {
 }
 
 /**
- * Fetches the npms modules.
+ * Fetches the npms packages.
  *
  * @param {Nano} npmsNano The npms nano instance
  *
  * @return {Promise} The promise that fulfills when done
  */
-function fetchNpmsModules(npmsNano) {
-    return npmsNano.listAsync({ startkey: 'module!', endkey: 'module!\ufff0' })
+function fetchNpmsPackages(npmsNano) {
+    return npmsNano.listAsync({ startkey: 'package!', endkey: 'package!\ufff0' })
     .then((response) => {
         return response.rows.map((row) => row.id.split('!')[1]);
     });
@@ -44,7 +44,7 @@ module.exports.builder = (yargs) => {
     return yargs
     .strict()
     .usage('Usage: $0 tasks clean-extraneous [options]\n\n\
-Finds modules that are analyzed but no longer exist in npm.\nThis command is useful if operations were lost due to repeated \
+Finds packages that are analyzed but no longer exist in npm.\nThis command is useful if operations were lost due to repeated \
 errors, e.g.: RabbitMQ or CouchDB were down or unstable.')
     .demand(0, 0)
 
@@ -65,34 +65,34 @@ module.exports.handler = (argv) => {
         // Stats
         stats.process();
 
-        log.info('Fetching npm & npms modules, this might take a while..');
+        log.info('Fetching npm & npms packages, this might take a while..');
 
-        // Load all modules in memory.. we can do this because the total modules is around ~250k which fit well in memory
+        // Load all packages in memory.. we can do this because the total packages is around ~250k which fit well in memory
         // and is much faster than doing manual iteration ( ~20sec vs ~3min)
         return Promise.all([
-            fetchNpmModules(npmNano),
-            fetchNpmsModules(npmsNano),
+            fetchNpmPackages(npmNano),
+            fetchNpmsPackages(npmsNano),
         ])
-        .spread((npmModules, npmsModules) => {
-            const extraneousModules = difference(npmsModules, npmModules);
+        .spread((npmPackages, npmsPackages) => {
+            const extraneousPackages = difference(npmsPackages, npmPackages);
 
-            log.info(`There's a total of ${extraneousModules.length} extraneous modules`);
-            extraneousModules.forEach((name) => log.debug(name));
+            log.info(`There's a total of ${extraneousPackages.length} extraneous packages`);
+            extraneousPackages.forEach((name) => log.debug(name));
 
-            if (!extraneousModules.length || argv.dryRun) {
+            if (!extraneousPackages.length || argv.dryRun) {
                 log.info('Exiting..');
                 return;
             }
 
-            return Promise.map(extraneousModules, (name, index) => {
-                index && index % 100 === 0 && log.info(`Removed ${index} modules`);
+            return Promise.map(extraneousPackages, (name, index) => {
+                index && index % 100 === 0 && log.info(`Removed ${index} packages`);
 
-                const key = `module!${name}`;
+                const key = `package!${name}`;
 
                 return npmsNano.getAsync(key)
                 .then((doc) => npmsNano.destroyAsync(key, doc._rev));
             }, { concurrency: 15 })
-            .then(() => log.info('Extraneous modules were removed!'));
+            .then(() => log.info('Extraneous packages were removed!'));
         });
     })
     .then(() => process.exit())

@@ -13,8 +13,8 @@ module.exports.builder = (yargs) => {
     return yargs
     .strict()
     .usage('Usage: $0 tasks re-metadata [options]\n\n\
-Iterates over all analyzed modules, running the metadata collector again.\nThis command is useful if there was a bug in the \
-metadata collector. Note that the modules score won\'t be updated.')
+Iterates over all analyzed packages, running the metadata collector again.\nThis command is useful if there was a bug in the \
+metadata collector. Note that the packages score won\'t be updated.')
     .demand(0, 0);
 };
 
@@ -25,12 +25,12 @@ module.exports.handler = (argv) => {
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms'])
     .spread((npmNano, npmsNano) => {
-        log.info('Starting modules re-metadata');
+        log.info('Starting packages re-metadata');
 
         // Stats
         stats.process();
 
-        // Iterate over all modules
+        // Iterate over all packages
         return couchdbIterator(npmsNano, (row) => {
             row.index && row.index % 2500 === 0 && log.info(`Processed ${row.index} rows`);
 
@@ -40,7 +40,7 @@ module.exports.handler = (argv) => {
 
             const name = row.id.split('!')[1];
 
-            // Grab module data
+            // Grab package data
             return npmNano.getAsync(name)
             .then((data) => {
                 let packageJson;
@@ -53,7 +53,7 @@ module.exports.handler = (argv) => {
                         throw err;
                     }
 
-                    // Remove the module if an unrecoverable error happened
+                    // Remove the package if an unrecoverable error happened
                     // We do this to prevent old metadata to stay around, which will probably cause issues further ahead
                     return analyze.remove(name, npmsNano);
                 }
@@ -71,11 +71,11 @@ module.exports.handler = (argv) => {
                     throw err;
                 });
             })
-            // Delete the analisis if the module does not exist in npm (e.g.: was deleted)
+            // Delete the analisis if the package does not exist in npm (e.g.: was deleted)
             .catch({ error: 'not_found' }, () => analyze.remove(name, npmsNano));
         }, {
-            startkey: 'module!',
-            endkey: 'module!\ufff0',
+            startkey: 'package!',
+            endkey: 'package!\ufff0',
             concurrency: 25,
             limit: 2500,
             includeDocs: true,

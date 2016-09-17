@@ -33,11 +33,12 @@ function statProgress(npmNano, npmsNano) {
         Promise.props({
             npmDocsCount: npmNano.infoAsync().then((res) => res.doc_count - blacklistCount),
             npmDesignDocsCount: npmNano.listAsync({ startkey: '_design/', endkey: '_design0' }).then((res) => res.rows.length),
-            npmsModulesCount: npmsNano.viewAsync('npms-analyzer', 'modules-evaluation', { reduce: true }).then((res) => res.rows[0].value),
+            npmsPackagesCount: npmsNano.viewAsync('npms-analyzer', 'packages-evaluation', { reduce: true })
+            .then((res) => res.rows[0].value),
         })
         .finally(() => { pending = false; })
         .then((result) => {
-            const analysis = `${(result.npmsModulesCount / (result.npmDocsCount - result.npmDesignDocsCount) * 100).toFixed(4)}%`;
+            const analysis = `${(result.npmsPackagesCount / (result.npmDocsCount - result.npmDesignDocsCount) * 100).toFixed(4)}%`;
 
             log.info({ analysis }, 'Progress stat');
         }, (err) => {

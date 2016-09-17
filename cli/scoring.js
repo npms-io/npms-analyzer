@@ -49,7 +49,7 @@ function cycle(delay, npmsNano, esClient) {
 
     // Prepare
     prepare(esClient)
-    // Aggregate + score all modules
+    // Aggregate + score all packages
     .tap(() => {
         return aggregate(npmsNano)
         .then((aggregation) => score.all(aggregation, npmsNano, esClient));
@@ -82,7 +82,7 @@ exports.builder = (yargs) => {
     return yargs
     .strict()
     .usage('Usage: $0 scoring [options]\n\n\
-Continuously iterate over the analyzed modules, scoring them.')
+Continuously iterate over the analyzed packages, scoring them.')
     .demand(0, 0)
 
     .option('cycle-delay', {

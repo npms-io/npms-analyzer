@@ -65,8 +65,8 @@
 
             // Custom analyzers
             "analyzer": {
-                // The module_* series produces good results for the `name` and `keywords` fields
-                "module": {
+                // The packages_* series produces good results for the `name` and `keywords` fields
+                "package": {
                     "tokenizer": "standard",
                     "filter": [
                         "asciifolding",
@@ -76,7 +76,7 @@
                     ],
                 },
 
-                "module_english": {
+                "package_english": {
                     "tokenizer": "standard",
                     "filter": [
                         "asciifolding",
@@ -87,7 +87,7 @@
                     ],
                 },
 
-                "module_english_aggressive": {
+                "package_english_aggressive": {
                     "tokenizer": "standard",
                     "filter": [
                         "asciifolding",
@@ -98,7 +98,7 @@
                     ],
                 },
 
-                "module_edge_ngram": {
+                "package_edge_ngram": {
                     // This analyzer provides fallbacks in which the stemmer is not efficient, e.g.: searching for "glob" should match "globby"
                     "tokenizer": "standard",
                     "filter": [
@@ -110,8 +110,8 @@
                     ],
                 },
 
-                // The module_autocomplete_* series produces good results for autocompletion
-                "module_autocomplete": {
+                // The package_autocomplete_* series produces good results for autocompletion
+                "package_autocomplete": {
                     "tokenizer": "standard",
                     "filter": [
                         "asciifolding",
@@ -122,7 +122,7 @@
                     ],
                 },
 
-                "module_autocomplete_keyword": {
+                "package_autocomplete_keyword": {
                     // This analyzer emits the whole string but replaces non-alfanum with spaces
                     // so that we can use it boost exact prefix matches higher
                     "tokenizer": "keyword",
@@ -136,8 +136,8 @@
                     ],
                 },
 
-                "module_autocomplete_keyword_search": {
-                    // This analyzer is the "search_analyzer" for "module_autocomplete_keyword"
+                "package_autocomplete_keyword_search": {
+                    // This analyzer is the "search_analyzer" for "package_autocomplete_keyword"
                     "tokenizer": "keyword",
                     "filter": [
                         "asciifolding",
@@ -147,7 +147,7 @@
                     ],
                 },
 
-                "module_autocomplete_highlight": {
+                "package_autocomplete_highlight": {
                     // This analyzer is necessary to perform proper highlighting
                     // See: https://github.com/elastic/elasticsearch/issues/3137#issuecomment-22116469
                     // Can't use split_word which may lead to "strange" highlighting in some edge cases :(
@@ -175,51 +175,51 @@
     // Mappings
     // ------------------------------------------------------------------------------
     "mappings" : {
-        "module" : {
+        "score" : {
             "dynamic": false,
             "_all": {
                 "enabled": false,
             },
 
             "properties" : {
-                "module": {
+                "package": {
                     "type": "object",
                     "properties": {
                         // The `name`, `description` and `keywords` fields all have `norms` disabled because we don't care about the fields length
-                        // Also they have additional fields beyond the `standard` analyzer, such as `module_english`, `module_english_docs` etc
+                        // Also they have additional fields beyond the `standard` analyzer, such as `package_english`, `package_english_docs` etc
                         "name": {
                             "type": "string",
                             "fields": {
                                 "english_docs": {
                                     "type": "string",
-                                    "analyzer": "module_english",
+                                    "analyzer": "package_english",
                                     "index_options": "docs",
                                 },
                                 "english_aggressive_docs": {
                                     "type": "string",
-                                    "analyzer": "module_english_aggressive",
+                                    "analyzer": "package_english_aggressive",
                                     "index_options": "docs",
                                 },
                                 "edge_ngram": {
                                     "type": "string",
-                                    "analyzer": "module_edge_ngram",
-                                    "search_analyzer": "module",
+                                    "analyzer": "package_edge_ngram",
+                                    "search_analyzer": "package",
                                 },
                                 "autocomplete": {
                                     "type": "string",
-                                    "analyzer": "module_autocomplete",
-                                    "search_analyzer": "module",
+                                    "analyzer": "package_autocomplete",
+                                    "search_analyzer": "package",
                                 },
                                 "autocomplete_highlight": {
                                     "type": "string",
-                                    "analyzer": "module_autocomplete_highlight",
-                                    "search_analyzer": "module",
+                                    "analyzer": "package_autocomplete_highlight",
+                                    "search_analyzer": "package",
                                     "index_options": "offsets",
                                 },
                                 "autocomplete_keyword": {
                                     "type": "string",
-                                    "analyzer": "module_autocomplete_keyword",
-                                    "search_analyzer": "module_autocomplete_keyword_search",
+                                    "analyzer": "package_autocomplete_keyword",
+                                    "search_analyzer": "package_autocomplete_keyword_search",
                                 },
                                 "raw": {
                                     "type": "string",
@@ -233,18 +233,18 @@
                             "fields": {
                                 "english_docs": {
                                     "type": "string",
-                                    "analyzer": "module_english",
+                                    "analyzer": "package_english",
                                     "index_options": "docs",
                                 },
                                 "english_aggressive_docs": {
                                     "type": "string",
-                                    "analyzer": "module_english_aggressive",
+                                    "analyzer": "package_english_aggressive",
                                     "index_options": "docs",
                                 },
                                 "edge_ngram": {
                                     "type": "string",
-                                    "analyzer": "module_edge_ngram",
-                                    "search_analyzer": "module",
+                                    "analyzer": "package_edge_ngram",
+                                    "search_analyzer": "package",
                                 },
                             },
                         },
@@ -253,18 +253,18 @@
                             "fields": {
                                 "english_docs": {
                                     "type": "string",
-                                    "analyzer": "module_english",
+                                    "analyzer": "package_english",
                                     "index_options": "docs",
                                 },
                                 "english_aggressive_docs": {
                                     "type": "string",
-                                    "analyzer": "module_english_aggressive",
+                                    "analyzer": "package_english_aggressive",
                                     "index_options": "docs",
                                 },
                                 "edge_ngram": {
                                     "type": "string",
-                                    "analyzer": "module_edge_ngram",
-                                    "search_analyzer": "module",
+                                    "analyzer": "package_edge_ngram",
+                                    "search_analyzer": "package",
                                 },
                             },
                         },

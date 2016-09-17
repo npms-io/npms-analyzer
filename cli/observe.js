@@ -10,21 +10,21 @@ const stats = require('./util/stats');
 const log = logger.child({ module: 'cli/observe' });
 
 /**
- * Pushes a module into the queue, retrying several times on error.
+ * Pushes a package into the queue, retrying several times on error.
  * If all retries are used, there isn't much we can do, therefore the process will gracefully exit.
  *
- * @param {array} name  The module name
+ * @param {array} name  The package name
  * @param {Queue} queue The analysis queue instance
  *
  * @return {Promise} The promise that fulfills once done
  */
-function onModule(name, queue) {
+function onPackage(name, queue) {
     return promiseRetry((retry) => {
         return queue.push(name)
         .catch(retry);
     })
     .catch((err) => {
-        log.fatal({ err, name }, 'Too many failed attempts while trying to push module into the queue, exiting..');
+        log.fatal({ err, name }, 'Too many failed attempts while trying to push package into the queue, exiting..');
         process.exit(1);
     });
 }
@@ -35,7 +35,7 @@ module.exports.builder = (yargs) => {
     return yargs
     .strict()
     .usage('Usage: $0 observe [options]\n\n\
-Starts the observing process, enqueueing modules that need to be analyzed into the queue.')
+Starts the observing process, enqueueing packages that need to be analyzed into the queue.')
     .demand(0, 0)
     .option('default-seq', {
         type: 'number',
@@ -61,8 +61,8 @@ module.exports.handler = (argv) => {
         stats.queue(queue);
 
         // Start observing..
-        realtime(npmNano, npmsNano, { defaultSeq: argv.defaultSeq }, (name) => onModule(name, queue));
-        stale(npmsNano, (name) => onModule(name, queue));
+        realtime(npmNano, npmsNano, { defaultSeq: argv.defaultSeq }, (name) => onPackage(name, queue));
+        stale(npmsNano, (name) => onPackage(name, queue));
     })
     .done();
 };

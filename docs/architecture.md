@@ -1,6 +1,6 @@
 # Architecture
 
-The `npms-analyzer` runs two continuous and distinct processes. One is the `analysis` process where each module gets inspected and evaluated. The other one is the `continuous scoring` process where all modules get a score based on the aggregated evaluation results.
+The `npms-analyzer` runs two continuous and distinct processes. One is the `analysis` process where each package gets inspected and evaluated. The other one is the `continuous scoring` process where all packages get a score based on the aggregated evaluation results.
 
 - [Analysis](#analysis)
 - [Continuous scoring](#continuous-scoring)
@@ -8,7 +8,7 @@ The `npms-analyzer` runs two continuous and distinct processes. One is the `anal
 
 ## Analysis
 
-The analysis process analyzes the `npm` modules, producing a result and a score.
+The analysis process analyzes the `npm` packages, producing a result and a score.
 
 ![analysis](./diagrams/analysis.png)
 
@@ -16,24 +16,24 @@ By looking at the diagram above, you get an idea of how the analysis process wor
 
 ### Observers
 
-Observers continuously push modules to the queue whenever they see fit.
+Observers continuously push packages to the queue whenever they see fit.
 
-- realtime - Observes the replicated `npm` registry for changes, pushing new or updated modules into the analyze queue.
-- stale - Fetches modules that were not analyzed for some time, pushing them to the queue.
+- realtime - Observes the replicated `npm` registry for changes, pushing new or updated packages into the analyze queue.
+- stale - Fetches packages that were not analyzed for some time, pushing them to the queue.
 
 ### Queue
 
-The queue holds all modules that are waiting to be analyzed. This component gives us:
+The queue holds all packages that are waiting to be analyzed. This component gives us:
 
 - Burst protection
-- No loss of modules on crashes or failures
+- No loss of packages on crashes or failures
 - Automatic retries
 
 ### Analyze
 
 The analyze is a simple pipeline that produces an analysis result:
 
-1. Fetches the module data
+1. Fetches the package data
 2. Downloads the source code
 3. Runs the Collectors
 4. Runs the evaluators
@@ -43,7 +43,7 @@ Below you may find additional information on the collectors and evaluators.
 
 #### Collectors
 
-The collectors are responsible for gathering useful information about each module from a variety of sources:
+The collectors are responsible for gathering useful information about each package from a variety of sources:
 
 - metadata
 - source
@@ -52,17 +52,17 @@ The collectors are responsible for gathering useful information about each modul
 
 ##### metadata
 
-The metadata collector extracts basic data and attributes of a module.
+The metadata collector extracts basic data and attributes of a package.
 
-- Extract module name, description and keywords
+- Extract package name, description and keywords
 - Extract package author, maintainers and contributors
 - Extract the license
 - Get releases timing information
 - Extract repository and homepage
 - Extract README
-- Extract the module dependencies
-- Check if the module is deprecated
-- Check if the module has a test script
+- Extract the package dependencies
+- Check if the package is deprecated
+- Check if the package has a test script
 
 ##### source
 
@@ -103,7 +103,7 @@ The npm collector uses the replicated CouchDB views and the npm [download-counts
 
 #### Evaluators
 
-The evaluators take the information that was previously collected and evaluate different aspects of the module. These aspects are divide in four categories:
+The evaluators take the information that was previously collected and evaluate different aspects of the package. These aspects are divide in four categories:
 
 - quality
 - popularity
@@ -114,7 +114,7 @@ Evaluators may further divide each of these aspects into more granular ones, but
 
 ##### quality
 
-Quality attributes are easy to calculate because they are self contained. These are the kind of attributes that a person looks first when looking at the module.
+Quality attributes are easy to calculate because they are self contained. These are the kind of attributes that a person looks first when looking at the package.
 
 Below are some of the points taken into consideration:
 
@@ -128,7 +128,7 @@ Below are some of the points taken into consideration:
 
 ##### maintenance
 
-Maintenance attributes allows us to understand if the module is active & healthy or if it is abandoned. These are typically the second kind of attributes that a person looks when looking at the module.
+Maintenance attributes allows us to understand if the package is active & healthy or if it is abandoned. These are typically the second kind of attributes that a person looks when looking at the package.
 
 Below follows some of the points taken into consideration:
 
@@ -139,7 +139,7 @@ Below follows some of the points taken into consideration:
 
 ##### popularity
 
-Popularity attributes allows us to understand the module adoption and community size. These are the kind of attributes that a person looks when they are undecided on the module choice.
+Popularity attributes allows us to understand the package adoption and community size. These are the kind of attributes that a person looks when they are undecided on the package choice.
 
 Below follows some of the points taken into consideration:
 
@@ -153,20 +153,20 @@ Below follows some of the points taken into consideration:
 
 ##### personalities
 
-If two modules are similar, one tend to choose the one in which the author is well known in the community. While this doesn't directly translate to quality, it's still a strong factor that we should account.
+If two packages are similar, one tend to choose the one in which the author is well known in the community. While this doesn't directly translate to quality, it's still a strong factor that we should account.
 
-Relationships between people are also important. When an user follows another, there's a bound between them. We can infer that people prefer modules from the users they follow.
+Relationships between people are also important. When an user follows another, there's a bound between them. We can infer that people prefer packages from the users they follow.
 
 I will not elaborate on this because this evaluator will NOT be developed nor used in the initial release.
 
 ### Scoring
 
-Calculates the module score based on the current aggregation if any. If there's no aggregation, the module won't be scored at the moment, but it will be later in the `continuous scoring` process.
+Calculates the package score based on the current aggregation if any. If there's no aggregation, the package won't be scored at the moment, but it will be later in the `continuous scoring` process.
 
 
 ## Continuous scoring
 
-The continuous scoring process runs once in a while to score all `npm` modules, indexing the score data in `Elasticsearch` to be searchable.
+The continuous scoring process runs once in a while to score all `npm` packages, indexing the score data in `Elasticsearch` to be searchable.
 
 ![continuous-scoring](./diagrams/continuous-scoring.png)
 
@@ -183,17 +183,17 @@ The prepare step creates a new index and updates the `npms-new` alias to point t
 
 ### Aggregate
 
-The aggregation step iterates all the modules evaluations, calculating the `min`, `max` and `mean` values for each evaluation. The aggregation is stored in CouchDB to also be used by the `analysis` process.
+The aggregation step iterates all the packages evaluations, calculating the `min`, `max` and `mean` values for each evaluation. The aggregation is stored in CouchDB to also be used by the `analysis` process.
 
-### Score modules
+### Score packages
 
-After having the aggregation done, all modules are iterated again to produce a score based on the previously calculated aggregation.
+After having the aggregation done, all packages are iterated again to produce a score based on the previously calculated aggregation.
 
-The module evaluation and aggregation `mean` are normalized ([0, 1]), using the aggregation `min` and `max` values, and a Bezier Curve is computed using 4 control points: (0, 0), (normalizedAggregationMean, 0.75), (normalizedAggregationMean, 0.75), (1, 1). The module score is the Y value that corresponds, in this curve, to the module evaluation (X axis).
+The package evaluation and aggregation `mean` are normalized ([0, 1]), using the aggregation `min` and `max` values, and a Bezier Curve is computed using 4 control points: (0, 0), (normalizedAggregationMean, 0.75), (normalizedAggregationMean, 0.75), (1, 1). The package score is the Y value that corresponds, in this curve, to the package evaluation (X axis).
 
 ![bezier](./diagrams/bezier.png)
 
-The score data for each module are stored in `Elasticsearch` into both `npms-current` and `npms-new` indices.
+The score data for each package are stored in `Elasticsearch` into both `npms-current` and `npms-new` indices.
 
 ### Finalize
 

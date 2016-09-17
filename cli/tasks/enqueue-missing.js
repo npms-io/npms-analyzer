@@ -9,13 +9,13 @@ const blacklisted = config.get('blacklist');
 const log = logger.child({ module: 'cli/enqueue-missing' });
 
 /**
- * Fetches the npm modules.
+ * Fetches the npm packages.
  *
  * @param {Nano} npmNano The npm nano instance
  *
  * @return {Promise} The promise that fulfills when done
  */
-function fetchNpmModules(npmNano) {
+function fetchNpmPackages(npmNano) {
     return npmNano.listAsync()
     .then((response) => {
         return response.rows
@@ -25,14 +25,14 @@ function fetchNpmModules(npmNano) {
 }
 
 /**
- * Fetches the npms modules.
+ * Fetches the npms packages.
  *
  * @param {Nano} npmsNano The npms nano instance
  *
  * @return {Promise} The promise that fulfills when done
  */
-function fetchNpmsModules(npmsNano) {
-    return npmsNano.listAsync({ startkey: 'module!', endkey: 'module!\ufff0' })
+function fetchNpmsPackages(npmsNano) {
+    return npmsNano.listAsync({ startkey: 'package!', endkey: 'package!\ufff0' })
     .then((response) => {
         return response.rows.map((row) => row.id.split('!')[1]);
     });
@@ -44,7 +44,7 @@ module.exports.builder = (yargs) => {
     return yargs
     .strict()
     .usage('Usage: $0 tasks enqueue-missing [options]\n\n\
-Finds modules that were not analyzed and enqueues them.\nThis command is useful if modules were lost due to repeated transient \
+Finds packages that were not analyzed and enqueues them.\nThis command is useful if packages were lost due to repeated transient \
 errors, e.g.: internet connection was lot or GitHub was down.')
     .demand(0, 0)
 
@@ -66,30 +66,30 @@ module.exports.handler = (argv) => {
         // Stats
         stats.process();
 
-        log.info('Fetching npm & npms modules, this might take a while..');
+        log.info('Fetching npm & npms packages, this might take a while..');
 
-        // Load all modules in memory.. we can do this because the total modules is around ~250k which fit well in memory
+        // Load all packages in memory.. we can do this because the total packages is around ~250k which fit well in memory
         // and is much faster than doing manual iteration ( ~20sec vs ~3min)
         return Promise.all([
-            fetchNpmModules(npmNano),
-            fetchNpmsModules(npmsNano),
+            fetchNpmPackages(npmNano),
+            fetchNpmsPackages(npmsNano),
         ])
-        .spread((npmModules, npmsModules) => {
-            const missingModules = difference(npmModules, npmsModules);
+        .spread((npmPackages, npmsPackages) => {
+            const missingPackages = difference(npmPackages, npmsPackages);
 
-            log.info(`There's a total of ${missingModules.length} missing modules`);
-            missingModules.forEach((name) => log.debug(name));
+            log.info(`There's a total of ${missingPackages.length} missing packages`);
+            missingPackages.forEach((name) => log.debug(name));
 
-            if (!missingModules.length || argv.dryRun) {
+            if (!missingPackages.length || argv.dryRun) {
                 log.info('Exiting..');
                 return;
             }
 
-            return Promise.map(missingModules, (name, index) => {
-                index && index % 1000 === 0 && log.info(`Enqueued ${index} modules`);
+            return Promise.map(missingPackages, (name, index) => {
+                index && index % 1000 === 0 && log.info(`Enqueued ${index} packages`);
                 return queue.push(name);
             }, { concurrency: 15 })
-            .then(() => log.info('Missing modules were enqueued!'));
+            .then(() => log.info('Missing packages were enqueued!'));
         });
     })
     .then(() => process.exit())

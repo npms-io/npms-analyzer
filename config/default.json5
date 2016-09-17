@@ -19,7 +19,7 @@
         addr: 'amqp://guest:guest@127.0.0.1',
     },
 
-    // List of modules that will be ignored by the CLI consume command (analysis process)
+    // List of packages that will be ignored by the CLI consume command (analysis process)
     blacklist: {
         'yourmom': 'Huge tar bomb',
         'tone-police': 'Registry crashes while downloading',

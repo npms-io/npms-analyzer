@@ -9,7 +9,7 @@ const blacklisted = config.get('blacklist');
 const log = logger.child({ module: 'cli/enqueue-view' });
 
 /**
- * Fetches modules of a view.
+ * Fetches packages of a view.
  *
  * @param {string} view    The view in the form of design-doc/view-name
  * @param {Nano}   npmNano The npm nano instance
@@ -22,7 +22,7 @@ function fetchView(view, npmNano) {
     return npmNano.viewAsync(split[0], split[1])
     .then((response) => {
         return response.rows
-        .map((row) => row.key.replace(/^module!/, ''))
+        .map((row) => row.key.replace(/^package!/, ''))
         .filter((id) => !blacklisted[id]);
     });
 }
@@ -33,8 +33,8 @@ module.exports.builder = (yargs) => {
     return yargs
     .strict()
     .usage('Usage: $0 tasks enqueue-view <design-doc/view-name> [options]\n\n\
-Enqueues all modules contained in the npms database view.\n\nNOTE: The view must be in the npms database and the key must be the module \
-name (may be prefixed with `module!`)')
+Enqueues all packages contained in the npms database view.\n\nNOTE: The view must be in the npms database and the key must be the package \
+name (may be prefixed with `package!`)')
     .demand(1, 1)
     .example('$0 tasks enqueue-view npms-analyzer/docs-to-be-fixed')
 
@@ -65,23 +65,23 @@ module.exports.handler = (argv) => {
 
         log.info(`Fetching view ${view}`);
 
-        // Load modules in memory.. we can do this because the total modules is around ~250k which fit well in memory
+        // Load packages in memory.. we can do this because the total packages is around ~250k which fit well in memory
         // and is much faster than doing manual iteration
         return fetchView(view, npmsNano)
-        .then((viewModules) => {
-            log.info(`There's a total of ${viewModules.length} modules in the view`);
-            viewModules.forEach((name) => log.debug(name));
+        .then((viewPackages) => {
+            log.info(`There's a total of ${viewPackages.length} packages in the view`);
+            viewPackages.forEach((name) => log.debug(name));
 
-            if (!viewModules.length || argv.dryRun) {
+            if (!viewPackages.length || argv.dryRun) {
                 log.info('Exiting..');
                 return;
             }
 
-            return Promise.map(viewModules, (name, index) => {
-                index && index % 5000 === 0 && log.info(`Enqueued ${index} modules`);
+            return Promise.map(viewPackages, (name, index) => {
+                index && index % 5000 === 0 && log.info(`Enqueued ${index} packages`);
                 return queue.push(name);
             }, { concurrency: 15 })
-            .then(() => log.info('View modules were enqueued!'));
+            .then(() => log.info('View packages were enqueued!'));
         });
     })
     .then(() => process.exit())

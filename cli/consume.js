@@ -22,17 +22,17 @@ const log = logger.child({ module: 'cli/consume' });
 function onMessage(msg, npmNano, npmsNano, esClient) {
     const name = msg.data;
 
-    // Check if this module is blacklisted
+    // Check if this package is blacklisted
     const blacklisted = config.get('blacklist')[name];
 
     if (blacklisted) {
-        log.info({ reason: blacklisted }, `Module ${name} is blacklisted`);
+        log.info({ reason: blacklisted }, `Package ${name} is blacklisted`);
         return Promise.resolve();
     }
 
-    log.info(`Processing module ${name}`);
+    log.info(`Processing package ${name}`);
 
-    // Check if the module has been analyzed after it has been pushed to the queue
+    // Check if the package has been analyzed after it has been pushed to the queue
     return analyze.get(name, npmsNano)
     .catch({ code: 'ANALYSIS_NOT_FOUND' }, () => {})
     .then((analysis) => {
@@ -50,7 +50,7 @@ function onMessage(msg, npmNano, npmsNano, esClient) {
         })
         // Score it to get a "real-time" feeling, ignoring any errors
         .then((analysis) => score(analysis, npmsNano, esClient).catch(() => {}))
-        .catch({ code: 'MODULE_NOT_FOUND' }, (err) => score.remove(name, esClient).finally(() => { throw err; }))
+        .catch({ code: 'PACKAGE_NOT_FOUND' }, (err) => score.remove(name, esClient).finally(() => { throw err; }))
         // Ignore unrecoverable errors, so that these are not re-queued
         .catch({ unrecoverable: true }, () => {});
     });
@@ -62,13 +62,13 @@ module.exports.builder = (yargs) => {
     return yargs
     .strict()
     .usage('Usage: $0 consume [options]\n\n\
-Consumes modules that are queued, triggering the analysis process for each module.')
+Consumes packages that are queued, triggering the analysis process for each package.')
     .demand(0, 0)
     .option('concurrency', {
         type: 'number',
         default: 5,
         alias: 'c',
-        describe: 'Number of modules to consume concurrently',
+        describe: 'Number of packages to consume concurrently',
     })
     .check((argv) => {
         assert(typeof argv.concurrency === 'number', 'Invalid argument: --concurrency must be a number');
@@ -89,7 +89,7 @@ module.exports.handler = (argv) => {
         stats.progress(npmNano, npmsNano);
         stats.tokens(config.get('githubTokens'), 'github');
 
-        // Clean old modules from the download directory
+        // Clean old packages from the download directory
         return analyze.cleanTmpDir()
         // Start consuming
         .then(() => queue.consume((message) => onMessage(message, npmNano, npmsNano, esClient), { concurrency: argv.concurrency }));
