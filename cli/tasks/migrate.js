@@ -27,7 +27,6 @@ module.exports.handler = (argv) => {
     .tap((npmsNano) => {
         log.info('Starting module! -> package! migration');
 
-        // Iterate over all packages, re-evaluating them
         return couchdbIterator(npmsNano, (row) => {
             row.index && row.index % 10000 === 0 && log.info(`Processed ${row.index} rows`);
 
@@ -55,7 +54,6 @@ module.exports.handler = (argv) => {
     .tap((npmsNano) => {
         log.info('Starting observer!module! -> observer!package! migration');
 
-        // Iterate over all packages, re-evaluating them
         return couchdbIterator(npmsNano, (row) => {
             row.index && row.index % 10000 === 0 && log.info(`Processed ${row.index} rows`);
 
