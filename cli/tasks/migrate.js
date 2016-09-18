@@ -2,6 +2,7 @@
 
 const couchdbIterator = require('couchdb-iterator');
 const couchdbForce = require('couchdb-force');
+const camelcaseKeys = require('camelcase-keys');
 const bootstrap = require('../util/bootstrap');
 const stats = require('../util/stats');
 
@@ -37,6 +38,19 @@ module.exports.handler = (argv) => {
             }
 
             const newDoc = Object.assign({}, doc, { _id: doc._id.replace(/^module!/, 'package!') });
+
+            // dependenciesVulnerabilities -> vulnerabilities
+            if (newDoc.collected.source && newDoc.collected.source.dependenciesVulnerabilities) {
+                newDoc.collected.source.vulnerabilities = newDoc.collected.source.dependenciesVulnerabilities
+                .map((vulnerability) => camelcaseKeys(vulnerability, { deep: true }));
+                delete newDoc.collected.source.dependenciesVulnerabilities;
+            }
+
+            // dependenciesHealth -> health
+            if (newDoc.evaluation.quality.dependenciesHealth == null) {
+                newDoc.evaluation.quality.health = newDoc.evaluation.quality.dependenciesHealth;
+                delete newDoc.evaluation.quality.dependenciesHealth;
+            }
 
             return couchdbForce.insert(npmsNano, newDoc)
             .then(() => npmsNano.destroyAsync(doc._id, doc._rev))

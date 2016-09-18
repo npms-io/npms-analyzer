@@ -32,6 +32,7 @@
     "amqplib": "^0.4.0",
     "bignumber.js": "^2.3.0",
     "bluebird": "^3.1.1",
+    "camelcase-keys": "^4.0.0",
     "config": "^1.19.0",
     "couchdb-force": "^1.0.1",
     "couchdb-iterator": "^2.0.0",

@@ -165,6 +165,18 @@
                     "tokenizer": "keyword",
                     "filter": [
                         "lowercase",
+                        "trim"
+                    ],
+                },
+
+                // Same as above but does a bit of normalization
+                "raw_normalized": {
+                    "tokenizer": "keyword",
+                    "filter": [
+                        "asciifolding",
+                        "non_alfanum_to_space",
+                        "lowercase",
+                        "trim",
                     ],
                 },
             },
@@ -288,7 +300,11 @@
                         "author": {
                             "type": "object",
                             "properties": {
-                                "name": { "type": "string", "index": "no" },
+                                "name": {
+                                    "type": "string",
+                                    "analyzer": "raw_normalized",
+                                    "index_options": "docs",
+                                },
                                 "username": {
                                     "type": "string",
                                     "analyzer": "raw",
@@ -326,7 +342,14 @@
                         },
                     },
                 },
-                "flags": { "type": "string", "index": "not_analyzed" },
+                "flags": {
+                    "type": "object",
+                    "properties": {
+                        "deprecated": { "type": "string", "index": "not_analyzed" },
+                        "insecure": { "type": "integer" },
+                        "unstable": { "type": "boolean" },
+                    },
+                },
                 "evaluation": {
                     "type": "object",
                     "properties": {
@@ -335,7 +358,7 @@
                             "properties": {
                                 "carefulness": { "type": "double", "index": "no" },
                                 "tests": { "type": "double", "index": "no" },
-                                "dependenciesHealth": { "type": "double", "index": "no" },
+                                "health": { "type": "double", "index": "no" },
                                 "branding": { "type": "double", "index": "no" },
                             },
                         },

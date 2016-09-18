@@ -40,7 +40,7 @@ function mockExternal(mocks, dir) {
                 let json;
 
                 try {
-                    json = (mocks.nsp && mocks.nsp(command)) || {};
+                    json = (mocks.nsp && mocks.nsp(command)) || [];
                 } catch (err) {
                     return callback(err, err.stdout || '', err.stderr || '');
                 }
@@ -188,7 +188,7 @@ describe('source', () => {
             });
 
             return source(data, packageJson, { dir: tmpDir })
-            .then((collected) => expect(collected.dependenciesVulnerabilities).to.equal(false))
+            .then((collected) => expect(collected.vulnerabilities).to.equal(false))
             .finally(() => {
                 sepia.disable();
                 betrayed.restore();
@@ -202,7 +202,7 @@ describe('source', () => {
             });
 
             return source(data, packageJson, { dir: tmpDir })
-            .then((collected) => expect(collected.dependenciesVulnerabilities).to.equal(false))
+            .then((collected) => expect(collected.vulnerabilities).to.equal(false))
             .finally(() => {
                 sepia.disable();
                 betrayed.restore();
@@ -227,7 +227,7 @@ describe('source', () => {
                     throw Object.assign(new Error('foo'),
                         { stderr: 'Bad Gateway' });
                 } else {
-                    return ['foo'];
+                    return [{ foo: 'bar' }];
                 }
             },
         });
@@ -238,7 +238,7 @@ describe('source', () => {
         fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
 
         return source(data, packageJson, { dir: tmpDir })
-        .then((collected) => expect(collected.dependenciesVulnerabilities).to.eql(['foo']))
+        .then((collected) => expect(collected.vulnerabilities).to.eql([{ foo: 'bar' }]))
         .finally(() => {
             sepia.disable();
             betrayed.restore();
