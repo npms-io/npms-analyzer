@@ -61,16 +61,18 @@ function cycle(delay, npmsNano, esClient) {
         const durationStr = humanizeDuration(Math.round((Date.now() - startedAt) / 1000) * 1000, { largest: 2 });
 
         log.info(`Scoring cycle successful, took ${durationStr}`);
+        return delay;
     }, (err) => {
         log.fatal({ err }, 'Scoring cycle failed');
+        return 10 * 60 * 1000;
     })
     // Start all over again after a short delay
-    .then(() => {
-        const delayStr = humanizeDuration(Math.round(delay / 1000) * 1000, { largest: 2 });
+    .then((wait) => {
+        const waitStr = humanizeDuration(Math.round(wait / 1000) * 1000, { largest: 2 });
 
-        log.info({ now: (new Date()).toISOString() }, `Waiting ${delayStr} before running the next cycle..`);
+        log.info({ now: (new Date()).toISOString() }, `Waiting ${waitStr} before running the next cycle..`);
 
-        Promise.delay(delay)
+        Promise.delay(wait)
         .then(() => cycle(delay, npmsNano, esClient));
     })
     .done();
