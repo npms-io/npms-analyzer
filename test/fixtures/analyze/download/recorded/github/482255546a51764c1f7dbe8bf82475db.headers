@@ -2,16 +2,16 @@
   "statusCode": 302,
   "headers": {
     "server": "GitHub.com",
-    "date": "Sun, 01 May 2016 10:10:12 GMT",
+    "date": "Sun, 18 Sep 2016 22:42:09 GMT",
     "content-type": "text/html;charset=utf-8",
     "content-length": "0",
     "status": "302 Found",
     "x-ratelimit-limit": "60",
-    "x-ratelimit-remaining": "60",
-    "x-ratelimit-reset": "1462101012",
+    "x-ratelimit-remaining": "44",
+    "x-ratelimit-reset": "1474241481",
     "cache-control": "public, must-revalidate, max-age=0",
-    "expires": "Sun, 01 May 2016 10:10:12 GMT",
-    "location": "https://codeload.github.com/IndigoUnited/node-cross-spawn/legacy.tar.gz/b5239f25c0274feba89242b77d8f0ce57dce83ad",
+    "expires": "Sun, 18 Sep 2016 22:42:09 GMT",
+    "location": "https://codeload.github.com/IndigoUnited/node-cross-spawn/legacy.tar.gz/65d41138e6b5161787df43d5f8de2442765e32d0",
     "access-control-expose-headers": "ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
     "access-control-allow-origin": "*",
     "content-security-policy": "default-src 'none'",
@@ -20,16 +20,17 @@
     "x-frame-options": "deny",
     "x-xss-protection": "1; mode=block",
     "vary": "Accept-Encoding",
-    "x-served-by": "a51acaae89a7607fd7ee967627be18e4",
-    "x-github-request-id": "D98186F0:76D6:2C1E4C90:5725D604"
+    "x-served-by": "474556b853193c38f1b14328ce2d1b7d",
+    "x-github-request-id": "D98186F0:C7B3:3073C1E:57DF1841"
   },
-  "url": "http://api.github.com:443/repos/IndigoUnited/node-cross-spawn/tarball/b5239f25c0274feba89242b77d8f0ce57dce83ad",
-  "time": 603,
+  "url": "https://api.github.com:443/repos/IndigoUnited/node-cross-spawn/tarball/65d41138e6b5161787df43d5f8de2442765e32d0",
+  "time": 378,
   "request": {
     "method": "GET",
     "headers": {
-      "user-agent": "got/6.3.0 (https://github.com/sindresorhus/got)",
-      "accept-encoding": "gzip,deflate"
+      "user-agent": "got/6.5.0 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/vnd.github.v3+json"
     }
   }
 }
