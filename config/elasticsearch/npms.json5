@@ -165,7 +165,7 @@
                     "tokenizer": "keyword",
                     "filter": [
                         "lowercase",
-                        "trim"
+                        "trim",
                     ],
                 },
 
