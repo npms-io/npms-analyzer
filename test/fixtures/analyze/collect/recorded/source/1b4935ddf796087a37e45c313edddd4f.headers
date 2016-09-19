@@ -1,7 +1,7 @@
 {
   "statusCode": 200,
   "headers": {
-    "content-length": "323112",
+    "transfer-encoding": "chunked",
     "access-control-allow-origin": "https://render.githubusercontent.com",
     "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'",
     "strict-transport-security": "max-age=31536000",
@@ -13,16 +13,17 @@
     "content-type": "application/x-gzip",
     "content-disposition": "attachment; filename=MathieuTurcotte-node-backoff-v2.5.0-1-g811118f.tar.gz",
     "x-geo-block-list": "",
-    "date": "Fri, 16 Sep 2016 02:21:50 GMT",
-    "x-github-request-id": "D98186F0:11CB:502623:57DB573E"
+    "date": "Mon, 19 Sep 2016 15:10:31 GMT",
+    "x-github-request-id": "D98186F0:11CB:623322:57DFFFE6"
   },
   "url": "https://codeload.github.com:443/MathieuTurcotte/node-backoff/legacy.tar.gz/811118fd1f89e9ca4e6b67292b9ef5da6c4f60e9",
-  "time": 1036,
+  "time": 1210,
   "request": {
     "method": "GET",
     "headers": {
       "user-agent": "got/6.5.0 (https://github.com/sindresorhus/got)",
-      "accept-encoding": "gzip,deflate"
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/vnd.github.v3+json"
     }
   }
 }
