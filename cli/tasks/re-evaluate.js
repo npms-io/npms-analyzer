@@ -12,8 +12,8 @@ module.exports.builder = (yargs) => {
     return yargs
     .strict()
     .usage('Usage: $0 tasks re-evaluate [options]\n\n\
-Iterates over all analyzed modules, evaluating them again.\nThis command is useful if the evaluation algorithm has changed and \
-the evaluation needs to be re-calculated for all modules. Note that the modules score won\'t be updated.')
+Iterates over all analyzed packages, evaluating them again.\nThis command is useful if the evaluation algorithm has changed and \
+the evaluation needs to be re-calculated for all packages. Note that the packages score won\'t be updated.')
     .demand(0, 0);
 };
 
@@ -24,12 +24,12 @@ module.exports.handler = (argv) => {
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpms'])
     .spread((npmsNano) => {
-        log.info('Starting modules re-evaluation');
+        log.info('Starting packages re-evaluation');
 
         // Stats
         stats.process();
 
-        // Iterate over all modules, re-evaluating them
+        // Iterate over all packages, re-evaluating them
         return couchdbIterator(npmsNano, (row) => {
             row.index && row.index % 10000 === 0 && log.info(`Processed ${row.index} rows`);
 
@@ -45,8 +45,8 @@ module.exports.handler = (argv) => {
 
             return save(doc, npmsNano);
         }, {
-            startkey: 'module!',
-            endkey: 'module!\ufff0',
+            startkey: 'package!',
+            endkey: 'package!\ufff0',
             concurrency: 25,
             limit: 2500,
             includeDocs: true,

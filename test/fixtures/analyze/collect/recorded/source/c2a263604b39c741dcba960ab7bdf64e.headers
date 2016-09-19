@@ -1,0 +1,29 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "transfer-encoding": "chunked",
+    "access-control-allow-origin": "https://render.githubusercontent.com",
+    "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'",
+    "strict-transport-security": "max-age=31536000",
+    "vary": "Authorization,Accept-Encoding",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "etag": "\"faacf022488bc30748bb8f35aca71a24343dc0fc\"",
+    "content-type": "application/x-gzip",
+    "content-disposition": "attachment; filename=hapijs-hapi-v13.4.0-0-gfaacf02.tar.gz",
+    "x-geo-block-list": "",
+    "date": "Sun, 18 Sep 2016 22:41:54 GMT",
+    "x-github-request-id": "D98186F0:11CB:5DAE04:57DF1832"
+  },
+  "url": "https://codeload.github.com:443/hapijs/hapi/legacy.tar.gz/faacf022488bc30748bb8f35aca71a24343dc0fc",
+  "time": 1007,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.5.0 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/vnd.github.v3+json"
+    }
+  }
+}

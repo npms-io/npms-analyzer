@@ -49,7 +49,7 @@ function cycle(delay, npmsNano, esClient) {
 
     // Prepare
     prepare(esClient)
-    // Aggregate + score all modules
+    // Aggregate + score all packages
     .tap(() => {
         return aggregate(npmsNano)
         .then((aggregation) => score.all(aggregation, npmsNano, esClient));
@@ -61,16 +61,18 @@ function cycle(delay, npmsNano, esClient) {
         const durationStr = humanizeDuration(Math.round((Date.now() - startedAt) / 1000) * 1000, { largest: 2 });
 
         log.info(`Scoring cycle successful, took ${durationStr}`);
+        return delay;
     }, (err) => {
         log.fatal({ err }, 'Scoring cycle failed');
+        return 10 * 60 * 1000;
     })
     // Start all over again after a short delay
-    .then(() => {
-        const delayStr = humanizeDuration(Math.round(delay / 1000) * 1000, { largest: 2 });
+    .then((wait) => {
+        const waitStr = humanizeDuration(Math.round(wait / 1000) * 1000, { largest: 2 });
 
-        log.info({ now: (new Date()).toISOString() }, `Waiting ${delayStr} before running the next cycle..`);
+        log.info({ now: (new Date()).toISOString() }, `Waiting ${waitStr} before running the next cycle..`);
 
-        Promise.delay(delay)
+        Promise.delay(wait)
         .then(() => cycle(delay, npmsNano, esClient));
     })
     .done();
@@ -82,7 +84,7 @@ exports.builder = (yargs) => {
     return yargs
     .strict()
     .usage('Usage: $0 scoring [options]\n\n\
-Continuously iterate over the analyzed modules, scoring them.')
+Continuously iterate over the analyzed packages, scoring them.')
     .demand(0, 0)
 
     .option('cycle-delay', {

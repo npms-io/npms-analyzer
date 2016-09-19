@@ -26,6 +26,8 @@ describe('metadata', () => {
         });
     });
 
+    it('should do a best effort to get the author username');
+
     it('should do a best effort to extract the publisher', () => {
         // Extract from npmUser
         return Promise.try(() => {

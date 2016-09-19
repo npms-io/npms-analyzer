@@ -1,0 +1,29 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "content-length": "151122",
+    "access-control-allow-origin": "https://render.githubusercontent.com",
+    "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'",
+    "strict-transport-security": "max-age=31536000",
+    "vary": "Authorization,Accept-Encoding",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "etag": "\"b978ab1afd96cd9c5b41a642f2821c453ec35ba7\"",
+    "content-type": "application/x-gzip",
+    "content-disposition": "attachment; filename=IndigoUnited-node-planify-1.1.0-2-gb978ab1.tar.gz",
+    "x-geo-block-list": "",
+    "date": "Sun, 18 Sep 2016 22:41:53 GMT",
+    "x-github-request-id": "D98186F0:11CB:5DADFE:57DF1830"
+  },
+  "url": "https://codeload.github.com:443/IndigoUnited/node-planify/legacy.tar.gz/b978ab1afd96cd9c5b41a642f2821c453ec35ba7",
+  "time": 794,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.5.0 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/vnd.github.v3+json"
+    }
+  }
+}

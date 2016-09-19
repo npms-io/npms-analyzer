@@ -16,11 +16,12 @@ module.exports = (yargs) => {
         return true;
     })
 
-    .command('process-module', 'Processes a single module, analyzing and scoring it', require('./process-module'))
-    .command('enqueue-view', 'Enqueues all modules contained in a npms view', require('./enqueue-view'))
-    .command('enqueue-missing', 'Finds modules that were not analyzed and enqueues them', require('./enqueue-missing'))
-    .command('clean-extraneous', 'Finds modules that are analyzed but no longer exist in npm', require('./clean-extraneous'))
-    .command('re-metadata', 'Iterates over all analyzed modules, running the metadata collector again', require('./re-metadata'))
-    .command('re-evaluate', 'Iterates over all analyzed modules, evaluating them again', require('./re-evaluate'))
-    .command('optimize-db', 'Optimizes the CouchDB database, compacting itself and its views', require('./optimize-db.js'));
+    .command('process-package', 'Processes a single package, analyzing and scoring it', require('./process-package'))
+    .command('enqueue-view', 'Enqueues all packages contained in a npms view', require('./enqueue-view'))
+    .command('enqueue-missing', 'Finds packages that were not analyzed and enqueues them', require('./enqueue-missing'))
+    .command('clean-extraneous', 'Finds packages that are analyzed but no longer exist in npm', require('./clean-extraneous'))
+    .command('re-metadata', 'Iterates over all analyzed packages, running the metadata collector again', require('./re-metadata'))
+    .command('re-evaluate', 'Iterates over all analyzed packages, evaluating them again', require('./re-evaluate'))
+    .command('optimize-db', 'Optimizes the CouchDB database, compacting itself and its views', require('./optimize-db.js'))
+    .command('migrate', 'Run the latest migration', require('./migrate.js'));
 };

@@ -1,0 +1,29 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "transfer-encoding": "chunked",
+    "access-control-allow-origin": "https://render.githubusercontent.com",
+    "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'",
+    "strict-transport-security": "max-age=31536000",
+    "vary": "Authorization,Accept-Encoding",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "etag": "\"b5239f25c0274feba89242b77d8f0ce57dce83ad\"",
+    "content-type": "application/x-gzip",
+    "content-disposition": "attachment; filename=IndigoUnited-node-cross-spawn-1.0.0-0-gb5239f2.tar.gz",
+    "x-geo-block-list": "",
+    "date": "Sun, 18 Sep 2016 22:42:05 GMT",
+    "x-github-request-id": "D98186F0:11CB:5DAE1E:57DF183C"
+  },
+  "url": "http://codeload.github.com:443/IndigoUnited/node-cross-spawn/legacy.tar.gz/b5239f25c0274feba89242b77d8f0ce57dce83ad",
+  "time": 429,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.5.0 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/vnd.github.v3+json"
+    }
+  }
+}

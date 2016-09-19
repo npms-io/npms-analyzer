@@ -2,12 +2,12 @@
    "_id": "_design/npms-analyzer",
    "language": "javascript",
    "views": {
-       "modules-evaluation": {
-           "map": "function (doc) {\n    if (doc._id.indexOf('module!') === 0) {\n        emit(doc._id.split('!')[1], doc.evaluation);\n    }\n}",
+       "packages-evaluation": {
+           "map": "function (doc) {\n    if (doc._id.indexOf('package!') === 0) {\n        emit(doc._id.split('!')[1], doc.evaluation);\n    }\n}",
            "reduce": "_count"
        },
-       "modules-stale": {
-           "map": "function (doc) {\n    if (doc._id.indexOf('module!') === 0) {\n        emit([Date.parse(doc.finishedAt), doc._id.split('!')[1]]);\n    }\n}"
+       "packages-stale": {
+           "map": "function (doc) {\n    if (doc._id.indexOf('package!') === 0) {\n        emit([Date.parse(doc.finishedAt), doc._id.split('!')[1]]);\n    }\n}"
        }
    }
 }

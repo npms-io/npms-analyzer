@@ -15,8 +15,8 @@
                     "type": "edgeNGram",
                     "min_gram": "1",
                     "max_gram": "15",
-                    "token_chars": ["letter", "digit"]
-                }
+                    "token_chars": ["letter", "digit"],
+                },
             },
 
             // Custom filters
@@ -24,7 +24,7 @@
                 "non_alfanum_to_space": {
                     "type": "pattern_replace",
                     "pattern": "(?i)[^a-z0-9]+",
-                    "replacement": " "
+                    "replacement": " ",
                 },
 
                 // Split word filter, which takes tokens, such as es6_promise or lodash.foreach, and splits them
@@ -39,66 +39,66 @@
                     "split_on_case_change": true,
                     "preserve_original": true,
                     "split_on_numerics": true,
-                    "stem_english_possessive": true
+                    "stem_english_possessive": true,
                 },
 
                 // Edge ngram to provide fallback to stemming
                 "edge_ngram": {
                     "type": "edgeNGram",
                     "min_gram": "4",
-                    "max_gram": "15"
+                    "max_gram": "15",
                 },
 
                 // Dedicated filter for autocompletion
                 "autocomplete": {
                     "type": "edgeNGram",
                     "min_gram": "1",
-                    "max_gram": "15"
+                    "max_gram": "15",
                 },
 
                 // Remove duplicate tokens
                 "unique_on_same_position": {
                    "type": "unique",
-                   "only_on_same_position": false
-                }
+                   "only_on_same_position": false,
+                },
             },
 
             // Custom analyzers
             "analyzer": {
-                // The module_* series produces good results for the `name` and `keywords` fields
-                "module": {
+                // The packages_* series produces good results for the `name` and `keywords` fields
+                "package": {
                     "tokenizer": "standard",
                     "filter": [
                         "asciifolding",
                         "split_word",
                         "lowercase",
-                        "unique_on_same_position"
+                        "unique_on_same_position",
                     ],
                 },
 
-                "module_english": {
+                "package_english": {
                     "tokenizer": "standard",
                     "filter": [
                         "asciifolding",
                         "split_word",
                         "lowercase",
                         "kstem",        // Non-aggressive english stemmer
-                        "unique_on_same_position"
-                    ]
+                        "unique_on_same_position",
+                    ],
                 },
 
-                "module_english_aggressive": {
+                "package_english_aggressive": {
                     "tokenizer": "standard",
                     "filter": [
                         "asciifolding",
                         "split_word",
                         "lowercase",
                         "porter_stem",  // Aggressive english stemmer
-                        "unique_on_same_position"
-                    ]
+                        "unique_on_same_position",
+                    ],
                 },
 
-                "module_edge_ngram": {
+                "package_edge_ngram": {
                     // This analyzer provides fallbacks in which the stemmer is not efficient, e.g.: searching for "glob" should match "globby"
                     "tokenizer": "standard",
                     "filter": [
@@ -106,23 +106,23 @@
                         "split_word",
                         "lowercase",
                         "edge_ngram",
-                        "unique_on_same_position"
-                    ]
+                        "unique_on_same_position",
+                    ],
                 },
 
-                // The module_autocomplete_* series produces good results for autocompletion
-                "module_autocomplete": {
+                // The package_autocomplete_* series produces good results for autocompletion
+                "package_autocomplete": {
                     "tokenizer": "standard",
                     "filter": [
                         "asciifolding",
                         "split_word",
                         "lowercase",
                         "autocomplete",
-                        "unique_on_same_position"
-                    ]
+                        "unique_on_same_position",
+                    ],
                 },
 
-                "module_autocomplete_keyword": {
+                "package_autocomplete_keyword": {
                     // This analyzer emits the whole string but replaces non-alfanum with spaces
                     // so that we can use it boost exact prefix matches higher
                     "tokenizer": "keyword",
@@ -132,22 +132,22 @@
                         "lowercase",
                         "autocomplete",
                         "trim",
-                        "unique_on_same_position"
-                    ]
+                        "unique_on_same_position",
+                    ],
                 },
 
-                "module_autocomplete_keyword_search": {
-                    // This analyzer is the "search_analyzer" for "module_autocomplete_keyword"
+                "package_autocomplete_keyword_search": {
+                    // This analyzer is the "search_analyzer" for "package_autocomplete_keyword"
                     "tokenizer": "keyword",
                     "filter": [
                         "asciifolding",
                         "non_alfanum_to_space",
                         "lowercase",
-                        "trim"
-                    ]
+                        "trim",
+                    ],
                 },
 
-                "module_autocomplete_highlight": {
+                "package_autocomplete_highlight": {
                     // This analyzer is necessary to perform proper highlighting
                     // See: https://github.com/elastic/elasticsearch/issues/3137#issuecomment-22116469
                     // Can't use split_word which may lead to "strange" highlighting in some edge cases :(
@@ -156,145 +156,137 @@
                         "asciifolding",
                         "non_alfanum_to_space",
                         "lowercase",
-                        "trim"
-                    ]
+                        "trim",
+                    ],
                 },
 
                 // The raw analyzer simply does no transformation besides lowercasing
                 "raw": {
                     "tokenizer": "keyword",
                     "filter": [
-                        "lowercase"
-                    ]
-                }
-            }
-        }
+                        "lowercase",
+                        "trim",
+                    ],
+                },
+
+                // Same as above but does a bit of normalization
+                "raw_normalized": {
+                    "tokenizer": "keyword",
+                    "filter": [
+                        "asciifolding",
+                        "non_alfanum_to_space",
+                        "lowercase",
+                        "trim",
+                    ],
+                },
+            },
+        },
     },
 
     // ------------------------------------------------------------------------------
     // Mappings
     // ------------------------------------------------------------------------------
     "mappings" : {
-        "module" : {
+        "score" : {
             "dynamic": false,
             "_all": {
-                "enabled": false
+                "enabled": false,
             },
 
             "properties" : {
-                "module": {
+                "package": {
                     "type": "object",
                     "properties": {
                         // The `name`, `description` and `keywords` fields all have `norms` disabled because we don't care about the fields length
-                        // Also they have additional fields beyond the `standard` analyzer, such as `module_english`, `module_english_docs` etc
+                        // Also they have additional fields beyond the `standard` analyzer, such as `package_english`, `package_english_docs` etc
                         "name": {
                             "type": "string",
                             "fields": {
                                 "english_docs": {
                                     "type": "string",
-                                    "analyzer": "module_english",
-                                    "index_options": "docs"
+                                    "analyzer": "package_english",
+                                    "index_options": "docs",
                                 },
                                 "english_aggressive_docs": {
                                     "type": "string",
-                                    "analyzer": "module_english_aggressive",
-                                    "index_options": "docs"
+                                    "analyzer": "package_english_aggressive",
+                                    "index_options": "docs",
                                 },
                                 "edge_ngram": {
                                     "type": "string",
-                                    "analyzer": "module_edge_ngram",
-                                    "search_analyzer": "module"
+                                    "analyzer": "package_edge_ngram",
+                                    "search_analyzer": "package",
                                 },
                                 "autocomplete": {
                                     "type": "string",
-                                    "analyzer": "module_autocomplete",
-                                    "search_analyzer": "module"
+                                    "analyzer": "package_autocomplete",
+                                    "search_analyzer": "package",
                                 },
                                 "autocomplete_highlight": {
                                     "type": "string",
-                                    "analyzer": "module_autocomplete_highlight",
-                                    "search_analyzer": "module",
-                                    "index_options": "offsets"
+                                    "analyzer": "package_autocomplete_highlight",
+                                    "search_analyzer": "package",
+                                    "index_options": "offsets",
                                 },
                                 "autocomplete_keyword": {
                                     "type": "string",
-                                    "analyzer": "module_autocomplete_keyword",
-                                    "search_analyzer": "module_autocomplete_keyword_search"
+                                    "analyzer": "package_autocomplete_keyword",
+                                    "search_analyzer": "package_autocomplete_keyword_search",
                                 },
                                 "raw": {
                                     "type": "string",
                                     "analyzer": "raw",
-                                    "index_options": "docs"
-                                }
-                            }
+                                    "index_options": "docs",
+                                },
+                            },
                         },
                         "description": {
                             "type": "string",
                             "fields": {
                                 "english_docs": {
                                     "type": "string",
-                                    "analyzer": "module_english",
-                                    "index_options": "docs"
+                                    "analyzer": "package_english",
+                                    "index_options": "docs",
                                 },
                                 "english_aggressive_docs": {
                                     "type": "string",
-                                    "analyzer": "module_english_aggressive",
-                                    "index_options": "docs"
+                                    "analyzer": "package_english_aggressive",
+                                    "index_options": "docs",
                                 },
                                 "edge_ngram": {
                                     "type": "string",
-                                    "analyzer": "module_edge_ngram",
-                                    "search_analyzer": "module"
+                                    "analyzer": "package_edge_ngram",
+                                    "search_analyzer": "package",
                                 },
-                            }
+                            },
                         },
                         "keywords": {
                             "type": "string",
                             "fields": {
                                 "english_docs": {
                                     "type": "string",
-                                    "analyzer": "module_english",
-                                    "index_options": "docs"
+                                    "analyzer": "package_english",
+                                    "index_options": "docs",
                                 },
                                 "english_aggressive_docs": {
                                     "type": "string",
-                                    "analyzer": "module_english_aggressive",
-                                    "index_options": "docs"
+                                    "analyzer": "package_english_aggressive",
+                                    "index_options": "docs",
                                 },
                                 "edge_ngram": {
                                     "type": "string",
-                                    "analyzer": "module_edge_ngram",
-                                    "search_analyzer": "module"
+                                    "analyzer": "package_edge_ngram",
+                                    "search_analyzer": "package",
                                 },
-                            }
+                            },
                         },
                         "version": {
                             "type": "string",
-                            "index": "no"
+                            "index": "no",
                         },
                         "date": {
                             "type": "date",
-                            "index": "no"
-                        },
-                        "deprecated": {
-                            "type": "string",
-                            "index": "no"
-                        },
-                        "publisher": {
-                            "type": "object",
-                            "properties": {
-                                "username": {
-                                    "type": "string",
-                                    "fields": {
-                                        "raw": {
-                                            "type": "string",
-                                            "analyzer": "raw",
-                                            "index_options": "docs"
-                                        }
-                                    }
-                                },
-                                "email": { "type": "string", "index": "no" }
-                            }
+                            "index": "no",
                         },
                         "links": {
                             "type": "object",
@@ -302,26 +294,61 @@
                                 "npm": { "type": "string", "index": "no" },
                                 "homepage": { "type": "string", "index": "no" },
                                 "repository": { "type": "string", "index": "no" },
-                                "bugs": { "type": "string", "index": "no" }
-                            }
+                                "bugs": { "type": "string", "index": "no" },
+                            },
+                        },
+                        "author": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "analyzer": "raw_normalized",
+                                    "index_options": "docs",
+                                },
+                                "username": {
+                                    "type": "string",
+                                    "analyzer": "raw",
+                                    "index_options": "docs",
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "analyzer": "raw",
+                                    "index_options": "docs",
+                                },
+                                "url": { "type": "string", "index": "no" },
+                            },
+                        },
+                        "publisher": {
+                            "type": "object",
+                            "properties": {
+                                "username": { "type": "string", "index": "no" },
+                                "email": { "type": "string", "index": "no" },
+                            },
                         },
                         "maintainers": {
                             "type": "object",
                             "properties": {
                                 "username": {
                                     "type": "string",
-                                    "fields": {
-                                        "raw": {
-                                            "type": "string",
-                                            "analyzer": "raw",
-                                            "index_options": "docs"
-                                        }
-                                    }
+                                    "analyzer": "raw",
+                                    "index_options": "docs",
                                 },
-                                "email": { "type": "string", "index": "no" }
-                            }
-                        }
-                    }
+                                "email": {
+                                    "type": "string",
+                                    "analyzer": "raw",
+                                    "index_options": "docs",
+                                },
+                            },
+                        },
+                    },
+                },
+                "flags": {
+                    "type": "object",
+                    "properties": {
+                        "deprecated": { "type": "string", "index": "not_analyzed" },
+                        "insecure": { "type": "integer" },
+                        "unstable": { "type": "boolean" },
+                    },
                 },
                 "evaluation": {
                     "type": "object",
@@ -331,9 +358,9 @@
                             "properties": {
                                 "carefulness": { "type": "double", "index": "no" },
                                 "tests": { "type": "double", "index": "no" },
-                                "dependenciesHealth": { "type": "double", "index": "no" },
-                                "branding": { "type": "double", "index": "no" }
-                            }
+                                "health": { "type": "double", "index": "no" },
+                                "branding": { "type": "double", "index": "no" },
+                            },
                         },
                         "popularity": {
                             "type": "object",
@@ -341,8 +368,8 @@
                                 "communityInterest": { "type": "double", "index": "no" },
                                 "downloadsCount": { "type": "double", "index": "no" },
                                 "downloadsAcceleration": { "type": "double", "index": "no" },
-                                "dependentsCount": { "type": "double", "index": "no" }
-                            }
+                                "dependentsCount": { "type": "double", "index": "no" },
+                            },
                         },
                         "maintenance": {
                             "type": "object",
@@ -350,10 +377,10 @@
                                 "releasesFrequency": { "type": "double", "index": "no" },
                                 "commitsFrequency": { "type": "double", "index": "no" },
                                 "openIssues": { "type": "double", "index": "no" },
-                                "issuesDistribution": { "type": "double", "index": "no" }
-                            }
-                        }
-                    }
+                                "issuesDistribution": { "type": "double", "index": "no" },
+                            },
+                        },
+                    },
                 },
                 "score": {
                     "type": "object",
@@ -364,12 +391,12 @@
                             "properties": {
                                 "quality": { "type": "double" },
                                 "popularity": { "type": "double" },
-                                "maintenance": { "type": "double" }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+                                "maintenance": { "type": "double" },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    },
 }
