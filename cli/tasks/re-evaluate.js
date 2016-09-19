@@ -39,11 +39,19 @@ module.exports.handler = (argv) => {
                 return;
             }
 
-            log.debug(`Evaluating ${doc.collected.metadata.name}..`);
+            const name = doc.collected.metadata.name;
 
-            doc.evaluation = evaluate(doc.collected);
+            log.debug(`Evaluating ${name}..`);
 
-            return save(doc, npmsNano);
+            return Promise.try(() => {
+                doc.evaluation = evaluate(doc.collected);
+
+                return save(doc, npmsNano);
+            })
+            .catch((err) => {
+                log.error({ err }, `Failed to evaluate ${name}`);
+                throw err;
+            });
         }, {
             startkey: 'package!',
             endkey: 'package!\ufff0',
