@@ -47,7 +47,7 @@ module.exports.handler = (argv) => {
             }
 
             // dependenciesHealth -> health
-            if (newDoc.evaluation.quality.dependenciesHealth == null) {
+            if (newDoc.evaluation.quality.dependenciesHealth != null) {
                 newDoc.evaluation.quality.health = newDoc.evaluation.quality.dependenciesHealth;
                 delete newDoc.evaluation.quality.dependenciesHealth;
             }
