@@ -7,6 +7,7 @@ global.Promise = require('bluebird');
 // Some packages have a .npmrc to integrate with CI systems which require NPM_TOKEN env var to be defined
 // See: https://github.com/alanshaw/david/issues/109
 process.env.NPM_TOKEN = '';
+process.env.NPM_AUTH_TOKEN = '';
 
 const path = require('path');
 const yargs = require('yargs');
