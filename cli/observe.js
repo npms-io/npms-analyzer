@@ -13,18 +13,19 @@ const log = logger.child({ module: 'cli/observe' });
  * Pushes a package into the queue, retrying several times on error.
  * If all retries are used, there isn't much we can do, therefore the process will gracefully exit.
  *
- * @param {array} name  The package name
- * @param {Queue} queue The analysis queue instance
+ * @param {array}  name     The package name
+ * @param {number} priority The priority to assign to this package when pushing into the queue
+ * @param {Queue}  queue    The analysis queue instance
  *
  * @return {Promise} The promise that fulfills once done
  */
-function onPackage(name, queue) {
+function onPackage(name, priority, queue) {
     return promiseRetry((retry) => {
-        return queue.push(name)
+        return queue.push(name, priority)
         .catch(retry);
     })
     .catch((err) => {
-        log.fatal({ err, name }, 'Too many failed attempts while trying to push package into the queue, exiting..');
+        log.fatal({ err, name }, 'Too many failed attempts while trying to push the package into the queue, exiting..');
         process.exit(1);
     });
 }
@@ -61,8 +62,8 @@ module.exports.handler = (argv) => {
         stats.queue(queue);
 
         // Start observing..
-        realtime(npmNano, npmsNano, { defaultSeq: argv.defaultSeq }, (name) => onPackage(name, queue));
-        stale(npmsNano, (name) => onPackage(name, queue));
+        realtime(npmNano, npmsNano, { defaultSeq: argv.defaultSeq }, (name) => onPackage(name, 1, queue));
+        stale(npmsNano, (name) => onPackage(name, 0, queue));
     })
     .done();
 };

@@ -17,6 +17,7 @@
     queue: {
         name: 'npms',
         addr: 'amqp://guest:guest@127.0.0.1',
+        options: { maxPriority: 1 },
     },
 
     // List of packages that will be ignored by the CLI consume command (analysis process)
