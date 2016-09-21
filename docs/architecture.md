@@ -21,6 +21,9 @@ Observers continuously push packages to the queue whenever they see fit.
 - realtime - Observes the replicated `npm` registry for changes, pushing new or updated packages into the analyze queue.
 - stale - Fetches packages that were not analyzed for some time, pushing them to the queue.
 
+The packages reported by the `realtime` have priority over the other observers, so that recently published packages are analyzed first.  
+
+
 ### Queue
 
 The queue holds all packages that are waiting to be analyzed. This component gives us:
