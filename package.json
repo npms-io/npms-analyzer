@@ -1,7 +1,7 @@
 {
   "name": "npms-analyzer",
   "version": "0.1.0",
-  "description": "The analyzer behind npms",
+  "description": "The analyzer behind npms.io",
   "main": "index.js",
   "scripts": {
     "lint": "eslint '{*.js,lib/**/*.js,test/**/*.js}' --ignore-pattern=test/coverage",
