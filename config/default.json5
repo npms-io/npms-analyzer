@@ -2,11 +2,11 @@
     // Databases & similar stuff
     couchdbNpm: {
         url: 'http://admin:admin@127.0.0.1:5984/npm',
-        requestDefaults: { timeout: 15000 }
+        requestDefaults: { timeout: 15000 },
     },
     couchdbNpms: {
         url: 'http://admin:admin@127.0.0.1:5984/npms',
-        requestDefaults: { timeout: 15000 }
+        requestDefaults: { timeout: 15000 },
     },
     elasticsearch: {
         host: 'http://127.0.0.1:9200',
