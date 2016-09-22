@@ -20,4 +20,4 @@ Before doing the first deploy, you need to setup the server. All commands execut
 
 ## Deploying
 
-Deployment is easy, just run `$ pm2 deploy ecosystem.json5 production` in your local machine
+Deployment is easy, just run `$ pm2 deploy ecosystem.json5 production` in your local machine.
