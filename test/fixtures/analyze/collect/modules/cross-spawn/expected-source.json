@@ -2,9 +2,7 @@
   "files": {
     "readmeSize": 2709,
     "testsSize": 20813,
-    "hasNpmIgnore": true,
-    "hasShrinkwrap": false,
-    "hasChangelog": false
+    "hasNpmIgnore": true
   },
   "repositorySize": 30199,
   "linters": {

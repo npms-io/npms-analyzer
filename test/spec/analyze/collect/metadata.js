@@ -120,17 +120,17 @@ describe('metadata', () => {
         // No scripts
         return Promise.try(() => {
             return metadata({}, { name: 'cross-spawn' })
-            .then((collected) => expect(collected.hasTestScript).to.equal(false));
+            .then((collected) => expect(collected).to.not.have.property('hasTestScript'));
         })
         // No test scripts
         .then(() => {
             return metadata({}, { name: 'cross-spawn', scripts: {} })
-            .then((collected) => expect(collected.hasTestScript).to.equal(false));
+            .then((collected) => expect(collected).to.not.have.property('hasTestScript'));
         })
         // No tests specified
         .then(() => {
             return metadata({}, { name: 'cross-spawn', scripts: { test: 'no test specified' } })
-            .then((collected) => expect(collected.hasTestScript).to.equal(false));
+            .then((collected) => expect(collected).to.not.have.property('hasTestScript'));
         })
         // Detect test
         .then(() => {
