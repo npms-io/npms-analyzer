@@ -80,21 +80,20 @@ describe('github', () => {
         it('should retry requests if cache is building up', () => {
             const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
             const expected = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/expected-github.json`);
-            let replied = false;
+
+            sepia.enable();
 
             nock('https://api.github.com', { allowUnmocked: true })
             .get('/repos/IndigoUnited/node-cross-spawn/stats/commit_activity')
             .reply(202, () => {
-                replied = true;
                 nock.cleanAll();
-                sepia.enable();
 
                 return [];
             });
 
             return github(packageJsonFromData('cross-spawn', data), {})
             .then((collected) => {
-                expect(replied).to.equal(true);
+                expect(nock.isDone()).to.equal(true);
                 expect(collected).to.eql(expected);
             })
             .finally(() => {
@@ -128,13 +127,17 @@ describe('github', () => {
         });
 
         it('should deal with 400 - Invalid repository name', () => {
-            sepia.enable();
-
             const betrayed = betray(logger.children['collect/github'], 'info');
+
+            // Can't use sepia because of https://github.com/linkedin/sepia/issues/15
+            nock('https://api.github.com')
+            .persist()
+            .get(/.*/)
+            .reply(400);
 
             return github({
                 name: 'foo',
-                repository: { type: 'git', url: 'git://github.com/some-org/some-repó.git' },
+                repository: { type: 'git', url: 'git://github.com/some-org/some-repó' },
             }, {})
             .then((collected) => {
                 expect(betrayed.invoked).to.be.greaterThan(1);
@@ -142,8 +145,8 @@ describe('github', () => {
                 expect(collected).to.equal(null);
             })
             .finally(() => {
-                sepia.disable();
                 betrayed.restore();
+                nock.cleanAll();
             });
         });
 
