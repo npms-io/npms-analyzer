@@ -168,17 +168,6 @@
                         "trim",
                     ],
                 },
-
-                // Same as above but does a bit of normalization
-                "raw_normalized": {
-                    "tokenizer": "keyword",
-                    "filter": [
-                        "asciifolding",
-                        "non_alfanum_to_space",
-                        "lowercase",
-                        "trim",
-                    ],
-                },
             },
         },
     },
@@ -278,6 +267,10 @@
                                     "analyzer": "package_edge_ngram",
                                     "search_analyzer": "package",
                                 },
+                                "raw": {
+                                    "type": "string",
+                                    "analyzer": "raw",
+                                }
                             },
                         },
                         "version": {
@@ -302,7 +295,7 @@
                             "properties": {
                                 "name": {
                                     "type": "string",
-                                    "analyzer": "raw_normalized",
+                                    "analyzer": "raw",
                                     "index_options": "docs",
                                 },
                                 "username": {
