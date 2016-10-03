@@ -58,7 +58,7 @@
     "moment-range": "^2.1.0",
     "nano": "^6.2.0",
     "normalize-package-data": "^2.3.5",
-    "nsp": "^2.2.0",
+    "nsp": "^2.6.2",
     "obj-flatten": "^1.1.0",
     "obj-unflatten": "^1.0.0",
     "php-escape-shell": "^1.0.0",
