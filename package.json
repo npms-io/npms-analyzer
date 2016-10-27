@@ -42,7 +42,7 @@
     "detect-repo-changelog": "^1.0.1",
     "detect-repo-linters": "^2.0.0",
     "detect-repo-test-files": "^1.0.0",
-    "elasticsearch": "^11.0.0",
+    "elasticsearch": "^12.0.0",
     "fetch-coverage": "^1.0.3",
     "gh-issues-stats": "^2.0.0",
     "glob": "^7.0.0",
