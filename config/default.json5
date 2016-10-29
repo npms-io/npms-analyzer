@@ -11,7 +11,7 @@
     elasticsearch: {
         host: 'http://127.0.0.1:9200',
         requestTimeout: 15000,
-        apiVersion: '2.3',
+        apiVersion: '2.4',
         log: null,
     },
     queue: {
