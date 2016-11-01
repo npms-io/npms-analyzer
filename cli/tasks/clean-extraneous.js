@@ -84,8 +84,11 @@ module.exports.handler = (argv) => {
                 return;
             }
 
-            return Promise.map(extraneousPackages, (name, index) => {
-                index && index % 100 === 0 && log.info(`Removed ${index} packages`);
+            let count = 0;
+
+            return Promise.map(extraneousPackages, (name) => {
+                count += 1;
+                count && count % 100 === 0 && log.info(`Removed ${count} packages`);
 
                 const key = `package!${name}`;
 

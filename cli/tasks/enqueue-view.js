@@ -77,8 +77,11 @@ module.exports.handler = (argv) => {
                 return;
             }
 
-            return Promise.map(viewPackages, (name, index) => {
-                index && index % 5000 === 0 && log.info(`Enqueued ${index} packages`);
+            let count = 0;
+
+            return Promise.map(viewPackages, (name) => {
+                count += 1;
+                count % 5000 === 0 && log.info(`Enqueued ${count} packages`);
                 return queue.push(name);
             }, { concurrency: 15 })
             .then(() => log.info('View packages were enqueued!'));
