@@ -1,0 +1,14 @@
+app = "{{npms_app}}"
+description =  "rank packages based on several metrics"
+processes = 1
+start =  "node ./cli.js {{npms_command}}"
+
+[environment]
+    COUCH_URL_NPM = "{{npms_couch_url_npm}}"
+    GITHUB_TOKENS = "[{% for token in npms_github_tokens|dictsort %}\\\"{{token[1]}}\\\"{% if not loop.last %},{% endif %}{% endfor %}]"
+    COUCH_URL_NPMS = "{{npms_couch_url}}"
+    ELASTICSEARCH_URL = "{{npms_elasticsearch_url}}"
+    RABBIT_URL = "{{npms_rabbit_url}}"
+
+[arguments]
+    log-level = "debug"
