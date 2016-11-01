@@ -52,7 +52,7 @@ function cycle(delay, npmsNano, esClient) {
     // Aggregate + score all packages
     .tap(() => {
         return aggregate(npmsNano)
-        .then((aggregation) => score.all(aggregation, npmsNano, esClient));
+        .then((aggregation) => aggregation && score.all(aggregation, npmsNano, esClient));  // If aggregation is null, there were no evaluations
     })
     // Finalize
     .then((esInfo) => finalize(esInfo, esClient))
