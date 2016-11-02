@@ -46,7 +46,7 @@
     "fetch-coverage": "^1.0.3",
     "gh-issues-stats": "^2.0.0",
     "glob": "^7.0.0",
-    "got": "^6.2.0",
+    "got": "^6.6.1",
     "hosted-git-info": "^2.1.4",
     "humanize-duration": "^3.6.1",
     "is-link-working": "^2.1.0",
