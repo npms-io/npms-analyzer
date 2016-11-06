@@ -12,7 +12,6 @@ const stats = require('./util/stats');
 const blacklist = JSON.parse(JSON.stringify(config.get('blacklist')));
 const gitRefOverrides = JSON.parse(JSON.stringify(config.get('gitRefOverrides')));
 const githubTokens = config.get('githubTokens');
-
 const log = logger.child({ module: 'cli/consume' });
 
 /**
