@@ -66,6 +66,7 @@
     "promise-retry": "^1.0.1",
     "require-directory": "^2.1.1",
     "semver": "^5.1.0",
+    "serialize-error": "^2.0.0",
     "spdx": "^0.5.0",
     "spdx-correct": "^1.0.2",
     "token-dealer": "^1.2.0",

@@ -277,4 +277,8 @@ describe('index', () => {
             .finally(() => sepia.disable());
         });
     });
+
+    describe('empty', () => {
+        it('should generate an empty collected object');
+    });
 });

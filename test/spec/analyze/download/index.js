@@ -112,7 +112,7 @@ describe('index', () => {
         .then(() => {
             expect(betrayed.invoked).to.equal(1);
             expect(tmpDir.indexOf(`${os.tmpdir()}/npms-analyzer/cross-spawn-`)).to.equal(0);
-            expect(tmpDir).to.match(/\-[a-z0-9]+$/);
+            expect(tmpDir).to.match(/-[a-z0-9]+$/);
         })
         .finally(() => betrayed.restore());
     });

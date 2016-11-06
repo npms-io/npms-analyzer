@@ -1,6 +1,5 @@
 'use strict';
 
-const config = require('config');
 const pino = require('pino');
 
 const log = logger.child({ module: 'stats/progress' });
@@ -19,7 +18,6 @@ function statProgress(npmNano, npmsNano) {
         return;
     }
 
-    const blacklistCount = Object.keys(config.blacklist).length;
     let pending = false;
 
     setInterval(() => {
@@ -31,7 +29,7 @@ function statProgress(npmNano, npmsNano) {
         pending = true;
 
         Promise.props({
-            npmDocsCount: npmNano.infoAsync().then((res) => res.doc_count - blacklistCount),
+            npmDocsCount: npmNano.infoAsync().then((res) => res.doc_count),
             npmDesignDocsCount: npmNano.listAsync({ startkey: '_design/', endkey: '_design0' }).then((res) => res.rows.length),
             npmsPackagesCount: npmsNano.viewAsync('npms-analyzer', 'packages-evaluation', { reduce: true })
             .then((res) => res.rows[0].value),
