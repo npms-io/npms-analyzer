@@ -9,9 +9,7 @@
     "test-cov": "test/download && VCR_MODE=cache istanbul cover --dir test/coverage _mocha && echo Coverage lies in test/coverage/lcov-report/index.html",
     "test-travis": "test/download && VCR_MODE=playback istanbul cover _mocha --report lcovonly && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
-  "bugs": {
-    "url": "https://github.com/npms-io/npms-analyzer/issues/"
-  },
+  "bugs": "https://github.com/npms-io/npms-analyzer/issues/",
   "repository": {
     "type": "git",
     "url": "git://github.com/npms-io/npms-analyzer.git"
