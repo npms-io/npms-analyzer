@@ -1,11 +1,9 @@
 'use strict';
 
-const config = require('config');
 const difference = require('lodash/difference');
 const bootstrap = require('../util/bootstrap');
 const stats = require('../util/stats');
 
-const blacklisted = config.get('blacklist');
 const log = logger.child({ module: 'cli/enqueue-missing' });
 
 /**
@@ -20,7 +18,7 @@ function fetchNpmPackages(npmNano) {
     .then((response) => {
         return response.rows
         .map((row) => row.id)
-        .filter((id) => id.indexOf('_design/') !== 0 && !blacklisted[id]);
+        .filter((id) => id.indexOf('_design/') !== 0);
     });
 }
 
@@ -89,7 +87,7 @@ module.exports.handler = (argv) => {
 
             return Promise.map(missingPackages, (name) => {
                 count += 1;
-                count && count % 1000 === 0 && log.info(`Enqueued ${count} packages`);
+                count % 1000 === 0 && log.info(`Enqueued ${count} packages`);
                 return queue.push(name);
             }, { concurrency: 15 })
             .then(() => log.info('Missing packages were enqueued!'));

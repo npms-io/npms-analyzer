@@ -1,11 +1,9 @@
 'use strict';
 
-const config = require('config');
 const difference = require('lodash/difference');
 const stats = require('../util/stats');
 const bootstrap = require('../util/bootstrap');
 
-const blacklisted = config.get('blacklist');
 const log = logger.child({ module: 'cli/clean-extraneous' });
 
 /**
@@ -20,7 +18,7 @@ function fetchNpmPackages(npmNano) {
     .then((response) => {
         return response.rows
         .map((row) => row.id)
-        .filter((id) => id.indexOf('_design/') !== 0 && !blacklisted[id]);
+        .filter((id) => id.indexOf('_design/') !== 0);
     });
 }
 
@@ -88,7 +86,7 @@ module.exports.handler = (argv) => {
 
             return Promise.map(extraneousPackages, (name) => {
                 count += 1;
-                count && count % 100 === 0 && log.info(`Removed ${count} packages`);
+                count % 100 === 0 && log.info(`Removed ${count} packages`);
 
                 const key = `package!${name}`;
 

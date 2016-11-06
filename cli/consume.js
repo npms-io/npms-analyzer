@@ -7,6 +7,11 @@ const score = require('../lib/scoring/score');
 const bootstrap = require('./util/bootstrap');
 const stats = require('./util/stats');
 
+// Need JSON.parse & JSON stringify because of config reserved words
+// See: https://github.com/lorenwest/node-config/issues/223
+const blacklist = JSON.parse(JSON.stringify(config.get('blacklist')));
+const gitRefOverrides = JSON.parse(JSON.stringify(config.get('gitRefOverrides')));
+const githubTokens = config.get('githubTokens');
 const log = logger.child({ module: 'cli/consume' });
 
 /**
@@ -23,11 +28,13 @@ function onMessage(msg, npmNano, npmsNano, esClient) {
     const name = msg.data;
 
     // Check if this package is blacklisted
-    const blacklisted = config.get('blacklist')[name];
+    const blacklisted = blacklist[name];
 
     if (blacklisted) {
-        log.info({ reason: blacklisted }, `Package ${name} is blacklisted`);
-        return Promise.resolve();
+        const err = Object.assign(new Error(`Package ${name} is blacklisted`), { code: 'BLACKLISTED', unrecoverable: true });
+
+        return onFailedAnalysis(name, err, npmsNano, esClient)
+        .catch(() => {});
     }
 
     log.info(`Processing package ${name}`);
@@ -43,17 +50,27 @@ function onMessage(msg, npmNano, npmsNano, esClient) {
 
         // If not, analyze it! :D
         return analyze(name, npmNano, npmsNano, {
-            githubTokens: config.get('githubTokens'),
-            gitRefOverrides: config.get('gitRefOverrides'),
+            githubTokens,
+            gitRefOverrides,
             waitRateLimit: true,
             rev: analysis && analysis._rev,
         })
         // Score it to get a "real-time" feeling, ignoring any errors
         .then((analysis) => score(analysis, npmsNano, esClient).catch(() => {}))
-        .catch({ code: 'PACKAGE_NOT_FOUND' }, (err) => score.remove(name, esClient).finally(() => { throw err; }))
+        .catch({ code: 'PACKAGE_NOT_FOUND' }, () => score.remove(name, esClient))
         // Ignore unrecoverable errors, so that these are not re-queued
-        .catch({ unrecoverable: true }, () => {});
+        .catch({ unrecoverable: true }, (err) => {
+            return onFailedAnalysis(name, err, npmsNano, esClient)
+            .catch(() => {});
+        });
     });
+}
+
+function onFailedAnalysis(name, err, npmsNano, esClient) {
+    // Save the failed analysis, by generating an empty analysis object with the associated error
+    return analyze.saveFailed(name, err, npmsNano)
+    // Score it to get a "real-time" feeling, ignoring any errors
+    .then((analysis) => score(analysis, npmsNano, esClient).catch(() => {}));
 }
 
 // ----------------------------------------------------------------------------
@@ -87,12 +104,15 @@ module.exports.handler = (argv) => {
         stats.process();
         stats.queue(queue);
         stats.progress(npmNano, npmsNano);
-        stats.tokens(config.get('githubTokens'), 'github');
+        stats.tokens(githubTokens, 'github');
 
         // Clean old packages from the download directory
         return analyze.cleanTmpDir()
         // Start consuming
-        .then(() => queue.consume((message) => onMessage(message, npmNano, npmsNano, esClient), { concurrency: argv.concurrency }));
+        .then(() => queue.consume((message) => onMessage(message, npmNano, npmsNano, esClient), {
+            concurrency: argv.concurrency,
+            onRetriesExceeded: (message, err) => onFailedAnalysis(message.data, err, npmsNano, esClient),
+        }));
     })
     .done();
 };

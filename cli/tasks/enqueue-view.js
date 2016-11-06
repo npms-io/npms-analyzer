@@ -1,11 +1,9 @@
 'use strict';
 
 const assert = require('assert');
-const config = require('config');
 const bootstrap = require('../util/bootstrap');
 const stats = require('../util/stats');
 
-const blacklisted = config.get('blacklist');
 const log = logger.child({ module: 'cli/enqueue-view' });
 
 /**
@@ -22,8 +20,7 @@ function fetchView(view, npmNano) {
     return npmNano.viewAsync(split[0], split[1])
     .then((response) => {
         return response.rows
-        .map((row) => row.key.replace(/^package!/, ''))
-        .filter((id) => !blacklisted[id]);
+        .map((row) => row.key.replace(/^package!/, ''));
     });
 }
 
@@ -46,7 +43,7 @@ name (may be prefixed with `package!`)')
     })
 
     .check((argv) => {
-        assert(/^[a-z0-9_\-]+\/[a-z0-9_\-]+$/.test(argv._[2]), 'The view argument must match the following format: <design-doc/view-name>');
+        assert(/^[a-z0-9_-]+\/[a-z0-9_-]+$/.test(argv._[2]), 'The view argument must match the following format: <design-doc/view-name>');
         return true;
     });
 };

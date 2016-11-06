@@ -236,4 +236,8 @@ describe('metadata', () => {
             });
         });
     });
+
+    describe('empty', () => {
+        it('should generate an empty metadata object');
+    });
 });

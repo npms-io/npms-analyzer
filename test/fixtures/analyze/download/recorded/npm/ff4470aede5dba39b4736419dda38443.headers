@@ -1,0 +1,13 @@
+{
+  "timeout": true,
+  "time": 0,
+  "url": "https://api.github.com:443/repos/strongloop-forks/strong-fork-syslog/stats/contributors",
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.6.0 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/vnd.github.v3+json"
+    }
+  }
+}

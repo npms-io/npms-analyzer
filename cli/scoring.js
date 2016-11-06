@@ -23,7 +23,7 @@ function waitRemaining(delay, esClient) {
     return Promise.resolve(esClient.indices.getAlias({ name: 'npms-current' }))
     .then((response) => {
         const index = Object.keys(response)[0];
-        const timestamp = Number(index.replace(/^npms\-/, ''));
+        const timestamp = Number(index.replace(/^npms-/, ''));
         const wait = timestamp ? Math.max(0, timestamp + delay - Date.now()) : 0;
         const waitStr = humanizeDuration(Math.round(wait / 1000) * 1000, { largest: 2 });
 
