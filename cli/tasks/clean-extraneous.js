@@ -14,6 +14,8 @@ const log = logger.child({ module: 'cli/clean-extraneous' });
  * @return {Promise} The promise that fulfills when done
  */
 function fetchNpmPackages(npmNano) {
+    log.info('Fetching npm packages, this might take a while..');
+
     return npmNano.listAsync()
     .then((response) => {
         return response.rows
@@ -30,10 +32,102 @@ function fetchNpmPackages(npmNano) {
  * @return {Promise} The promise that fulfills when done
  */
 function fetchNpmsPackages(npmsNano) {
+    log.info('Fetching npms packages, this might take a while..');
+
     return npmsNano.listAsync({ startkey: 'package!', endkey: 'package!\ufff0' })
     .then((response) => {
         return response.rows.map((row) => row.id.split('!')[1]);
     });
+}
+
+/**
+ * Fetches the npms packages.
+ *
+ * @param {Nano} npmsNano The npms nano instance
+ *
+ * @return {Promise} The promise that fulfills when done
+ */
+function fetchNpmsObservedPackages(npmsNano) {
+    log.info('Fetching npms observed packages, this might take a while..');
+
+    return npmsNano.listAsync({ startkey: 'observer!package!', endkey: 'observer!package!\ufff0' })
+    .then((response) => {
+        return response.rows.map((row) => row.id.split('!')[2]);
+    });
+}
+
+/**
+ * Calculates which npms packages are considered extraneous and removes them.
+ *
+ * @param {array}    npmPackages  All npm packages
+ * @param {array}    npmsPackages All npms packages
+ * @param {Nano}     npmsNano     The npms nano instance
+ * @param {boolean}  dryRun       True to do a dry-run, false otherwise
+ *
+ * @return {Promise} The promise that fulfills when done
+ */
+function cleanExtraneousNpmsPackages(npmPackages, npmsPackages, npmsNano, dryRun) {
+    const extraneousPackages = difference(npmsPackages, npmPackages);
+
+    log.info(`There's a total of ${extraneousPackages.length} extraneous packages`);
+    extraneousPackages.forEach((name) => log.debug(name));
+
+    if (!extraneousPackages.length) {
+        return;
+    }
+
+    if (dryRun) {
+        log.info('This is a dry-run, skipping..');
+        return;
+    }
+
+    let count = 0;
+
+    return Promise.map(extraneousPackages, (name) => {
+        count += 1;
+        count % 100 === 0 && log.info(`Removed ${count} packages`);
+
+        const key = `package!${name}`;
+
+        return npmsNano.getAsync(key)
+        .then((doc) => npmsNano.destroyAsync(key, doc._rev));
+    }, { concurrency: 15 })
+    .then(() => log.info('Extraneous packages were removed!'));
+}
+
+/**
+ * Calculates which npms observed packages are considered extraneous and removes them.
+ *
+ * @param {array}    npmPackages          All npm packages
+ * @param {array}    npmsObservedPackages All npms observed packages
+ * @param {Nano}     npmsNano             The npms nano instance
+ * @param {boolean}  dryRun               True to do a dry-run, false otherwise
+ *
+ * @return {Promise} The promise that fulfills when done
+ */
+function cleanExtraneousNpmsObservedPackages(npmPackages, npmsObservedPackages, npmsNano, dryRun) {
+    const extraneousPackages = difference(npmsObservedPackages, npmPackages);
+
+    log.info(`There's a total of ${extraneousPackages.length} extraneous observed packages`);
+    extraneousPackages.forEach((name) => log.debug(name));
+
+    if (!extraneousPackages.length || dryRun) {
+        log.info('This is a dry-run, skipping..');
+        return;
+    }
+
+    let count = 0;
+
+    return Promise.map(extraneousPackages, (name) => {
+        count += 1;
+        count % 100 === 0 && log.info(`Removed ${count} observed packages`);
+
+        const key = `observer!package!${name}`;
+
+        return npmsNano.getAsync(key)
+        .then((doc) => npmsNano.destroyAsync(key, doc._rev));
+    }, { concurrency: 15 })
+    .then(() => log.info('Extraneous observed packages were removed!'));
 }
 
 // --------------------------------------------------
@@ -63,37 +157,20 @@ module.exports.handler = (argv) => {
         // Stats
         stats.process();
 
-        log.info('Fetching npm & npms packages, this might take a while..');
+        // The strategy below loads all packages in memory.. we can do this because the total packages is around ~250k
+        // which fit well in memory and is much faster than doing manual iteration (~20sec vs ~3min)
 
-        // Load all packages in memory.. we can do this because the total packages is around ~250k which fit well in memory
-        // and is much faster than doing manual iteration ( ~20sec vs ~3min)
-        return Promise.all([
-            fetchNpmPackages(npmNano),
-            fetchNpmsPackages(npmsNano),
-        ])
-        .spread((npmPackages, npmsPackages) => {
-            const extraneousPackages = difference(npmsPackages, npmPackages);
-
-            log.info(`There's a total of ${extraneousPackages.length} extraneous packages`);
-            extraneousPackages.forEach((name) => log.debug(name));
-
-            if (!extraneousPackages.length || argv.dryRun) {
-                log.info('Exiting..');
-                return;
-            }
-
-            let count = 0;
-
-            return Promise.map(extraneousPackages, (name) => {
-                count += 1;
-                count % 100 === 0 && log.info(`Removed ${count} packages`);
-
-                const key = `package!${name}`;
-
-                return npmsNano.getAsync(key)
-                .then((doc) => npmsNano.destroyAsync(key, doc._rev));
-            }, { concurrency: 15 })
-            .then(() => log.info('Extraneous packages were removed!'));
+        // Fetch npm packages
+        return fetchNpmPackages(npmNano)
+        // Fetch npms packages & clean extraneous
+        .tap((npmPackages) => {
+            return fetchNpmsPackages(npmsNano)
+            .then((npmsPackages) => cleanExtraneousNpmsPackages(npmPackages, npmsPackages, npmsNano, argv.dryRun));
+        })
+        // Fetch npms observed packages & clean extraneous
+        .then((npmPackages) => {
+            return fetchNpmsObservedPackages(npmsNano)
+            .then((npmsObservedPackages) => cleanExtraneousNpmsObservedPackages(npmPackages, npmsObservedPackages, npmsNano, argv.dryRun));
         });
     })
     .then(() => process.exit())

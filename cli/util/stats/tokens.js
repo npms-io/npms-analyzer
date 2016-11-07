@@ -28,7 +28,7 @@ function statTokens(tokens, group) {
             return;
         }
         if (tokensUsage.length < 1) {
-            log.info(`We have no tokens (${group})`);
+            log.info(`No tokens (${group})`);
             return;
         }
 
