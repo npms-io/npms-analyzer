@@ -59,10 +59,10 @@ function fetchNpmsObservedPackages(npmsNano) {
 /**
  * Calculates which npms packages are considered extraneous and removes them.
  *
- * @param {array}    npmPackages  All npm packages
- * @param {array}    npmsPackages All npms packages
- * @param {Nano}     npmsNano     The npms nano instance
- * @param {boolean}  dryRun       True to do a dry-run, false otherwise
+ * @param {array}   npmPackages  All npm packages
+ * @param {array}   npmsPackages All npms packages
+ * @param {Nano}    npmsNano     The npms nano instance
+ * @param {boolean} dryRun       True to do a dry-run, false otherwise
  *
  * @return {Promise} The promise that fulfills when done
  */
@@ -98,10 +98,10 @@ function cleanExtraneousNpmsPackages(npmPackages, npmsPackages, npmsNano, dryRun
 /**
  * Calculates which npms observed packages are considered extraneous and removes them.
  *
- * @param {array}    npmPackages          All npm packages
- * @param {array}    npmsObservedPackages All npms observed packages
- * @param {Nano}     npmsNano             The npms nano instance
- * @param {boolean}  dryRun               True to do a dry-run, false otherwise
+ * @param {array}   npmPackages          All npm packages
+ * @param {array}   npmsObservedPackages All npms observed packages
+ * @param {Nano}    npmsNano             The npms nano instance
+ * @param {boolean} dryRun               True to do a dry-run, false otherwise
  *
  * @return {Promise} The promise that fulfills when done
  */
