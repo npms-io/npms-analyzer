@@ -26,7 +26,7 @@ For more information about the command, run `$ npms-analyzer observe -h`
 
 ### npms-analyzer consume
 
-The `consume` command starts consuming the queue, running the analysis process for queued package.
+The `consume` command starts consuming the queue, running the analysis process for each queued package.
 
 ```bash
 $ npms-analyzer consume --log-level debug --concurrency 5 | pino
