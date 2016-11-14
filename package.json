@@ -61,6 +61,7 @@
     "obj-unflatten": "^1.0.0",
     "php-escape-shell": "^1.0.0",
     "pino": "^2.4.0",
+    "pino-err-serializer": "^1.0.0",
     "promise-retry": "^1.0.1",
     "require-directory": "^2.1.1",
     "semver": "^5.1.0",
