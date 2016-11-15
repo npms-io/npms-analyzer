@@ -27,8 +27,8 @@ glob.sync('**/*.js', { cwd: `${process.cwd()}/node_modules/nock/lib` }).forEach(
 const disabledNock = require('nock');
 const nockedRequests = { http: http.request, https: https.request };
 
-// Mock the timed-out module used by got() to avoid timeouts being triggered
-// becase socket 'connect' event is never fired when using sepia/nock
+// Mock the timed-out module used by got() to avoid timeouts being triggered:  the socket 'connect' event
+// is never fired when using sepia/nock
 // See: https://github.com/floatdrop/timed-out/blob/bdc812346570a0ed4e6d7d5fdc668e2feb72f239/index.js#L21
 mockRequire('timed-out', (req) => req);
 
