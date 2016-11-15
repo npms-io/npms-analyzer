@@ -5,7 +5,7 @@ const loadJsonFile = require('load-json-file');
 const nano = require('nano');
 const expect = require('chai').expect;
 const betray = require('betray');
-const sepia = require('sepia');
+const sepia = require(`${process.cwd()}/test/util/sepia`);
 const collect = require(`${process.cwd()}/lib/analyze/collect`);
 const packageJsonFromData = require(`${process.cwd()}/lib/analyze/util/packageJsonFromData`);
 

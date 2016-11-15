@@ -2,10 +2,11 @@
 
 const fs = require('fs');
 const cp = require('child_process');
+const which = require('which');
 const expect = require('chai').expect;
-const betray = require('betray');
 const untar = require(`${process.cwd()}/lib/analyze/download/util/untar`);
 
+const hasBsdTar = (() => { try { return !!which.sync('gtar'); } catch (err) { return false; } })();
 const tmpDir = `${process.cwd()}/test/tmp`;
 const fixturesDir = `${process.cwd()}/test/fixtures/analyze/download`;
 
@@ -40,31 +41,25 @@ describe('untar', () => {
     it('should deal with malformed archives', () => {
         // Test malformed archive
         return Promise.try(() => {
-            const betrayed = betray(logger.children['util/untar'], 'warn');
-
             fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/mocked/broken-archive.tgz`));
 
             return untar(`${tmpDir}/test.tgz`)
             .then(() => {
-                expect(betrayed.invoked).to.equal(1);
-                expect(betrayed.invocations[0][1]).to.match(/malformed/i);
-                expect(fs.readdirSync(tmpDir)).to.eql([]);
-            })
-            .finally(() => betrayed.restore());
+                throw new Error('Should have failed');
+            }, (err) => {
+                expect(err.message).to.contain('malformed');
+            });
         })
         // Test non-gzip archive (e.g.: testing233 module)
         .then(() => {
-            const betrayed = betray(logger.children['util/untar'], 'warn');
-
             fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/mocked/non-gzip-archive.tgz`));
 
             return untar(`${tmpDir}/test.tgz`)
             .then(() => {
-                expect(betrayed.invoked).to.equal(1);
-                expect(betrayed.invocations[0][1]).to.match(/malformed/i);
-                expect(fs.readdirSync(tmpDir)).to.eql([]);
-            })
-            .finally(() => betrayed.restore());
+                throw new Error('Should have failed');
+            }, (err) => {
+                expect(err.message).to.contain('malformed');
+            });
         });
     });
 
@@ -83,6 +78,11 @@ describe('untar', () => {
     });
 
     it('should deal with "is out of uid_t range" errors by using bsdtar', () => {
+        // Only bsdtar is benevolent with these kind of errors
+        if (!hasBsdTar) {
+            return;
+        }
+
         fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/downloaded/citong-1.3.1.tgz`));
 
         return untar(`${tmpDir}/test.tgz`)
@@ -102,7 +102,7 @@ describe('untar', () => {
         });
     });
 
-    it('should delete the archive file, even if the extraction failed', () => {
+    it('should delete the archive file if successful', () => {
         // Good tar
         return Promise.try(() => {
             fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/downloaded/couchdb-iterator-2.0.2.tgz`));
@@ -117,7 +117,8 @@ describe('untar', () => {
             fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/mocked/broken-archive.tgz`));
 
             return untar(`${tmpDir}/test.tgz`)
-            .then(() => expect(() => fs.accessSync(`${tmpDir}/test.tgz`)).to.throw(/ENOENT/));
+            .catch(() => {})
+            .then(() => fs.accessSync(`${tmpDir}/test.tgz`));
         });
     });
 });

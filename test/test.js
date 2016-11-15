@@ -11,6 +11,7 @@ if (process.cwd() !== path.join(__dirname, '..')) {
 
 // Configure
 require('../lib/configure');
+require('./util/sepia');
 logger.level = 'fatal';
 
 // Auto-load tests
