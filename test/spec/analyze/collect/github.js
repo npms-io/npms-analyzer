@@ -1,9 +1,8 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sepia = require('sepia');
+const sepia = require(`${process.cwd()}/test/util/sepia`);
 const betray = require('betray');
-const nock = require('nock');
 const chronokinesis = require('chronokinesis');
 const loadJsonFile = require('load-json-file');
 const packageJsonFromData = require(`${process.cwd()}/lib/analyze/util/packageJsonFromData`);
@@ -83,22 +82,22 @@ describe('github', () => {
 
             sepia.enable();
 
-            nock('https://api.github.com', { allowUnmocked: true })
+            sepia.nock('https://api.github.com', { allowUnmocked: true })
             .get('/repos/IndigoUnited/node-cross-spawn/stats/commit_activity')
             .reply(202, () => {
-                nock.cleanAll();
+                sepia.nock.cleanAll();
 
                 return [];
             });
 
             return github(packageJsonFromData('cross-spawn', data), {})
             .then((collected) => {
-                expect(nock.isDone()).to.equal(true);
+                expect(sepia.nock.isDone()).to.equal(true);
                 expect(collected).to.eql(expected);
             })
             .finally(() => {
+                sepia.nock.cleanAll();
                 sepia.disable();
-                nock.cleanAll();
             });
         });
 
@@ -130,7 +129,7 @@ describe('github', () => {
             const betrayed = betray(logger.children['collect/github'], 'info');
 
             // Can't use sepia because of https://github.com/linkedin/sepia/issues/15
-            nock('https://api.github.com')
+            sepia.nock('https://api.github.com')
             .persist()
             .get(/.*/)
             .reply(400);
@@ -146,7 +145,7 @@ describe('github', () => {
             })
             .finally(() => {
                 betrayed.restore();
-                nock.cleanAll();
+                sepia.nock.cleanAll();
             });
         });
 

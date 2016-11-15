@@ -1,8 +1,7 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sepia = require('sepia');
-const nock = require('nock');
+const sepia = require(`${process.cwd()}/test/util/sepia`);
 const betray = require('betray');
 const chronokinesis = require('chronokinesis');
 const nano = require('nano');
@@ -43,7 +42,7 @@ describe('npm', () => {
     });
 
     it('should handle 200 OK error responses from api.npmjs.org', () => {
-        nock('https://api.npmjs.org')
+        sepia.nock('https://api.npmjs.org')
         .get((path) => path.indexOf('/downloads/range/') === 0)
         .reply(200, { error: 'foo' });
 
@@ -53,14 +52,14 @@ describe('npm', () => {
         .then(() => {
             throw new Error('Expected to fail');
         }, (err) => {
-            expect(nock.isDone()).to.equal(true);
+            expect(sepia.nock.isDone()).to.equal(true);
             expect(err.message).to.equal('foo');
         })
-        .finally(() => nock.cleanAll());
+        .finally(() => sepia.nock.cleanAll());
     });
 
     it('should handle `no stats yet` error from api.npmjs.org', () => {
-        nock('https://api.npmjs.org')
+        sepia.nock('https://api.npmjs.org')
         .get((path) => path.indexOf('/downloads/range/') === 0)
         .reply(200, { error: 'no stats for this package' });
 
@@ -70,7 +69,7 @@ describe('npm', () => {
         .then((collected) => {
             collected.downloads.forEach((download) => expect(download.count).to.equal(0));
         })
-        .finally(() => nock.cleanAll());
+        .finally(() => sepia.nock.cleanAll());
     });
 
     it('should retry on network errors');

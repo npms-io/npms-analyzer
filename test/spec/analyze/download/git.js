@@ -38,17 +38,6 @@ function mock(mocks) {
                 callback(null, '', '');
             },
         },
-        {
-            match: (command) => command.indexOf('rm -rf') !== -1,
-            handle: (command, options, callback) => {
-                cp.execSync(command, options);
-                callback(null, '', '');
-            },
-        },
-        {
-            match: () => true,
-            handle: () => { throw new Error('Not mocked'); },
-        },
     ]);
 }
 
@@ -314,6 +303,28 @@ describe('git', () => {
         .then(() => {
             expect(betrayed.invoked).to.be.greaterThan(1);
             expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
+        })
+        .finally(() => betrayed.restore());
+    });
+
+    it('should abort if it\'s taking too much time');
+
+    it('should fail if the tarball has too many files', () => {
+        const betrayed = mock({
+            clone: () => fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ name: 'cross-spawn', version: '0.1.0' })),
+        });
+
+        const download = git({
+            name: 'cross-spawn',
+            repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
+        }, { maxFiles: 1 });
+
+        return download(tmpDir)
+        .then(() => {
+            throw new Error('Should have failed');
+        }, (err) => {
+            expect(err.message).to.match(/too many file/i);
+            expect(err.unrecoverable).to.equal(true);
         })
         .finally(() => betrayed.restore());
     });

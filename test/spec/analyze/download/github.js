@@ -4,7 +4,6 @@ const fs = require('fs');
 const cp = require('child_process');
 const loadJsonFile = require('load-json-file');
 const expect = require('chai').expect;
-const nock = require('nock');
 const sepia = require(`${process.cwd()}/test/util/sepia`);
 const github = require(`${process.cwd()}/lib/analyze/download/github`);
 
@@ -82,7 +81,7 @@ describe('github', () => {
     });
 
     it('should fail if the tarball is too large', () => {
-        nock('https://api.github.com')
+        sepia.nock('https://api.github.com')
         .get('/repos/liferay/liferay-portal/tarball/')
         .reply(200, 'foo', {
             'Content-Length': '1000000000000',
@@ -97,17 +96,37 @@ describe('github', () => {
         .then(() => {
             throw new Error('Should have failed');
         }, (err) => {
-            expect(nock.isDone()).to.equal(true);
+            expect(sepia.nock.isDone()).to.equal(true);
             expect(err.message).to.match(/too large/i);
             expect(err.unrecoverable).to.equal(true);
         })
         .then(() => Promise.delay(2500))  // Wait some time because request.abort() might take a while
-        .finally(() => nock.cleanAll());
+        .finally(() => sepia.nock.cleanAll());
+    });
+
+    it('should fail if the tarball has too many files', () => {
+        sepia.enable();
+
+        const download = github({
+            name: 'cross-spawn',
+            version: '0.1.0',
+            repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
+            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad',  // This is the ref for 1.0.0
+        }, { maxFiles: 1 });
+
+        return download(tmpDir)
+        .then(() => {
+            throw new Error('Should have failed');
+        }, (err) => {
+            expect(err.message).to.match(/too many file/i);
+            expect(err.unrecoverable).to.equal(true);
+        })
+        .finally(() => sepia.disable());
     });
 
     it('should handle some 4xx errors', () => {
         return Promise.each([404, 403, 400], (code) => {
-            nock('https://api.github.com')
+            sepia.nock('https://api.github.com')
             .get(`/repos/some-org/repo-${code}/tarball/`)
             .reply(code);
 
@@ -118,10 +137,10 @@ describe('github', () => {
 
             return download(tmpDir)
             .then(() => {
-                expect(nock.isDone()).to.equal(true);
+                expect(sepia.nock.isDone()).to.equal(true);
                 expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
             })
-            .finally(() => nock.cleanAll());
+            .finally(() => sepia.nock.cleanAll());
         });
     });
 
