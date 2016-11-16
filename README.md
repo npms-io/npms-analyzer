@@ -69,11 +69,11 @@ $ npm test
 $ npm test-cov # to get coverage report
 ```
 
-[coveralls-image]: https://img.shields.io/coveralls/npms-io/npms-analyzer.svg
+[coveralls-image]: https://img.shields.io/coveralls/npms-io/npms-analyzer/master.svg
 [coveralls-url]: https://coveralls.io/r/npms-io/npms-analyzer
 [david-dm-dev-image]: https://img.shields.io/david/dev/npms-io/npms-analyzer.svg
 [david-dm-dev-url]: https://david-dm.org/npms-io/npms-analyzer#info=devDependencies
 [david-dm-image]: https://img.shields.io/david/npms-io/npms-analyzer.svg
 [david-dm-url]: https://david-dm.org/npms-io/npms-analyzer
-[travis-image]: http://img.shields.io/travis/npms-io/npms-analyzer.svg
+[travis-image]: http://img.shields.io/travis/npms-io/npms-analyzer/master.svg
 [travis-url]: https://travis-ci.org/npms-io/npms-analyzer
