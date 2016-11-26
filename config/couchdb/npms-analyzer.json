@@ -7,7 +7,7 @@
             "reduce": "_count"
         },
         "packages-stale": {
-            "map": "function (doc) {\n    if (doc._id.indexOf('package!') === 0) {\n        if (doc.error) {\n        emit(['failed', Date.parse(doc.error.caughtAt), doc._id.split('!')[1]]);\n        } else {\n            emit(['normal', Date.parse(doc.finishedAt), doc._id.split('!')[1]]);\n        }\n    }\n}"
+            "map": "function (doc) {\n    if (doc._id.indexOf('package!') === 0) {\n        if (doc.error) {\n            if (!doc.error.unrecoverable) {\n                emit(['failed', Date.parse(doc.error.caughtAt), doc._id.split('!')[1]]);\n            }\n        } else {\n            emit(['normal', Date.parse(doc.finishedAt), doc._id.split('!')[1]]);\n        }\n    }\n}"
         }
     }
 }
