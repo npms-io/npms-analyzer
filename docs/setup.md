@@ -46,6 +46,7 @@ This project uses [config](https://www.npmjs.com/package/config) for configurati
   - `script.engine.groovy.inline.search: on`
   - `script.engine.groovy.inline.update: on`
 
-  ## Crontab
 
-  If you plan to run this in production, you should add `$ npms-analyzer tasks enqueue-missing` and `$ npms-analyzer tasks clean-extraneous` to crontab. These tasks ensure that, in case of errors, the `npms` packages are in sync with the packages from the `npm` registry.
+## Crontab
+
+If you plan to run this in production, you should add `$ npms-analyzer tasks enqueue-missing` and `$ npms-analyzer tasks clean-extraneous` to crontab. These tasks ensure that, in case of errors, the `npms` packages are in sync with the packages from the `npm` registry.
