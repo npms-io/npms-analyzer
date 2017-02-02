@@ -341,6 +341,7 @@
                         "deprecated": { "type": "string", "index": "not_analyzed" },
                         "insecure": { "type": "integer" },
                         "unstable": { "type": "boolean" },
+                        "dts": { "type": "boolean" },
                     },
                 },
                 "evaluation": {
