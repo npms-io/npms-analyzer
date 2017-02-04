@@ -12,7 +12,7 @@
         {
             name: 'npms-analyzer-consume',
             script: './cli.js',
-            args: 'consume --concurrency 4',
+            args: 'consume --concurrency 5',
             instances: 2,
             env : { NODE_ENV: 'production' },
             max_memory_restart: '1500M',
