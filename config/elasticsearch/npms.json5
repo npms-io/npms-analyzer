@@ -333,6 +333,10 @@
                                 },
                             },
                         },
+                        "scope": {
+                            "type": "string",
+                            "index": "not_analyzed",
+                        },
                     },
                 },
                 "flags": {

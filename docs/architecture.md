@@ -57,7 +57,7 @@ The collectors are responsible for gathering useful information about each packa
 
 The metadata collector extracts basic data and attributes of a package.
 
-- Extract package name, description and keywords
+- Extract package name, scope, description and keywords
 - Extract package author, maintainers and contributors
 - Extract the license
 - Get releases timing information
