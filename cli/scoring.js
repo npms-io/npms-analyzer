@@ -1,5 +1,6 @@
 'use strict';
 
+const assert = require('assert');
 const humanizeDuration = require('humanize-duration');
 const prepare = require('../lib/scoring/prepare');
 const aggregate = require('../lib/scoring/aggregate');
@@ -92,6 +93,11 @@ Continuously iterate over the analyzed packages, scoring them.')
         default: 3 * 60 * 60 * 1000,  // 3 hours
         alias: 'd',
         describe: 'The time to wait between each scoring cycle (in ms)',
+    })
+
+    .check((argv) => {
+        assert(argv.cycleDelay >= 0, 'Invalid argument: --cycle-delay must be a number greater or equal to 0');
+        return true;
     });
 };
 

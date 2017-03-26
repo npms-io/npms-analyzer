@@ -81,14 +81,16 @@ module.exports.builder = (yargs) => {
     .usage('Usage: $0 consume [options]\n\n\
 Consumes packages that are queued, triggering the analysis process for each package.')
     .demand(0, 0)
+
     .option('concurrency', {
         type: 'number',
         default: 5,
         alias: 'c',
         describe: 'Number of packages to consume concurrently',
     })
+
     .check((argv) => {
-        assert(typeof argv.concurrency === 'number', 'Invalid argument: --concurrency must be a number');
+        assert(argv.concurrency > 0, 'Invalid argument: --concurrency must be a number greater than 0');
         return true;
     });
 };
