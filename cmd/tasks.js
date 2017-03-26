@@ -1,6 +1,6 @@
 'use strict';
 
-exports.command = 'tasks <command>';
+exports.command = 'tasks';
 exports.describe = 'Execute a task';
 
 exports.builder = (yargs) =>
