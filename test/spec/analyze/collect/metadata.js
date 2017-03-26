@@ -16,12 +16,12 @@ describe('metadata', () => {
     });
     after(() => chronokinesis.reset());
 
-    ['cross-spawn'].forEach((name) => {
+    ['cross-spawn', '@bcoe%2fexpress-oauth-server'].forEach((name) => {
         it(`should collect \`${name}\` correctly`, () => {
             const data = loadJsonFile.sync(`${fixturesDir}/modules/${name}/data.json`);
             const expected = loadJsonFile.sync(`${fixturesDir}/modules/${name}/expected-metadata.json`);
 
-            return metadata(data, packageJsonFromData(name, data))
+            return metadata(data, packageJsonFromData(name.replace('%2f', '/'), data))
             .then((collected) => expect(collected).to.eql(expected));
         });
     });

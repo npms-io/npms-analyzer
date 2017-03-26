@@ -333,6 +333,11 @@
                                 },
                             },
                         },
+                        "scope": {
+                            "type": "string",
+                            "analyzer": "raw",
+                            "index_options": "docs",
+                        },
                     },
                 },
                 "flags": {
