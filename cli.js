@@ -25,7 +25,7 @@ yargs
     global: true,
 })
 
-.commandDir('./cli')
+.commandDir('./cmd')
 .demandCommand(1, 'Please supply a valid command')
 
 .argv;
