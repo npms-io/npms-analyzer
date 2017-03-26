@@ -1,22 +1,22 @@
 {
   "statusCode": 200,
   "headers": {
-    "date": "Sat, 25 Mar 2017 00:21:54 GMT",
+    "date": "Sun, 26 Mar 2017 18:22:35 GMT",
     "content-type": "application/json",
     "transfer-encoding": "chunked",
     "connection": "keep-alive",
     "set-cookie": [
-      "__cfduid=dcd8b66b66ec9a1c9ff16f2c07a4fd2281490401314; expires=Sun, 25-Mar-18 00:21:54 GMT; path=/; domain=.shields.io; HttpOnly"
+      "__cfduid=db5b57344bbeb9db9dc88805f5f6ae69f1490552555; expires=Mon, 26-Mar-18 18:22:35 GMT; path=/; domain=.shields.io; HttpOnly"
     ],
     "cache-control": "no-cache, no-store, must-revalidate",
-    "expires": "Sat, 25 Mar 2017 00:21:54 GMT",
+    "expires": "Sun, 26 Mar 2017 18:22:35 GMT",
     "access-control-allow-origin": "*",
     "content-encoding": "gzip",
     "server": "cloudflare-nginx",
-    "cf-ray": "344db6768f951e95-SJC"
+    "cf-ray": "345c22dcebe6624e-LIS"
   },
   "url": "https://img.shields.io:443/codecov/c/github/hapijs/hapi.json",
-  "time": 685,
+  "time": 827,
   "request": {
     "method": "GET",
     "headers": {

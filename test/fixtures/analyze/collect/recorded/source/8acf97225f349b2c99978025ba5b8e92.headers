@@ -1,26 +1,26 @@
 {
   "statusCode": 200,
   "headers": {
-    "date": "Wed, 14 Sep 2016 22:24:49 GMT",
+    "date": "Sun, 26 Mar 2017 18:22:35 GMT",
     "content-type": "application/json",
     "transfer-encoding": "chunked",
     "connection": "keep-alive",
     "set-cookie": [
-      "__cfduid=d338a1e63c0d7a78e6ca1f0f7897c12121473891888; expires=Thu, 14-Sep-17 22:24:48 GMT; path=/; domain=.shields.io; HttpOnly"
+      "__cfduid=dfa6c13d9aca4bf96e2ca18462ef4be601490552555; expires=Mon, 26-Mar-18 18:22:35 GMT; path=/; domain=.shields.io; HttpOnly"
     ],
     "cache-control": "no-cache, no-store, must-revalidate",
-    "expires": "Wed, 14 Sep 2016 22:24:48 GMT",
+    "expires": "Sun, 26 Mar 2017 18:22:35 GMT",
     "access-control-allow-origin": "*",
     "content-encoding": "gzip",
     "server": "cloudflare-nginx",
-    "cf-ray": "2e27404eeabd35c6-LHR"
+    "cf-ray": "345c22dd0bdf622a-LIS"
   },
   "url": "https://img.shields.io:443/scrutinizer/coverage/g/hapijs/hapi.json",
-  "time": 1294,
+  "time": 1130,
   "request": {
     "method": "GET",
     "headers": {
-      "user-agent": "got/6.5.0 (https://github.com/sindresorhus/got)",
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
       "accept-encoding": "gzip,deflate",
       "accept": "application/json"
     }
