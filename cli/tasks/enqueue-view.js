@@ -61,13 +61,14 @@ function enqueueViewPackages(packages, queue, dryRun) {
 
 // --------------------------------------------------
 
-module.exports.builder = (yargs) => {
-    return yargs
-    .strict()
+exports.command = 'enqueue-view <view> [options]';
+exports.describe = 'Enqueues all packages contained in a npms view';
+
+exports.builder = (yargs) =>
+    yargs
     .usage('Usage: $0 tasks enqueue-view <design-doc/view-name> [options]\n\n\
 Enqueues all packages contained in the npms database view.\n\nNOTE: The view must be in the npms database and the key must be the package \
 name (may be prefixed with `package!`)')
-    .demand(1, 1)
     .example('$0 tasks enqueue-view npms-analyzer/docs-to-be-fixed')
 
     .option('dry-run', {
@@ -78,16 +79,15 @@ name (may be prefixed with `package!`)')
     })
 
     .check((argv) => {
-        assert(/^[a-z0-9_-]+\/[a-z0-9_-]+$/.test(argv._[2]), 'The view argument must match the following format: <design-doc/view-name>');
+        assert(/^[a-z0-9_-]+\/[a-z0-9_-]+$/.test(argv.view), 'The view argument must match the following format: <design-doc/view-name>');
         return true;
     });
-};
 
-module.exports.handler = (argv) => {
+exports.handler = (argv) => {
     process.title = 'npms-analyzer-enqueue-view';
     logger.level = argv.logLevel || 'info';
 
-    const view = argv._[2];
+    const view = argv.view;
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms', 'queue'])

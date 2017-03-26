@@ -75,12 +75,13 @@ function onFailedAnalysis(name, err, npmsNano, esClient) {
 
 // ----------------------------------------------------------------------------
 
-module.exports.builder = (yargs) => {
-    return yargs
-    .strict()
+exports.command = 'consume [options]';
+exports.describe = 'Starts observing module changes and pushes them into the queue';
+
+exports.builder = (yargs) =>
+    yargs
     .usage('Usage: $0 consume [options]\n\n\
 Consumes packages that are queued, triggering the analysis process for each package.')
-    .demand(0, 0)
 
     .option('concurrency', {
         type: 'number',
@@ -93,9 +94,8 @@ Consumes packages that are queued, triggering the analysis process for each pack
         assert(argv.concurrency > 0, 'Invalid argument: --concurrency must be a number greater than 0');
         return true;
     });
-};
 
-module.exports.handler = (argv) => {
+exports.handler = (argv) => {
     process.title = 'npms-analyzer-consume';
     logger.level = argv.logLevel || 'warn';
 

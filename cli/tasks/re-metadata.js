@@ -9,16 +9,16 @@ const stats = require('../util/stats');
 
 const log = logger.child({ module: 'cli/re-metadata' });
 
-module.exports.builder = (yargs) => {
-    return yargs
-    .strict()
+exports.command = 're-metadata [options]';
+exports.describe = 'Iterates over all analyzed packages, running the metadata collector again';
+
+exports.builder = (yargs) =>
+    yargs
     .usage('Usage: $0 tasks re-metadata [options]\n\n\
 Iterates over all analyzed packages, running the metadata collector again.\nThis command is useful if there was a bug in the \
-metadata collector. Note that the packages score won\'t be updated.')
-    .demand(0, 0);
-};
+metadata collector. Note that the packages score won\'t be updated.');
 
-module.exports.handler = (argv) => {
+exports.handler = (argv) => {
     process.title = 'npms-analyzer-re-metadata';
     logger.level = argv.logLevel || 'info';
 

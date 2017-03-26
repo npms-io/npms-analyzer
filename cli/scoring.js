@@ -81,12 +81,13 @@ function cycle(delay, npmsNano, esClient) {
 
 // ----------------------------------------------------------------------------
 
-exports.builder = (yargs) => {
-    return yargs
-    .strict()
+exports.command = 'scoring [options]';
+exports.describe = 'Continuously iterate over the analyzed modules, scoring them';
+
+exports.builder = (yargs) =>
+    yargs
     .usage('Usage: $0 scoring [options]\n\n\
 Continuously iterate over the analyzed packages, scoring them.')
-    .demand(0, 0)
 
     .option('cycle-delay', {
         type: 'number',
@@ -99,7 +100,6 @@ Continuously iterate over the analyzed packages, scoring them.')
         assert(argv.cycleDelay >= 0, 'Invalid argument: --cycle-delay must be a number greater or equal to 0');
         return true;
     });
-};
 
 exports.handler = (argv) => {
     process.title = 'npms-analyzer-scoring';

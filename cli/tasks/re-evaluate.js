@@ -8,16 +8,16 @@ const stats = require('../util/stats');
 
 const log = logger.child({ module: 'cli/re-evaluate' });
 
-module.exports.builder = (yargs) => {
-    return yargs
-    .strict()
+exports.command = 're-evaluate [options]';
+exports.describe = 'Iterates over all analyzed packages, evaluating them again';
+
+exports.builder = (yargs) =>
+    yargs
     .usage('Usage: $0 tasks re-evaluate [options]\n\n\
 Iterates over all analyzed packages, evaluating them again.\nThis command is useful if the evaluation algorithm has changed and \
-the evaluation needs to be re-calculated for all packages. Note that the packages score won\'t be updated.')
-    .demand(0, 0);
-};
+the evaluation needs to be re-calculated for all packages. Note that the packages score won\'t be updated.');
 
-module.exports.handler = (argv) => {
+exports.handler = (argv) => {
     process.title = 'npms-analyzer-re-evaluate';
     logger.level = argv.logLevel || 'info';
 

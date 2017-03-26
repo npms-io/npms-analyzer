@@ -132,13 +132,14 @@ function cleanExtraneousNpmsObservedPackages(npmPackages, npmsObservedPackages, 
 
 // --------------------------------------------------
 
-module.exports.builder = (yargs) => {
-    return yargs
-    .strict()
+exports.command = 'clean-extraneous [options]';
+exports.describe = 'Finds packages that are analyzed but no longer exist in npm';
+
+exports.builder = (yargs) =>
+    yargs
     .usage('Usage: $0 tasks clean-extraneous [options]\n\n\
 Finds packages that are analyzed but no longer exist in npm.\nThis command is useful if operations were lost due to repeated \
 errors, e.g.: RabbitMQ or CouchDB were down or unstable.')
-    .demand(0, 0)
 
     .option('dry-run', {
         alias: 'dr',
@@ -146,9 +147,8 @@ errors, e.g.: RabbitMQ or CouchDB were down or unstable.')
         default: false,
         describe: 'Enables dry-run',
     });
-};
 
-module.exports.handler = (argv) => {
+exports.handler = (argv) => {
     process.title = 'npms-analyzer-clean-extraneous';
     logger.level = argv.logLevel || 'info';
 

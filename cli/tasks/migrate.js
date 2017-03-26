@@ -8,15 +8,15 @@ const stats = require('../util/stats');
 
 const log = logger.child({ module: 'cli/migrate' });
 
-module.exports.builder = (yargs) => {
-    return yargs
-    .strict()
-    .usage('Usage: $0 tasks migrate [options]\n\n\
-Run the latest migration.')
-    .demand(0, 0);
-};
+exports.command = 'migrate [options]';
+exports.describe = 'Run the latest migration';
 
-module.exports.handler = (argv) => {
+exports.builder = (yargs) =>
+    yargs
+    .usage('Usage: $0 tasks migrate [options]\n\n\
+Run the latest migration.');
+
+exports.handler = (argv) => {
     process.title = 'npms-analyzer-migrate';
     logger.level = argv.logLevel || 'info';
 
