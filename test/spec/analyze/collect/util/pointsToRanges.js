@@ -1,12 +1,9 @@
 'use strict';
 
-const moment = require('moment');
 const expect = require('chai').expect;
 const chronokinesis = require('chronokinesis');
 const values = require('lodash/values');
 const pointsToRanges = require(`${process.cwd()}/lib/analyze/collect/util/pointsToRanges`);
-
-require('moment-range');
 
 describe('pointsToRanges', () => {
     it('should arrange points into ranges', () => {
@@ -38,10 +35,10 @@ describe('pointsToRanges', () => {
         };
 
         const ranges = pointsToRanges(values(points), [
-            moment.range('2016-05-01T00:00:00.000Z', '2016-05-11T00:00:00.000Z'),
-            moment.range('2016-05-11T00:00:00.000Z', '2016-05-12T00:00:00.000Z'),
-            moment.range('2016-05-12T00:00:00.000Z', '2016-06-10T00:00:00.000Z'),
-            moment.range('2016-06-10T00:00:00.000Z', '2017-01-01T00:00:00.000Z'),
+            { start: '2016-05-01T00:00:00.000Z', end: '2016-05-11T00:00:00.000Z' },
+            { start: '2016-05-11T00:00:00.000Z', end: '2016-05-12T00:00:00.000Z' },
+            { start: '2016-05-12T00:00:00.000Z', end: '2016-06-10T00:00:00.000Z' },
+            { start: '2016-06-10T00:00:00.000Z', end: '2017-01-01T00:00:00.000Z' },
         ]);
 
         expect(ranges).to.eql([
@@ -74,7 +71,7 @@ describe('pointsToRanges', () => {
 
         it('should generate ranges based on breakpoints', () => {
             const ranges = pointsToRanges.bucketsFromBreakpoints([1, 7, 15, 30, 90]);
-            const dates = ranges.map((range) => range.toDate().map((date) => date.toISOString()));
+            const dates = ranges.map((range) => [range.start.toISOString(), range.end.toISOString()]);
 
             expect(dates).to.eql([
                 ['2016-05-13T00:00:00.000Z', '2016-05-14T00:00:00.000Z'],
