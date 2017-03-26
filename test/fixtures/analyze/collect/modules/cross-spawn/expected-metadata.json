@@ -1,6 +1,6 @@
 {
   "name": "cross-spawn",
-  "scope": "public",
+  "scope": "unscoped",
   "version": "2.2.3",
   "description": "Cross platform child_process#spawn and child_process#spawnSync",
   "keywords": [

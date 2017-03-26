@@ -335,7 +335,8 @@
                         },
                         "scope": {
                             "type": "string",
-                            "index": "not_analyzed",
+                            "analyzer": "raw",
+                            "index_options": "docs",
                         },
                     },
                 },

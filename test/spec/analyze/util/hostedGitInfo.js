@@ -55,7 +55,7 @@ describe('hostedGitInfo', () => {
             throw new Error('Should not crash');
         }
 
-        expect(info).to.equal(null);
+        expect(info).to.equal(undefined);
     });
 
     it('should not crash on incomplete URLs', () => {
@@ -67,7 +67,7 @@ describe('hostedGitInfo', () => {
             throw new Error('Should not crash');
         }
 
-        expect(info).to.equal(null);
+        expect(info).to.equal(undefined);
     });
 
     describe('normalizeTrailingSlashes', () => {
