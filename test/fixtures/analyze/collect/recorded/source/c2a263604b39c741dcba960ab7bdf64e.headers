@@ -13,15 +13,15 @@
     "content-type": "application/x-gzip",
     "content-disposition": "attachment; filename=hapijs-hapi-v13.4.0-0-gfaacf02.tar.gz",
     "x-geo-block-list": "",
-    "date": "Sun, 18 Sep 2016 22:41:54 GMT",
-    "x-github-request-id": "D98186F0:11CB:5DAE04:57DF1832"
+    "date": "Sun, 26 Mar 2017 18:22:32 GMT",
+    "x-github-request-id": "E1CC:2FE62:6BB3A8:8A9900:58D806E8"
   },
   "url": "https://codeload.github.com:443/hapijs/hapi/legacy.tar.gz/faacf022488bc30748bb8f35aca71a24343dc0fc",
-  "time": 1007,
+  "time": 2770,
   "request": {
     "method": "GET",
     "headers": {
-      "user-agent": "got/6.5.0 (https://github.com/sindresorhus/got)",
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
       "accept-encoding": "gzip,deflate",
       "accept": "application/vnd.github.v3+json"
     }

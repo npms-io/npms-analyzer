@@ -1,26 +1,26 @@
 {
   "statusCode": 200,
   "headers": {
-    "date": "Wed, 14 Sep 2016 22:24:50 GMT",
+    "date": "Sun, 26 Mar 2017 18:22:41 GMT",
     "content-type": "application/json",
     "transfer-encoding": "chunked",
     "connection": "keep-alive",
     "set-cookie": [
-      "__cfduid=daaf60b3e12814c6a6ca6636e70e891b21473891890; expires=Thu, 14-Sep-17 22:24:50 GMT; path=/; domain=.shields.io; HttpOnly"
+      "__cfduid=d4085d8d678c72d2b7a243f17dbe90f7d1490552560; expires=Mon, 26-Mar-18 18:22:40 GMT; path=/; domain=.shields.io; HttpOnly"
     ],
     "cache-control": "no-cache, no-store, must-revalidate",
-    "expires": "Wed, 14 Sep 2016 22:24:50 GMT",
+    "expires": "Sun, 26 Mar 2017 18:22:40 GMT",
     "access-control-allow-origin": "*",
     "content-encoding": "gzip",
     "server": "cloudflare-nginx",
-    "cf-ray": "2e27405895d5355a-LHR"
+    "cf-ray": "345c23010eaa6212-LIS"
   },
   "url": "http://img.shields.io:443/codeclimate/coverage/github/lgeorgieff/ccbuild.json",
-  "time": 789,
+  "time": 532,
   "request": {
     "method": "GET",
     "headers": {
-      "user-agent": "got/6.5.0 (https://github.com/sindresorhus/got)",
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
       "accept-encoding": "gzip,deflate",
       "accept": "application/json"
     }
