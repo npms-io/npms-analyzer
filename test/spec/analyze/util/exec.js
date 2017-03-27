@@ -32,7 +32,7 @@ describe('exec', () => {
         .then(() => {
             throw new Error('Should have failed');
         }, (err) => {
-            expect(err.code).to.equal(1);
+            expect(err.exitCode).to.equal(1);
             expect(err.stdout).to.equal('foo\n');
             expect(err.stderr).to.equal('');
 
@@ -40,7 +40,7 @@ describe('exec', () => {
             .then(() => {
                 throw new Error('Should have failed');
             }, (err) => {
-                expect(err.code).to.equal(2);
+                expect(err.exitCode).to.equal(2);
                 expect(err.stdout).to.equal('');
                 expect(err.stderr).to.equal('foo\n');
             });
