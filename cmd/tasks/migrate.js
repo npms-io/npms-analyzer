@@ -30,7 +30,7 @@ exports.handler = (argv) => {
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms'])
     .spread((npmNano, npmsNano) => {
-        log.info('Starting packages re-metadata');
+        log.info('Starting migration');
 
         // Stats
         stats.process();
