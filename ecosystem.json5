@@ -7,7 +7,8 @@
             args: 'observe',
             instances: 1,
             env : { NODE_ENV: 'production' },
-            max_memory_restart: '1500M',
+            max_memory_restart: '2018M',  // Restart if it's getting close to the limit
+            node_args: '--max_old_space_size=2048',
         },
         {
             name: 'npms-analyzer-consume',
@@ -15,7 +16,8 @@
             args: 'consume --concurrency 5',
             instances: 2,
             env : { NODE_ENV: 'production' },
-            max_memory_restart: '1500M',
+            max_memory_restart: '2018M',  // Restart if it's getting close to the limit
+            node_args: '--max_old_space_size=2048',
         },
         {
             name: 'npms-analyzer-scoring',
@@ -23,7 +25,8 @@
             args: 'scoring --log-level info',
             instances: 1,
             env : { NODE_ENV: 'production' },
-            max_memory_restart: '1500M',
+            max_memory_restart: '4066M',  // Restart if it's getting close to the limit
+            node_args: '--max_old_space_size=4096',
         },
     ],
     deploy: {
