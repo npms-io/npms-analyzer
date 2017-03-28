@@ -20,7 +20,7 @@
         {
             name: 'npms-analyzer-scoring',
             script: './cli.js',
-            args: 'scoring',
+            args: 'scoring --log-level info',
             instances: 1,
             env : { NODE_ENV: 'production' },
             max_memory_restart: '1500M',
