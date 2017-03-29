@@ -39,7 +39,7 @@
             'post-deploy': '\
 cp ../local.json5 ./config/ && \
 npm update --loglevel http --production && \
-pm2 startOrRestart ecosystem.json5 --env production',
+pm2 startOrRestart ecosystem.json5 --env production --no-pmx',
         },
     },
 }
