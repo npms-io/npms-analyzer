@@ -102,6 +102,10 @@ Continuously iterate over the analyzed packages, scoring them.')
     });
 
 exports.handler = (argv) => {
+    // Disable long stack traces specifically for this command since we create them in bursts
+    // This improves performance by a great margin
+    Promise.config({ longStackTraces: false });
+
     process.title = 'npms-analyzer-scoring';
     logger.level = argv.logLevel || 'warn';
 
