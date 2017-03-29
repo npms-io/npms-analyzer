@@ -24,7 +24,7 @@
         {
             name: 'npms-analyzer-scoring',
             script: './cli.js',
-            args: 'scoring --log-level info',
+            args: 'scoring',
             instances: 1,
             env : { NODE_ENV: 'production' },
             max_memory_restart: '4066M',  // Restart if it's getting close to the limit
