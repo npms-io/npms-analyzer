@@ -9,6 +9,7 @@
             env : { NODE_ENV: 'production' },
             max_memory_restart: '2018M',  // Restart if it's getting close to the limit
             node_args: '--max_old_space_size=2048',
+            pmx: false,  // We were experiecing PMX has a lot of memory leaks, see: https://github.com/keymetrics/pmx/issues/23
         },
         {
             name: 'npms-analyzer-consume',
@@ -18,6 +19,7 @@
             env : { NODE_ENV: 'production' },
             max_memory_restart: '2018M',  // Restart if it's getting close to the limit
             node_args: '--max_old_space_size=2048',
+            pmx: false,  // We were experiecing PMX has a lot of memory leaks, see: https://github.com/keymetrics/pmx/issues/23
         },
         {
             name: 'npms-analyzer-scoring',
@@ -27,6 +29,7 @@
             env : { NODE_ENV: 'production' },
             max_memory_restart: '4066M',  // Restart if it's getting close to the limit
             node_args: '--max_old_space_size=4096',
+            pmx: false,  // We were experiecing PMX has a lot of memory leaks, see: https://github.com/keymetrics/pmx/issues/23
         },
     ],
     deploy: {
@@ -39,7 +42,7 @@
             'post-deploy': '\
 cp ../local.json5 ./config/ && \
 npm update --loglevel http --production && \
-pm2 startOrRestart ecosystem.json5 --env production --no-pmx',
+pm2 startOrRestart ecosystem.json5 --env production',
         },
     },
 }
