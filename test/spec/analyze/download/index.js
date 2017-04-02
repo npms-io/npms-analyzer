@@ -15,7 +15,6 @@ describe('index', () => {
 
         const options = {
             githubTokens: ['foo', 'bar'],
-            gitRefOverrides: { bower: 'master' },
             waitRateLimit: true,
         };
 
@@ -31,7 +30,6 @@ describe('index', () => {
             expect(invocation[0].name).to.equal('cross-spawn');
             expect(invocation[1]).to.eql({
                 tokens: options.githubTokens,
-                refOverrides: options.gitRefOverrides,
                 waitRateLimit: options.waitRateLimit,
             });
 
@@ -47,7 +45,6 @@ describe('index', () => {
 
         const options = {
             githubTokens: ['foo', 'bar'],
-            gitRefOverrides: { bower: 'master' },
             waitRateLimit: true,
         };
 
@@ -61,7 +58,7 @@ describe('index', () => {
             const invocation = betrayed.invocations[0];
 
             expect(invocation[0].name).to.equal('angular-ui-select');
-            expect(invocation[1]).to.eql({ refOverrides: options.gitRefOverrides });
+            expect(invocation[1]).to.equal(undefined);
 
             expect(downloaded).to.eql({});
         })
@@ -75,7 +72,6 @@ describe('index', () => {
 
         const options = {
             githubTokens: ['foo', 'bar'],
-            gitRefOverrides: { bower: 'master' },
             waitRateLimit: true,
         };
 

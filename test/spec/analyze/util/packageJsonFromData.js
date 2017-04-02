@@ -89,11 +89,20 @@ describe('packageJsonFromData', () => {
         })).to.throw(/name mismatch/i);
 
         // Data is ok but package.json is not, it should simply overwrite
-        expect(packageJsonFromData('foo', {
+        expect(() => packageJsonFromData('foo', {
             name: 'foo',
             'dist-tags': { latest: '1.0.0' },
             versions: {
                 '1.0.0': { name: 'bar', version: '2.0.0' },
+            },
+        })).to.throw(/name mismatch/i);
+
+        // All ok
+        expect(packageJsonFromData('foo', {
+            name: 'foo',
+            'dist-tags': { latest: '1.0.0' },
+            versions: {
+                '1.0.0': { name: 'foo', version: '2.0.0' },
             },
         }).name).to.equal('foo');
     });

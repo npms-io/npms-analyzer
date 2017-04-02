@@ -4,7 +4,6 @@
     "testsSize": 20813,
     "hasNpmIgnore": true
   },
-  "repositorySize": 30199,
   "linters": {
     "general": [
       "editorconfig"

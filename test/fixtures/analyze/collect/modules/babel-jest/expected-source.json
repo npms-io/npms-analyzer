@@ -1,0 +1,31 @@
+{
+  "files": {
+    "readmeSize": 803,
+    "testsSize": 783379,
+    "hasNpmIgnore": true,
+    "hasChangelog": true
+  },
+  "badges": [
+    {
+      "urls": {
+        "original": "https://travis-ci.org/facebook/jest.svg?branch=master",
+        "service": "https://api.travis-ci.org/facebook/jest.svg?branch=master",
+        "shields": "https://img.shields.io/travis/facebook/jest/master.svg",
+        "content": "https://img.shields.io/travis/facebook/jest/master.json"
+      },
+      "info": {
+        "service": "travis",
+        "type": "build",
+        "modifiers": {
+          "branch": "master"
+        }
+      }
+    }
+  ],
+  "linters": {
+    "js": [
+      "eslint"
+    ]
+  },
+  "coverage": 0.64
+}

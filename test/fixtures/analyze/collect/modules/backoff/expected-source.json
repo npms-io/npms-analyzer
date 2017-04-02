@@ -4,7 +4,6 @@
     "testsSize": 27463,
     "hasChangelog": true
   },
-  "repositorySize": 529376,
   "linters": {
     "js": [
       "jshint"

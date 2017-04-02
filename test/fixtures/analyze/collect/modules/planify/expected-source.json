@@ -3,7 +3,6 @@
     "readmeSize": 9014,
     "testsSize": 140994
   },
-  "repositorySize": 280540,
   "linters": {
     "general": [
       "editorconfig"

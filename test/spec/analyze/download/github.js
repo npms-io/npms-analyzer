@@ -50,6 +50,7 @@ describe('github', () => {
         .then((downloaded) => {
             expect(downloaded.downloader).to.equal('github');
             expect(downloaded.dir).to.equal(tmpDir);
+            expect(downloaded.packageDir).to.equal(tmpDir);
             expect(downloaded.packageJson.name).to.equal('cross-spawn');
             expect(downloaded.gitRef).to.equal('b5239f25c0274feba89242b77d8f0ce57dce83ad');
         })
@@ -71,6 +72,7 @@ describe('github', () => {
         .then((downloaded) => {
             expect(downloaded.downloader).to.equal('github');
             expect(downloaded.dir).to.equal(tmpDir);
+            expect(downloaded.packageDir).to.equal(tmpDir);
             expect(downloaded.packageJson.name).to.equal('cross-spawn');
             expect(downloaded.gitRef).to.equal(null);
 
@@ -171,33 +173,6 @@ describe('github', () => {
         .finally(() => sepia.disable());
     });
 
-    it('should override refs based on options.refOverrides', () => {
-        sepia.enable();
-
-        const npmPackageJson = {
-            name: 'cross-spawn',
-            version: '0.1.0',
-            repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
-            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad',  // This is the ref for 1.0.0
-        };
-
-        const download = github(npmPackageJson, {
-            refOverrides: { 'cross-spawn': '65d41138e6b5161787df43d5f8de2442765e32d0' },   // This is the ref for 2.0.0
-        });
-
-        return download(tmpDir)
-        .then(() => loadJsonFile.sync(`${tmpDir}/package.json`))
-        .then((packageJson) => {
-            expect(packageJson.version).to.equal('2.0.0');
-            expect(packageJson.description).to.be.a('string');
-
-            // Test if properties were merged back
-            expect(npmPackageJson.version).to.equal('2.0.0');
-            expect(npmPackageJson.description).to.be.a('string');
-        })
-        .finally(() => sepia.disable());
-    });
-
     it('should resolve with the downloaded object', () => {
         sepia.enable();
 
@@ -211,8 +186,29 @@ describe('github', () => {
         return download(tmpDir)
         .then((downloaded) => {
             expect(downloaded.dir).to.equal(tmpDir);
+            expect(downloaded.packageDir).to.equal(tmpDir);
             expect(downloaded.packageJson.name).to.equal('cross-spawn');
             expect(downloaded.packageJson.version).to.equal('1.0.0');
+        })
+        .finally(() => sepia.disable());
+    });
+
+    it('should detect the proper `packageDir` for mono-repositories', () => {
+        sepia.enable();
+
+        const download = github({
+            name: 'babel-cli',
+            version: '6.23.0',
+            repository: { type: 'git', url: 'git://github.com/babel/babel.git' },
+            gitHead: '48573f1fb4e632add2c000bec3f95d88ebea4440',  // This is the ref for 6.23.0
+        });
+
+        return download(tmpDir)
+        .then((downloaded) => {
+            expect(downloaded.dir).to.equal(tmpDir);
+            expect(downloaded.packageDir).to.equal(`${tmpDir}/packages/babel-cli`);
+            expect(downloaded.packageJson.name).to.equal('babel-cli');
+            expect(downloaded.packageJson.version).to.equal('6.23.0');
         })
         .finally(() => sepia.disable());
     });

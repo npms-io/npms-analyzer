@@ -31,14 +31,17 @@ describe('npm', () => {
         .finally(() => sepia.disable());
     });
 
-    it('should still work if there\'s no dist tarball', () => {
+    it('should fail if there\'s no dist tarball', () => {
         const download = npm({
             name: 'cool-module',
         });
 
         return download(tmpDir)
         .then(() => {
-            expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
+            throw new Error('Should have failed');
+        }, (err) => {
+            expect(err.message).to.match(/no tarball/i);
+            expect(err.unrecoverable).to.equal(true);
         });
     });
 
@@ -140,6 +143,7 @@ describe('npm', () => {
         return download(tmpDir)
         .then((downloaded) => {
             expect(downloaded.dir).to.equal(tmpDir);
+            expect(downloaded.packageDir).to.equal(tmpDir);
             expect(downloaded.packageJson.name).to.equal('cross-spawn');
             expect(downloaded.packageJson.version).to.equal('1.0.0');
         })

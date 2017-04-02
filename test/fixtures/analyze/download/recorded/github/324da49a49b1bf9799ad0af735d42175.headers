@@ -1,0 +1,36 @@
+{
+  "statusCode": 302,
+  "headers": {
+    "server": "GitHub.com",
+    "date": "Sun, 02 Apr 2017 17:07:05 GMT",
+    "content-type": "text/html;charset=utf-8",
+    "content-length": "0",
+    "status": "302 Found",
+    "x-ratelimit-limit": "60",
+    "x-ratelimit-remaining": "60",
+    "x-ratelimit-reset": "1491156425",
+    "cache-control": "public, must-revalidate, max-age=0",
+    "expires": "Sun, 02 Apr 2017 17:07:05 GMT",
+    "location": "https://codeload.github.com/babel/babel/legacy.tar.gz/48573f1fb4e632add2c000bec3f95d88ebea4440",
+    "access-control-expose-headers": "ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
+    "access-control-allow-origin": "*",
+    "content-security-policy": "default-src 'none'",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "vary": "Accept-Encoding",
+    "x-served-by": "1e9204dbc0447a6f39c3b3c44d87b3f8",
+    "x-github-request-id": "FEFF:2C8E5:33F95D0:42DDB98:58E12FB9"
+  },
+  "url": "https://api.github.com:443/repos/babel/babel/tarball/48573f1fb4e632add2c000bec3f95d88ebea4440",
+  "time": 753,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/vnd.github.v3+json"
+    }
+  }
+}

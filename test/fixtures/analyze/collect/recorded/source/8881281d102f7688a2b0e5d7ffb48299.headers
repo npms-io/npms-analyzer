@@ -1,0 +1,36 @@
+{
+  "statusCode": 302,
+  "headers": {
+    "server": "GitHub.com",
+    "date": "Sun, 02 Apr 2017 20:36:56 GMT",
+    "content-type": "text/html;charset=utf-8",
+    "content-length": "0",
+    "status": "302 Found",
+    "x-ratelimit-limit": "60",
+    "x-ratelimit-remaining": "59",
+    "x-ratelimit-reset": "1491168654",
+    "cache-control": "public, must-revalidate, max-age=0",
+    "expires": "Sun, 02 Apr 2017 20:36:56 GMT",
+    "location": "https://codeload.github.com/ReactTraining/react-router/legacy.tar.gz/master",
+    "access-control-expose-headers": "ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
+    "access-control-allow-origin": "*",
+    "content-security-policy": "default-src 'none'",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "vary": "Accept-Encoding",
+    "x-served-by": "c6c65e5196703428e7641f7d1e9bc353",
+    "x-github-request-id": "D86D:2C8E4:9F4B3F:CC69BB:58E160E8"
+  },
+  "url": "https://api.github.com:443/repos/reacttraining/react-router/tarball/",
+  "time": 707,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/vnd.github.v3+json"
+    }
+  }
+}

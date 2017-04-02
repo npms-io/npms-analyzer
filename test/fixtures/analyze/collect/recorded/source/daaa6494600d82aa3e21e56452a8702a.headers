@@ -1,0 +1,36 @@
+{
+  "statusCode": 302,
+  "headers": {
+    "server": "GitHub.com",
+    "date": "Sun, 02 Apr 2017 20:41:12 GMT",
+    "content-type": "text/html;charset=utf-8",
+    "content-length": "0",
+    "status": "302 Found",
+    "x-ratelimit-limit": "60",
+    "x-ratelimit-remaining": "59",
+    "x-ratelimit-reset": "1491168654",
+    "cache-control": "public, must-revalidate, max-age=0",
+    "expires": "Sun, 02 Apr 2017 20:41:12 GMT",
+    "location": "https://codeload.github.com/facebook/jest/legacy.tar.gz/master",
+    "access-control-expose-headers": "ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
+    "access-control-allow-origin": "*",
+    "content-security-policy": "default-src 'none'",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "vary": "Accept-Encoding",
+    "x-served-by": "a7f8a126c9ed3f1c4715a34c0ddc7290",
+    "x-github-request-id": "D948:2C8E6:3A0564E:4A8E10D:58E161E8"
+  },
+  "url": "https://api.github.com:443/repos/facebook/jest/tarball/",
+  "time": 901,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/vnd.github.v3+json"
+    }
+  }
+}

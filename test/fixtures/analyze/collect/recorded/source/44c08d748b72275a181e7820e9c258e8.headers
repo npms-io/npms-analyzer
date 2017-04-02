@@ -1,0 +1,28 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "date": "Sun, 02 Apr 2017 20:41:18 GMT",
+    "content-type": "application/json",
+    "transfer-encoding": "chunked",
+    "connection": "keep-alive",
+    "set-cookie": [
+      "__cfduid=d184285d3d869a5acfbcd198f29ab5c591491165678; expires=Mon, 02-Apr-18 20:41:18 GMT; path=/; domain=.shields.io; HttpOnly"
+    ],
+    "cache-control": "no-cache, no-store, must-revalidate",
+    "expires": "Sun, 02 Apr 2017 20:41:18 GMT",
+    "access-control-allow-origin": "*",
+    "content-encoding": "gzip",
+    "server": "cloudflare-nginx",
+    "cf-ray": "34969baf9faa620c-LIS"
+  },
+  "url": "https://img.shields.io:443/codecov/c/github/facebook/jest.json",
+  "time": 1187,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/json"
+    }
+  }
+}
