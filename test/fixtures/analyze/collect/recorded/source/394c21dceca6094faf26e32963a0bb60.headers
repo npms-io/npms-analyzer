@@ -1,26 +1,26 @@
 {
   "statusCode": 200,
   "headers": {
-    "date": "Wed, 14 Sep 2016 22:24:47 GMT",
+    "date": "Sun, 26 Mar 2017 18:20:43 GMT",
     "content-type": "application/json",
     "transfer-encoding": "chunked",
     "connection": "keep-alive",
     "set-cookie": [
-      "__cfduid=df3be302928f414ab5ee9fa391b011f411473891886; expires=Thu, 14-Sep-17 22:24:46 GMT; path=/; domain=.shields.io; HttpOnly"
+      "__cfduid=d44fc1145b8bf882034da0f26c7fac3461490552442; expires=Mon, 26-Mar-18 18:20:42 GMT; path=/; domain=.shields.io; HttpOnly"
     ],
     "cache-control": "no-cache, no-store, must-revalidate",
-    "expires": "Wed, 14 Sep 2016 22:24:47 GMT",
+    "expires": "Sun, 26 Mar 2017 18:20:43 GMT",
     "access-control-allow-origin": "*",
     "content-encoding": "gzip",
     "server": "cloudflare-nginx",
-    "cf-ray": "2e2740456e9a06e2-LHR"
+    "cf-ray": "345c201f9989625a-LIS"
   },
   "url": "http://img.shields.io:443/codeclimate/coverage/github/IndigoUnited/node-cross-spawn.json",
-  "time": 821,
+  "time": 993,
   "request": {
     "method": "GET",
     "headers": {
-      "user-agent": "got/6.5.0 (https://github.com/sindresorhus/got)",
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
       "accept-encoding": "gzip,deflate",
       "accept": "application/json"
     }

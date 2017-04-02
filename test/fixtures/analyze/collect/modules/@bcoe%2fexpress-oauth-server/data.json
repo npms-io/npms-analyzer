@@ -1,0 +1,116 @@
+{
+  "_id": "@bcoe/express-oauth-server",
+  "_rev": "2-1eafc256421b304557faf317e9b16b3c",
+  "name": "@bcoe/express-oauth-server",
+  "description": "OAuth provider for express",
+  "dist-tags": {
+    "latest": "1.0.0"
+  },
+  "versions": {
+    "1.0.0": {
+      "name": "@bcoe/express-oauth-server",
+      "version": "1.0.0",
+      "description": "OAuth provider for express",
+      "main": "index.js",
+      "scripts": {
+        "lint": "jshint .",
+        "test": "mocha --recursive test"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git://github.com/seegno/express-oauth-server.git"
+      },
+      "keywords": [
+        "express",
+        "oauth",
+        "oauth2"
+      ],
+      "author": {
+        "name": "Nuno Sousa",
+        "email": "nfs@seegno.com"
+      },
+      "license": "SEE LICENSE IN LICENSE",
+      "dependencies": {
+        "bluebird": "^3.0.5",
+        "express": "^4.13.3",
+        "oauth2-server": "^3.0.0-b2",
+        "thenify": "^3.0.0"
+      },
+      "devDependencies": {
+        "body-parser": "^1.14.1",
+        "jshint": "^2.8.0",
+        "mocha": "^2.3.3",
+        "should": "^7.1.0",
+        "sinon": "^1.14.1",
+        "supertest": "^0.15.0"
+      },
+      "engines": {
+        "node": ">=0.11"
+      },
+      "gitHead": "c5216f4c4d37dd4962d8553b6c9ba2cf7c47b739",
+      "bugs": {
+        "url": "https://github.com/seegno/express-oauth-server/issues"
+      },
+      "homepage": "https://github.com/seegno/express-oauth-server#readme",
+      "_id": "@bcoe/express-oauth-server@1.0.0",
+      "_shasum": "cd72c60a73533023ca397104274d6a7b6d7eecef",
+      "_from": ".",
+      "_npmVersion": "3.3.12",
+      "_nodeVersion": "5.1.0",
+      "_npmUser": {
+        "name": "bcoe",
+        "email": "ben@npmjs.com"
+      },
+      "dist": {
+        "shasum": "cd72c60a73533023ca397104274d6a7b6d7eecef",
+        "tarball": "https://registry.npmjs.org/@bcoe/express-oauth-server/-/express-oauth-server-1.0.0.tgz"
+      },
+      "maintainers": [
+        {
+          "name": "bcoe",
+          "email": "ben@npmjs.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "packages-12-west.internal.npmjs.com",
+        "tmp": "tmp/express-oauth-server-1.0.0.tgz_1459216830343_0.7240529225673527"
+      },
+      "directories": {}
+    }
+  },
+  "readme": "# Express OAuth Server [![Build Status](https://travis-ci.org/seegno/express-oauth-server.png?branch=master)](https://travis-ci.org/seegno/express-oauth-server)\n\nComplete, compliant and well tested module for implementing an OAuth2 Server/Provider with [express](https://github.com/strongloop/express) in [node.js](http://nodejs.org/).\n\nThis is the express wrapper for [oauth2-server](https://github.com/thomseddon/node-oauth2-server).\n\n## Installation\n\n    $ npm install @bcoe/express-oauth-server\n\n## Quick Start\n\nThe module provides two middlewares - one for granting tokens and another to authorise them. `@bcoe/express-oauth-server` and, consequently `oauth2-server`, expect the request body to be parsed already.\nThe following example uses `body-parser` but you may opt for an alternative library.\n\n```js\nvar bodyparser = require('body-parser');\nvar express = require('express');\nvar OAuthServer = require('@bcoe/express-oauth-server');\n\nvar app = express();\n\napp.oauth = new OAuthServer({\n  model: {}, // See https://github.com/thomseddon/node-oauth2-server for specification\n});\n\napp.use(bodyParser.json());\napp.use(bodyparser.urlencoded({ extended: false }))\napp.use(app.oauth.authorise());\n\napp.use(function(req, res) {\n  res.send('Secret area');\n});\n\napp.listen(3000);\n```\n",
+  "maintainers": [
+    {
+      "name": "bcoe",
+      "email": "ben@npmjs.com"
+    }
+  ],
+  "time": {
+    "modified": "2016-03-29T02:00:30.766Z",
+    "created": "2016-03-29T02:00:30.766Z",
+    "1.0.0": "2016-03-29T02:00:30.766Z"
+  },
+  "homepage": "https://github.com/seegno/express-oauth-server#readme",
+  "keywords": [
+    "express",
+    "oauth",
+    "oauth2"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/seegno/express-oauth-server.git"
+  },
+  "author": {
+    "name": "Nuno Sousa",
+    "email": "nfs@seegno.com"
+  },
+  "bugs": {
+    "url": "https://github.com/seegno/express-oauth-server/issues"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "readmeFilename": "Readme.md",
+  "users": {
+    "bcoe": true
+  },
+  "_attachments": {}
+}

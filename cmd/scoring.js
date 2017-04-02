@@ -1,5 +1,6 @@
 'use strict';
 
+const assert = require('assert');
 const humanizeDuration = require('humanize-duration');
 const prepare = require('../lib/scoring/prepare');
 const aggregate = require('../lib/scoring/aggregate');
@@ -80,22 +81,31 @@ function cycle(delay, npmsNano, esClient) {
 
 // ----------------------------------------------------------------------------
 
-exports.builder = (yargs) => {
-    return yargs
-    .strict()
+exports.command = 'scoring [options]';
+exports.describe = 'Continuously iterate over the analyzed modules, scoring them';
+
+exports.builder = (yargs) =>
+    yargs
     .usage('Usage: $0 scoring [options]\n\n\
 Continuously iterate over the analyzed packages, scoring them.')
-    .demand(0, 0)
 
     .option('cycle-delay', {
         type: 'number',
         default: 3 * 60 * 60 * 1000,  // 3 hours
         alias: 'd',
         describe: 'The time to wait between each scoring cycle (in ms)',
+    })
+
+    .check((argv) => {
+        assert(argv.cycleDelay >= 0, 'Invalid argument: --cycle-delay must be a number greater or equal to 0');
+        return true;
     });
-};
 
 exports.handler = (argv) => {
+    // Disable long stack traces specifically for this command since we create them in bursts
+    // This improves performance by a great margin
+    Promise.config({ longStackTraces: false });
+
     process.title = 'npms-analyzer-scoring';
     logger.level = argv.logLevel || 'warn';
 

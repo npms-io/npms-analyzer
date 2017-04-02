@@ -1,0 +1,28 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "date": "Sun, 26 Mar 2017 18:22:40 GMT",
+    "content-type": "application/json",
+    "transfer-encoding": "chunked",
+    "connection": "keep-alive",
+    "set-cookie": [
+      "__cfduid=defd02c2ba81a6c88bdfebf96364169ab1490552559; expires=Mon, 26-Mar-18 18:22:39 GMT; path=/; domain=.shields.io; HttpOnly"
+    ],
+    "cache-control": "no-cache, no-store, must-revalidate",
+    "expires": "Sun, 26 Mar 2017 18:22:40 GMT",
+    "access-control-allow-origin": "*",
+    "content-encoding": "gzip",
+    "server": "cloudflare-nginx",
+    "cf-ray": "345c22fbda8d61fa-LIS"
+  },
+  "url": "https://img.shields.io:443/codecov/c/github/MathieuTurcotte/node-backoff.json",
+  "time": 576,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/json"
+    }
+  }
+}

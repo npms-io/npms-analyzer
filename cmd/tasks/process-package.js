@@ -7,12 +7,13 @@ const bootstrap = require('../util/bootstrap');
 
 const log = logger.child({ module: 'cli/process-package' });
 
-module.exports.builder = (yargs) => {
-    return yargs
-    .strict()
+exports.command = 'process-package <package> [options]';
+exports.describe = 'Processes a single package, analyzing and scoring it';
+
+exports.builder = (yargs) =>
+    yargs
     .usage('Usage: $0 tasks process-package <package> [options]\n\n\
 Processes a single package, analyzing and scoring it.')
-    .demand(1, 1, 'Please supply one package to process')
     .example('$0 tasks process-package analyze cross-spawn')
     .example('$0 tasks process-package analyze cross-spawn --no-analyze', 'Just score the package, do not analyze')
 
@@ -21,13 +22,12 @@ Processes a single package, analyzing and scoring it.')
         default: true,
         describe: 'Either to analyze and score or just score',
     });
-};
 
-module.exports.handler = (argv) => {
+exports.handler = (argv) => {
     process.title = 'npms-analyzer-process-package';
     logger.level = argv.logLevel || 'info';
 
-    const name = argv._[2].toString();  // package 0 evaluates to number so we must cast to a string
+    const name = argv.package.toString();  // package 0 evaluates to number so we must cast to a string
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms', 'elasticsearch'])

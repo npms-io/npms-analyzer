@@ -55,7 +55,7 @@ describe('hostedGitInfo', () => {
             throw new Error('Should not crash');
         }
 
-        expect(info).to.equal(null);
+        expect(info).to.equal(undefined);
     });
 
     it('should not crash on incomplete URLs', () => {
@@ -67,29 +67,6 @@ describe('hostedGitInfo', () => {
             throw new Error('Should not crash');
         }
 
-        expect(info).to.equal(null);
-    });
-
-    describe('normalizeTrailingSlashes', () => {
-        it('should remove trailing slashes from a GitHub/GitLab/Bitbucket URLs', () => {
-            expect(hostedGitInfo.normalizeTrailingSlashes('git://github.com/IndigoUnited/node-cross-spawn.git//'))
-            .to.equal('git://github.com/IndigoUnited/node-cross-spawn.git');
-            expect(hostedGitInfo.normalizeTrailingSlashes('git@github.com:IndigoUnited/node-cross-spawn.git//'))
-            .to.equal('git@github.com:IndigoUnited/node-cross-spawn.git');
-            expect(hostedGitInfo.normalizeTrailingSlashes('https://github.com/IndigoUnited/node-cross-spawn.git//'))
-            .to.equal('https://github.com/IndigoUnited/node-cross-spawn.git');
-
-            expect(hostedGitInfo.normalizeTrailingSlashes('git@gitlab.com:codium/angular-ui-select.git//'))
-            .to.equal('git@gitlab.com:codium/angular-ui-select.git');
-            expect(hostedGitInfo.normalizeTrailingSlashes('https://gitlab.com/codium/angular-ui-select.git//'))
-            .to.equal('https://gitlab.com/codium/angular-ui-select.git');
-
-            expect(hostedGitInfo.normalizeTrailingSlashes('git@bitbucket.org:fvdm/node-xml2json.git//'))
-            .to.equal('git@bitbucket.org:fvdm/node-xml2json.git');
-            expect(hostedGitInfo.normalizeTrailingSlashes('https://bitbucket.org/fvdm/node-xml2json.git//'))
-            .to.equal('https://bitbucket.org/fvdm/node-xml2json.git');
-
-            expect(hostedGitInfo.normalizeTrailingSlashes('git@foo.bar:foo/bar//')).to.equal('git@foo.bar:foo/bar//');
-        });
+        expect(info).to.equal(undefined);
     });
 });

@@ -32,25 +32,27 @@ function onPackage(name, priority, queue) {
 
 // ----------------------------------------------------------------------------
 
-module.exports.builder = (yargs) => {
-    return yargs
-    .strict()
+exports.command = 'observe [options]';
+exports.describe = 'Consumes modules from the queue, analyzing them';
+
+exports.builder = (yargs) =>
+    yargs
     .usage('Usage: $0 observe [options]\n\n\
 Starts the observing process, enqueueing packages that need to be analyzed into the queue.')
-    .demand(0, 0)
+
     .option('default-seq', {
         type: 'number',
         default: 0,
         alias: 'ds',
         describe: 'The default seq to be used on first run',
     })
+
     .check((argv) => {
-        assert(typeof argv.defaultSeq === 'number', 'Invalid argument: --default-seq must be a positive integer');
+        assert(argv.defaultSeq >= 0, 'Invalid argument: --default-seq must be a number greater or equal to 0');
         return true;
     });
-};
 
-module.exports.handler = (argv) => {
+exports.handler = (argv) => {
     process.title = 'npms-analyzer-observe';
     logger.level = argv.logLevel || 'warn';
 

@@ -77,13 +77,14 @@ function enqueueMissingPackages(npmPackages, npmsPackages, queue, dryRun) {
 
 // --------------------------------------------------
 
-module.exports.builder = (yargs) => {
-    return yargs
-    .strict()
+exports.command = 'enqueue-missing [options]';
+exports.describe = 'Finds packages that were not analyzed and enqueues them';
+
+exports.builder = (yargs) =>
+    yargs
     .usage('Usage: $0 tasks enqueue-missing [options]\n\n\
 Finds packages that were not analyzed and enqueues them.\nThis command is useful if packages were lost due to repeated transient \
 errors, e.g.: internet connection was lot or GitHub was down.')
-    .demand(0, 0)
 
     .option('dry-run', {
         alias: 'dr',
@@ -91,9 +92,8 @@ errors, e.g.: internet connection was lot or GitHub was down.')
         default: false,
         describe: 'Enables dry-run',
     });
-};
 
-module.exports.handler = (argv) => {
+exports.handler = (argv) => {
     process.title = 'npms-analyzer-enqueue-missing';
     logger.level = argv.logLevel || 'info';
 
