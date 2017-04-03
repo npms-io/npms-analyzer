@@ -31,17 +31,14 @@ describe('npm', () => {
         .finally(() => sepia.disable());
     });
 
-    it('should fail if there\'s no dist tarball', () => {
+    it('should still work if there\'s no dist tarball', () => {
         const download = npm({
             name: 'cool-module',
         });
 
         return download(tmpDir)
         .then(() => {
-            throw new Error('Should have failed');
-        }, (err) => {
-            expect(err.message).to.match(/no tarball/i);
-            expect(err.unrecoverable).to.equal(true);
+            expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
         });
     });
 
