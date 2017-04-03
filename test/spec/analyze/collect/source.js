@@ -176,7 +176,6 @@ describe('source', () => {
 
             fs.mkdirSync(`${tmpDir}/cross-spawn`);
             fs.writeFileSync(`${tmpDir}/cross-spawn/package.json`, JSON.stringify(packageJson));
-            // No need to create pa
             fs.writeFileSync(`${tmpDir}/README.md`, `
                 # planify
 
