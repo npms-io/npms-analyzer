@@ -35,4 +35,22 @@ describe('normalizePackageJson', () => {
 
         expect(packageJson.repository.url).to.equal('git://github.com/balderdashy/waterline.git');
     });
+
+    it('should remove paths from repository URLs', () => {
+        let packageJson;
+
+        packageJson = normalizePackageJson({
+            name: 'babel-helper-fixtures',
+            repository: 'https://github.com/babel/babel/tree/master/packages/babel-helper-fixtures',
+        });
+
+        expect(packageJson.repository.url).to.equal('git+https://github.com/babel/babel.git');
+
+        packageJson = normalizePackageJson({
+            name: 'babel-helper-fixtures',
+            repository: { type: 'git', url: 'https://github.com/babel/babel/tree/master/packages/babel-helper-fixtures' },
+        });
+
+        expect(packageJson.repository.url).to.equal('git+https://github.com/babel/babel.git');
+    });
 });
