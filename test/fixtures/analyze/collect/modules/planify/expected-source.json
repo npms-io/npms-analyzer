@@ -4,6 +4,7 @@
     "testsSize": 140994
   },
   "repositorySize": 280540,
+  "technicalDebts": 0,
   "linters": {
     "general": [
       "editorconfig"

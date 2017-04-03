@@ -5,6 +5,7 @@
     "hasNpmIgnore": true
   },
   "repositorySize": 30199,
+  "technicalDebts": 0,
   "linters": {
     "general": [
       "editorconfig"

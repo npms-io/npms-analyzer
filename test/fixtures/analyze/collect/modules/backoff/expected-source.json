@@ -5,6 +5,7 @@
     "hasChangelog": true
   },
   "repositorySize": 529376,
+  "technicalDebts": 0,
   "linters": {
     "js": [
       "jshint"

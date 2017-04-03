@@ -67,6 +67,7 @@
     "semver": "^5.1.0",
     "serialize-error": "^2.0.0",
     "spdx": "^0.5.0",
+    "technical-debts": "^1.0.1",
     "spdx-correct": "^2.0.0",
     "token-dealer": "^2.1.0",
     "weighted-mean": "^1.0.0",
