@@ -111,7 +111,6 @@ describe('source', () => {
             });
         });
 
-
         it('should detect tests on the package dir and fallback to root', () => {
             sepia.enable();
             const betrayed = mockExternal(null, `${tmpDir}/cross-spawn`);
@@ -140,7 +139,7 @@ describe('source', () => {
             });
         });
 
-        it('should detect changelog on the package dir', () => {
+        it('should detect changelog on the package dir and fallback to root', () => {
             sepia.enable();
             const betrayed = mockExternal(null, `${tmpDir}/cross-spawn`);
 
@@ -189,13 +188,41 @@ describe('source', () => {
 
             return Promise.try(() => {
                 return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.badges.length).to.equal(5));
+                .then((collected) => expect(collected.badges).to.have.length(5));
             })
             .then(() => {
                 delete data.readme;
 
                 return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.badges.length).to.equal(1));
+                .then((collected) => expect(collected.badges).to.have.length(1));
+            })
+            .finally(() => {
+                sepia.disable();
+                betrayed.restore();
+            });
+        });
+
+        it('should detect linters on the package dir and fallback to root', () => {
+            sepia.enable();
+            const betrayed = mockExternal(null, `${tmpDir}/cross-spawn`);
+
+            const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
+            const packageJson = packageJsonFromData('cross-spawn', data);
+
+            fs.mkdirSync(`${tmpDir}/cross-spawn`);
+            fs.writeFileSync(`${tmpDir}/cross-spawn/package.json`, JSON.stringify(packageJson));
+            fs.writeFileSync(`${tmpDir}/cross-spawn/.editorconfig`, 'foo');
+            fs.writeFileSync(`${tmpDir}/.eslintrc.json`, 'foo');
+
+            return Promise.try(() => {
+                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.linters).to.eql({ general: ['editorconfig'] }));
+            })
+            .then(() => {
+                fs.unlinkSync(`${tmpDir}/cross-spawn/.editorconfig`);
+
+                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.linters).to.eql({ js: ['eslint'] }));
             })
             .finally(() => {
                 sepia.disable();
