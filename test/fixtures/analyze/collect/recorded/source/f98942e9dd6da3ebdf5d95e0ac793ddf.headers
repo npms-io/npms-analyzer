@@ -1,0 +1,28 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "date": "Sun, 02 Apr 2017 20:36:59 GMT",
+    "content-type": "application/json",
+    "transfer-encoding": "chunked",
+    "connection": "keep-alive",
+    "set-cookie": [
+      "__cfduid=dab3d31780871018dd67b8838879380511491165418; expires=Mon, 02-Apr-18 20:36:58 GMT; path=/; domain=.shields.io; HttpOnly"
+    ],
+    "cache-control": "no-cache, no-store, must-revalidate",
+    "expires": "Sun, 02 Apr 2017 20:36:58 GMT",
+    "access-control-allow-origin": "*",
+    "content-encoding": "gzip",
+    "server": "cloudflare-nginx",
+    "cf-ray": "3496955aed636200-LIS"
+  },
+  "url": "https://img.shields.io:443/codeclimate/coverage/github/reacttraining/react-router.json",
+  "time": 883,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/json"
+    }
+  }
+}

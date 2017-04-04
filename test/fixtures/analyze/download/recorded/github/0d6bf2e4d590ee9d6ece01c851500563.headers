@@ -1,0 +1,29 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "transfer-encoding": "chunked",
+    "access-control-allow-origin": "https://render.githubusercontent.com",
+    "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'",
+    "strict-transport-security": "max-age=31536000",
+    "vary": "Authorization,Accept-Encoding",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "etag": "\"48573f1fb4e632add2c000bec3f95d88ebea4440\"",
+    "content-type": "application/x-gzip",
+    "content-disposition": "attachment; filename=babel-babel-v6.23.0-0-g48573f1.tar.gz",
+    "x-geo-block-list": "",
+    "date": "Sun, 02 Apr 2017 17:07:06 GMT",
+    "x-github-request-id": "FF00:0520:1EEDD5:26CA23:58E12FB9"
+  },
+  "url": "https://codeload.github.com:443/babel/babel/legacy.tar.gz/48573f1fb4e632add2c000bec3f95d88ebea4440",
+  "time": 1759,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/vnd.github.v3+json"
+    }
+  }
+}

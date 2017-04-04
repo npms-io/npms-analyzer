@@ -1,0 +1,108 @@
+{
+  "files": {
+    "readmeSize": 968,
+    "testsSize": 31281,
+    "hasChangelog": true
+  },
+  "badges": [
+    {
+      "urls": {
+        "original": "https://img.shields.io/npm/v/react-router.svg?style=flat-square",
+        "shields": "https://img.shields.io/npm/v/react-router.svg",
+        "content": "https://img.shields.io/npm/v/react-router.json"
+      },
+      "info": {
+        "service": "npm",
+        "type": "version",
+        "modifiers": {
+          "type": "v"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "https://img.shields.io/npm/dm/react-router.svg?style=flat-square",
+        "shields": "https://img.shields.io/npm/dm/react-router.svg",
+        "content": "https://img.shields.io/npm/dm/react-router.json"
+      },
+      "info": {
+        "service": "npm",
+        "type": "downloads",
+        "modifiers": {
+          "type": "dm"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "https://img.shields.io/travis/ReactTraining/react-router/master.svg?style=flat-square",
+        "service": "https://api.travis-ci.org/ReactTraining/react-router.svg?branch=master",
+        "shields": "https://img.shields.io/travis/ReactTraining/react-router/master.svg",
+        "content": "https://img.shields.io/travis/ReactTraining/react-router/master.json"
+      },
+      "info": {
+        "service": "travis",
+        "type": "build",
+        "modifiers": {
+          "branch": "master"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "https://img.shields.io/npm/v/react-router.svg?style=flat-square",
+        "shields": "https://img.shields.io/npm/v/react-router.svg",
+        "content": "https://img.shields.io/npm/v/react-router.json"
+      },
+      "info": {
+        "service": "npm",
+        "type": "version",
+        "modifiers": {
+          "type": "v"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "https://img.shields.io/npm/v/react-router-dom.svg?style=flat-square",
+        "shields": "https://img.shields.io/npm/v/react-router-dom.svg",
+        "content": "https://img.shields.io/npm/v/react-router-dom.json"
+      },
+      "info": {
+        "service": "npm",
+        "type": "version",
+        "modifiers": {
+          "type": "v"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "https://img.shields.io/npm/v/react-router-native.svg?style=flat-square",
+        "shields": "https://img.shields.io/npm/v/react-router-native.svg",
+        "content": "https://img.shields.io/npm/v/react-router-native.json"
+      },
+      "info": {
+        "service": "npm",
+        "type": "version",
+        "modifiers": {
+          "type": "v"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "https://img.shields.io/npm/v/react-router-config.svg?style=flat-square",
+        "shields": "https://img.shields.io/npm/v/react-router-config.svg",
+        "content": "https://img.shields.io/npm/v/react-router-config.json"
+      },
+      "info": {
+        "service": "npm",
+        "type": "version",
+        "modifiers": {
+          "type": "v"
+        }
+      }
+    }
+  ]
+}

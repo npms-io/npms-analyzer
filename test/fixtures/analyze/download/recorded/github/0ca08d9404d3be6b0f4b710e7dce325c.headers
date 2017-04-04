@@ -9,15 +9,15 @@
     "x-content-type-options": "nosniff",
     "x-frame-options": "deny",
     "x-xss-protection": "1; mode=block",
-    "date": "Sun, 18 Sep 2016 22:42:05 GMT",
-    "x-github-request-id": "D98186F0:11CB:5DAE22:57DF183D"
+    "date": "Sun, 02 Apr 2017 17:07:43 GMT",
+    "x-github-request-id": "FF27:0521:1476D9:19E431:58E12FDE"
   },
   "url": "https://codeload.github.com:443/IndigoUnited/node-cross-spawn/legacy.tar.gz/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-  "time": 411,
+  "time": 615,
   "request": {
     "method": "GET",
     "headers": {
-      "user-agent": "got/6.5.0 (https://github.com/sindresorhus/got)",
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
       "accept-encoding": "gzip,deflate",
       "accept": "application/vnd.github.v3+json"
     }

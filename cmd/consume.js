@@ -10,7 +10,6 @@ const stats = require('./util/stats');
 // Need JSON.parse & JSON stringify because of config reserved words
 // See: https://github.com/lorenwest/node-config/issues/223
 const blacklist = JSON.parse(JSON.stringify(config.get('blacklist')));
-const gitRefOverrides = JSON.parse(JSON.stringify(config.get('gitRefOverrides')));
 const githubTokens = config.get('githubTokens');
 const log = logger.child({ module: 'cli/consume' });
 
@@ -51,7 +50,6 @@ function onMessage(msg, npmNano, npmsNano, esClient) {
         // If not, analyze it! :D
         return analyze(name, npmNano, npmsNano, {
             githubTokens,
-            gitRefOverrides,
             waitRateLimit: true,
             rev: analysis && analysis._rev,
         })

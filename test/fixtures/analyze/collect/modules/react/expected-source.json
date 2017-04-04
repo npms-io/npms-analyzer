@@ -1,0 +1,62 @@
+{
+  "files": {
+    "readmeSize": 1198,
+    "testsSize": 1491255,
+    "hasChangelog": true
+  },
+  "badges": [
+    {
+      "urls": {
+        "original": "https://img.shields.io/travis/facebook/react/master.svg?style=flat",
+        "service": "https://api.travis-ci.org/facebook/react.svg?branch=master",
+        "shields": "https://img.shields.io/travis/facebook/react/master.svg",
+        "content": "https://img.shields.io/travis/facebook/react/master.json"
+      },
+      "info": {
+        "service": "travis",
+        "type": "build",
+        "modifiers": {
+          "branch": "master"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "https://img.shields.io/coveralls/facebook/react/master.svg?style=flat",
+        "service": "https://coveralls.io/repos/facebook/react/badge.svg?branch=master",
+        "shields": "https://img.shields.io/coveralls/facebook/react/master.svg",
+        "content": "https://img.shields.io/coveralls/facebook/react/master.json"
+      },
+      "info": {
+        "service": "coveralls",
+        "type": "coverage",
+        "modifiers": {
+          "branch": "master"
+        }
+      }
+    },
+    {
+      "urls": {
+        "original": "https://img.shields.io/npm/v/react.svg?style=flat",
+        "shields": "https://img.shields.io/npm/v/react.svg",
+        "content": "https://img.shields.io/npm/v/react.json"
+      },
+      "info": {
+        "service": "npm",
+        "type": "version",
+        "modifiers": {
+          "type": "v"
+        }
+      }
+    }
+  ],
+  "linters": {
+    "general": [
+      "editorconfig"
+    ],
+    "js": [
+      "eslint"
+    ]
+  },
+  "coverage": 0.82
+}

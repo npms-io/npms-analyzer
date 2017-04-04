@@ -2,15 +2,15 @@
   "statusCode": 302,
   "headers": {
     "server": "GitHub.com",
-    "date": "Sun, 18 Sep 2016 22:42:04 GMT",
+    "date": "Sun, 02 Apr 2017 17:07:41 GMT",
     "content-type": "text/html;charset=utf-8",
     "content-length": "0",
     "status": "302 Found",
     "x-ratelimit-limit": "60",
-    "x-ratelimit-remaining": "44",
-    "x-ratelimit-reset": "1474241481",
+    "x-ratelimit-remaining": "60",
+    "x-ratelimit-reset": "1491156461",
     "cache-control": "public, must-revalidate, max-age=0",
-    "expires": "Sun, 18 Sep 2016 22:42:04 GMT",
+    "expires": "Sun, 02 Apr 2017 17:07:41 GMT",
     "location": "https://codeload.github.com/IndigoUnited/node-cross-spawn/legacy.tar.gz/b5239f25c0274feba89242b77d8f0ce57dce83ad",
     "access-control-expose-headers": "ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
     "access-control-allow-origin": "*",
@@ -20,15 +20,15 @@
     "x-frame-options": "deny",
     "x-xss-protection": "1; mode=block",
     "vary": "Accept-Encoding",
-    "x-served-by": "a474937f3b2fa272558fa6dc951018ad",
-    "x-github-request-id": "D98186F0:C7B6:2CA2380:57DF183C"
+    "x-served-by": "77fbfb53269bbb85f82f23584d59f7c1",
+    "x-github-request-id": "FF23:2C8E5:33FAAAD:42DF577:58E12FDC"
   },
   "url": "https://api.github.com:443/repos/IndigoUnited/node-cross-spawn/tarball/b5239f25c0274feba89242b77d8f0ce57dce83ad",
-  "time": 379,
+  "time": 778,
   "request": {
     "method": "GET",
     "headers": {
-      "user-agent": "got/6.5.0 (https://github.com/sindresorhus/got)",
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
       "accept-encoding": "gzip,deflate",
       "accept": "application/vnd.github.v3+json"
     }

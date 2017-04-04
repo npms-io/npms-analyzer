@@ -1,0 +1,29 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "transfer-encoding": "chunked",
+    "access-control-allow-origin": "https://render.githubusercontent.com",
+    "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'",
+    "strict-transport-security": "max-age=31536000",
+    "vary": "Authorization,Accept-Encoding",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "etag": "\"38ca942f6f2979ed25f54510173dbd2761dd7e04\"",
+    "content-type": "application/x-gzip",
+    "content-disposition": "attachment; filename=facebook-jest-v19.0.2-122-g38ca942.tar.gz",
+    "x-geo-block-list": "",
+    "date": "Sun, 02 Apr 2017 20:41:13 GMT",
+    "x-github-request-id": "D94B:0521:14D461:1A66D5:58E161E9"
+  },
+  "url": "https://codeload.github.com:443/facebook/jest/legacy.tar.gz/master",
+  "time": 3364,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/vnd.github.v3+json"
+    }
+  }
+}

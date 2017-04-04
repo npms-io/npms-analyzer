@@ -99,6 +99,7 @@ describe('git', () => {
             .then((downloaded) => {
                 expect(downloaded.downloader).to.equal('git');
                 expect(downloaded.dir).to.equal(tmpDir);
+                expect(downloaded.packageDir).to.equal(tmpDir);
                 expect(downloaded.packageJson.name).to.equal('cross-spawn');
                 expect(downloaded.gitRef).to.equal('5fb20ce2f44d9947fcf59e8809fe6cb1d767433b');
             })
@@ -133,6 +134,7 @@ describe('git', () => {
             .then((downloaded) => {
                 expect(downloaded.downloader).to.equal('git');
                 expect(downloaded.dir).to.equal(tmpDir);
+                expect(downloaded.packageDir).to.equal(tmpDir);
                 expect(downloaded.packageJson.name).to.equal('xml2json');
                 expect(downloaded.gitRef).to.equal('4c8dc5c636f7bbb746ed519a39bb1b183a27064d');
             })
@@ -168,6 +170,7 @@ describe('git', () => {
             .then((downloaded) => {
                 expect(downloaded.downloader).to.equal('git');
                 expect(downloaded.dir).to.equal(tmpDir);
+                expect(downloaded.packageDir).to.equal(tmpDir);
                 expect(downloaded.packageJson.name).to.equal('angular-ui-select');
                 expect(downloaded.gitRef).to.equal('560042cc9005e5f2c2889a3c7e64ea3ea0b80c88');
             })
@@ -208,6 +211,7 @@ describe('git', () => {
 
             expect(downloaded.downloader).to.equal('git');
             expect(downloaded.dir).to.equal(tmpDir);
+            expect(downloaded.packageDir).to.equal(tmpDir);
             expect(downloaded.packageJson.name).to.equal('cross-spawn');
             expect(downloaded.gitRef).to.equal(null);
 
@@ -398,29 +402,38 @@ describe('git', () => {
         return download(tmpDir)
         .then((downloaded) => {
             expect(downloaded.dir).to.equal(tmpDir);
+            expect(downloaded.packageDir).to.equal(tmpDir);
             expect(downloaded.packageJson.name).to.equal('');
             expect(downloaded.packageJson.version).to.equal('1.0.0');
         })
         .finally(() => betrayed.restore());
     });
 
-    it('should override refs based on options.refOverrides', () => {
-        let command;
+    it('should detect the proper `packageDir` for mono-repositories', () => {
         const betrayed = mock({
-            checkout: (command_) => { command = command_; },
+            checkout: () => {
+                fs.mkdirSync(`${tmpDir}/cool-module`);
+                fs.writeFileSync(`${tmpDir}/cool-module/package.json`, JSON.stringify({
+                    name: 'cool-module',
+                    version: '1.0.0',
+                }));
+            },
         });
 
         const download = git({
-            name: 'cross-spawn',
+            name: 'cool-module',
             version: '0.1.0',
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
             gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad', // This is the ref for 1.0.0
-        }, {
-            refOverrides: { 'cross-spawn': 'foobar' },
         });
 
         return download(tmpDir)
-        .then(() => expect(command).to.contain('foobar'))
+        .then((downloaded) => {
+            expect(downloaded.dir).to.equal(tmpDir);
+            expect(downloaded.packageDir).to.equal(`${tmpDir}/cool-module`);
+            expect(downloaded.packageJson.name).to.equal('cool-module');
+            expect(downloaded.packageJson.version).to.equal('1.0.0');
+        })
         .finally(() => betrayed.restore());
     });
 

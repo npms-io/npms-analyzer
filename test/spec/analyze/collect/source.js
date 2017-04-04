@@ -87,6 +87,149 @@ describe('source', () => {
         });
     });
 
+    describe('monorepos', () => {
+        [
+            { name: 'react-router', downloader: githubDownloader },
+            { name: 'babel-jest', downloader: githubDownloader },
+        ].forEach((entry) => {
+            it(`should collect \`${entry.name}\` correctly`, () => {
+                sepia.enable();
+
+                const data = loadJsonFile.sync(`${fixturesDir}/modules/${entry.name}/data.json`);
+                const packageJson = packageJsonFromData(entry.name, data);
+                const expected = loadJsonFile.sync(`${fixturesDir}/modules/${entry.name}/expected-source.json`);
+
+                return entry.downloader(packageJson)(tmpDir)
+                .then((downloaded) => {
+                    const betrayed = mockExternal(null, downloaded.packageDir);
+
+                    return source(data, packageJson, downloaded)
+                    .then((collected) => expect(collected).to.eql(expected))
+                    .finally(() => betrayed.restore());
+                })
+                .finally(() => sepia.disable());
+            });
+        });
+
+        it('should detect tests on the package dir and fallback to root', () => {
+            sepia.enable();
+            const betrayed = mockExternal(null, `${tmpDir}/cross-spawn`);
+
+            const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
+            const packageJson = packageJsonFromData('cross-spawn', data);
+
+            fs.mkdirSync(`${tmpDir}/cross-spawn`);
+            fs.writeFileSync(`${tmpDir}/cross-spawn/package.json`, JSON.stringify(packageJson));
+            fs.writeFileSync(`${tmpDir}/cross-spawn/test.js`, 'foo');
+            fs.writeFileSync(`${tmpDir}/test.js`, 'foobar');
+
+            return Promise.try(() => {
+                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.files.testsSize).to.equal(3));
+            })
+            .then(() => {
+                fs.unlinkSync(`${tmpDir}/cross-spawn/test.js`);
+
+                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.files.testsSize).to.equal(6));
+            })
+            .finally(() => {
+                sepia.disable();
+                betrayed.restore();
+            });
+        });
+
+        it('should detect changelog on the package dir and fallback to root', () => {
+            sepia.enable();
+            const betrayed = mockExternal(null, `${tmpDir}/cross-spawn`);
+
+            const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
+            const packageJson = packageJsonFromData('cross-spawn', data);
+
+            fs.mkdirSync(`${tmpDir}/cross-spawn`);
+            fs.writeFileSync(`${tmpDir}/cross-spawn/package.json`, JSON.stringify(packageJson));
+            fs.writeFileSync(`${tmpDir}/cross-spawn/CHANGELOG.md`, 'foo');
+
+            return Promise.try(() => {
+                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.files.hasChangelog).to.equal(true));
+            })
+            .then(() => {
+                fs.unlinkSync(`${tmpDir}/cross-spawn/CHANGELOG.md`);
+                fs.writeFileSync(`${tmpDir}/CHANGELOG.md`, 'foo');
+
+                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.files.hasChangelog).to.equal(true));
+            })
+            .finally(() => {
+                sepia.disable();
+                betrayed.restore();
+            });
+        });
+
+        it('should detect readme badges on the package readme and fallback to root', () => {
+            sepia.enable();
+            const betrayed = mockExternal(null, `${tmpDir}/cross-spawn`);
+
+            const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
+            const packageJson = packageJsonFromData('cross-spawn', data);
+
+            fs.mkdirSync(`${tmpDir}/cross-spawn`);
+            fs.writeFileSync(`${tmpDir}/cross-spawn/package.json`, JSON.stringify(packageJson));
+            fs.writeFileSync(`${tmpDir}/README.md`, `
+                # planify
+
+                [![NPM version][npm-image]][npm-url]
+
+                [npm-url]:https://npmjs.org/package/planify
+                [npm-image]:http://img.shields.io/npm/v/planify.svg
+            `);
+
+            return Promise.try(() => {
+                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.badges).to.have.length(5));
+            })
+            .then(() => {
+                delete data.readme;
+
+                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.badges).to.have.length(1));
+            })
+            .finally(() => {
+                sepia.disable();
+                betrayed.restore();
+            });
+        });
+
+        it('should detect linters on the package dir and fallback to root', () => {
+            sepia.enable();
+            const betrayed = mockExternal(null, `${tmpDir}/cross-spawn`);
+
+            const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
+            const packageJson = packageJsonFromData('cross-spawn', data);
+
+            fs.mkdirSync(`${tmpDir}/cross-spawn`);
+            fs.writeFileSync(`${tmpDir}/cross-spawn/package.json`, JSON.stringify(packageJson));
+            fs.writeFileSync(`${tmpDir}/cross-spawn/.editorconfig`, 'foo');
+            fs.writeFileSync(`${tmpDir}/.eslintrc.json`, 'foo');
+
+            return Promise.try(() => {
+                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.linters).to.eql({ general: ['editorconfig'] }));
+            })
+            .then(() => {
+                fs.unlinkSync(`${tmpDir}/cross-spawn/.editorconfig`);
+
+                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.linters).to.eql({ js: ['eslint'] }));
+            })
+            .finally(() => {
+                sepia.disable();
+                betrayed.restore();
+            });
+        });
+    });
+
     it('should work around NPM_TOKEN env var, e.g.: `babbel`');
 
     it('should handle broken dependencies when checking outdated with david', () => {
@@ -100,7 +243,7 @@ describe('source', () => {
 
         fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
 
-        return source(data, packageJson, { dir: tmpDir })
+        return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
         .then((collected) => expect(collected.outdatedDependencies).to.equal(false))
         .finally(() => {
             sepia.disable();
@@ -121,7 +264,7 @@ describe('source', () => {
                 nsp: () => { throw Object.assign(new Error('foo'), { stderr: 'Debug output: undefined\n{}\n' }); },
             });
 
-            return source(data, packageJson, { dir: tmpDir })
+            return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
             .then((collected) => expect(collected.vulnerabilities).to.equal(false))
             .finally(() => {
                 sepia.disable();
@@ -135,7 +278,7 @@ describe('source', () => {
                 nsp: () => { throw Object.assign(new Error('foo'), { stderr: '"statusCode":400' }); },
             });
 
-            return source(data, packageJson, { dir: tmpDir })
+            return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
             .then((collected) => expect(collected.vulnerabilities).to.equal(false))
             .finally(() => {
                 sepia.disable();
@@ -171,7 +314,7 @@ describe('source', () => {
 
         fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
 
-        return source(data, packageJson, { dir: tmpDir })
+        return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
         .then((collected) => expect(collected.vulnerabilities).to.eql([{ foo: 'bar' }]))
         .finally(() => {
             sepia.disable();

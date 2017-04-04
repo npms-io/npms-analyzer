@@ -29,16 +29,6 @@
         'zachtestproject4': 'Test project that makes registry return 500 internal',
     },
 
-    // List of download target overrides to be used when downloading
-    // This makes it possible to override the ref which defaults to `packageJson.gitHead`
-    gitRefOverrides: {
-        // Bower removes the dependencies from package.json in a pre-publish script, so we must download from master
-        'bower': 'master',
-        // React has a strange build step with a different name in the package.json which was causing problems when checking repo ownership,
-        // therefore we instruct to totally bypass any git based downloader and use the npm downloader instead
-        'react': null,
-    },
-
     // Github tokens to be used by token-dealer
     githubTokens: [],
 }
