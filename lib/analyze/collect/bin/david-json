@@ -8,6 +8,7 @@ global.Promise = require('bluebird');
 // See: https://github.com/alanshaw/david/issues/109
 process.env.NPM_TOKEN = '';
 process.env.NPM_AUTH_TOKEN = '';
+process.env.SOCIALTABLES_NPM_TOKEN = '';  // https://github.com/socialtables/react-table-sorter/blob/master/.npmrc
 
 const path = require('path');
 const yargs = require('yargs');
