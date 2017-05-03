@@ -71,7 +71,7 @@
     "token-dealer": "^2.1.0",
     "weighted-mean": "^1.0.0",
     "which": "^1.2.8",
-    "yargs": "^7.0.0"
+    "yargs": "^8.0.1"
   },
   "optionalDependencies": {
     "heapdump": "^0.3.7"
