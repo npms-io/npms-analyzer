@@ -41,27 +41,10 @@ describe('npm', () => {
         .finally(() => betrayed.restore());
     });
 
-    it('should handle 200 OK error responses from api.npmjs.org', () => {
+    it('should handle no stats yet error from api.npmjs.org (404)', () => {
         sepia.nock('https://api.npmjs.org')
         .get((path) => path.indexOf('/downloads/range/') === 0)
-        .reply(200, { error: 'foo' });
-
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
-
-        return npm(data, packageJsonFromData('cross-spawn', data), npmNano)
-        .then(() => {
-            throw new Error('Expected to fail');
-        }, (err) => {
-            expect(sepia.nock.isDone()).to.equal(true);
-            expect(err.message).to.equal('foo');
-        })
-        .finally(() => sepia.nock.cleanAll());
-    });
-
-    it('should handle `no stats yet` error from api.npmjs.org', () => {
-        sepia.nock('https://api.npmjs.org')
-        .get((path) => path.indexOf('/downloads/range/') === 0)
-        .reply(200, { error: 'no stats for this package' });
+        .reply(404, { error: 'package cross-spawn not found' });
 
         const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
 
