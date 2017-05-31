@@ -79,7 +79,7 @@
   "devDependencies": {
     "@satazor/eslint-config": "^3.0.0",
     "betray": "^1.3.0",
-    "chai": "^3.5.0",
+    "chai": "^4.0.1",
     "chronokinesis": "^1.1.0",
     "clear-require": "^2.0.0",
     "coveralls": "^2.11.6",
