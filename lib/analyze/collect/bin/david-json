@@ -40,6 +40,7 @@ loadJsonFile(packageJsonPath)
             registry: argv.registry,
         },
         loose: true, // Enable loose semver, there's some really strange versions that got into the registry somehow
+        stable: true,
     });
 })
 .then((deps) => {
