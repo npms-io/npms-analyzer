@@ -82,7 +82,7 @@
     "chai": "^3.5.0",
     "chronokinesis": "^1.1.0",
     "clear-require": "^2.0.0",
-    "coveralls": "^2.11.6",
+    "coveralls": "^3.0.0",
     "eslint": "^3.0.0",
     "istanbul": "^0.4.2",
     "mocha": "^3.0.1",
