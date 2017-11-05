@@ -187,7 +187,7 @@ describe('source', () => {
 
             return Promise.try(() => {
                 return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.badges).to.have.length(5));
+                .then((collected) => expect(collected.badges).to.have.length(6));
             })
             .then(() => {
                 delete data.readme;
