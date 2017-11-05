@@ -8,7 +8,6 @@
 const glob = require('glob');
 const http = require('http');
 const https = require('https');
-const clearRequire = require('clear-require');
 const mockRequire = require('mock-require');
 
 // Grab original requests
@@ -22,8 +21,10 @@ const sepiaRequests = { http: http.request, https: https.request };
 // Grab standalone requests + nock (used when disabled)
 http.request = originalRequests.http;
 https.request = originalRequests.https;
-clearRequire('nock');
-glob.sync('**/*.js', { cwd: `${process.cwd()}/node_modules/nock/lib` }).forEach((file) => clearRequire(`nock/lib/${file}`));
+delete require.cache[require.resolve('nock')];
+glob.sync('**/*.js', { cwd: `${process.cwd()}/node_modules/nock/lib` }).forEach((file) => {
+    delete require.cache[require.resolve(`nock/lib/${file}`)];
+});
 const disabledNock = require('nock');
 const nockedRequests = { http: http.request, https: https.request };
 

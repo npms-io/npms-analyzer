@@ -20,6 +20,18 @@
           "branch": "master"
         }
       }
+    },
+    {
+      "info": {
+        "service": "appveyor",
+        "type": "build"
+      },
+      "urls": {
+        "content": "https://img.shields.io/appveyor/ci/8n38o44k585hhvhd/branch/master.json",
+        "original": "https://ci.appveyor.com/api/projects/status/8n38o44k585hhvhd/branch/master?svg=true",
+        "service": "https://ci.appveyor.com/api/projects/status/8n38o44k585hhvhd/branch/master",
+        "shields": "https://img.shields.io/appveyor/ci/8n38o44k585hhvhd/branch/master.svg"
+      }
     }
   ],
   "linters": {

@@ -57,6 +57,18 @@
       }
     },
     {
+      "info": {
+        "service": "appveyor",
+        "type": "build"
+      },
+      "urls": {
+        "content": "https://img.shields.io/appveyor/ci/satazor/node-cross-spawn.json",
+        "original": "https://img.shields.io/appveyor/ci/satazor/node-cross-spawn.svg",
+        "service": "https://ci.appveyor.com/api/projects/status/satazor/node-cross-spawn",
+        "shields": "https://img.shields.io/appveyor/ci/satazor/node-cross-spawn.svg"
+      }
+    },
+    {
       "urls": {
         "original": "https://img.shields.io/david/IndigoUnited/node-cross-spawn.svg",
         "service": "https://david-dm.org/IndigoUnited/node-cross-spawn.svg",
