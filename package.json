@@ -62,7 +62,7 @@
     "obj-flatten": "^2.0.0",
     "obj-unflatten": "^1.0.0",
     "php-escape-shell": "^1.0.0",
-    "pino": "^3.0.0",
+    "pino": "^4.10.0",
     "promise-retry": "^1.0.1",
     "require-directory": "^2.1.1",
     "semver": "^5.1.0",
