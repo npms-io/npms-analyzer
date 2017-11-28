@@ -117,7 +117,8 @@ describe('metadata', () => {
             .then((collected) => expect(collected.deprecated).to.equal('use something else'));
         })
         // Test when deprecated is not a string
-        // There's some packages such as oh-flex that have deprecated manually written in the package.json...
+        // There's some packages such as oh-flex that have an invalid deprecated field
+        // that was manually written in the package.json...
         .then(() => {
             return metadata({}, { name: 'cross-spawn', deprecated: {} })
             .then((collected) => expect(collected.deprecated).to.equal(undefined));
