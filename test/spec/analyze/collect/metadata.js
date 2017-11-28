@@ -111,9 +111,17 @@ describe('metadata', () => {
         .then((collected) => expect(collected.bundledDependencies).to.eql({ react: '15.0.0' }));
     });
 
-    it('should detect deprecated repositories', () => {
-        return metadata({}, { name: 'cross-spawn', deprecated: 'use something else' })
-        .then((collected) => expect(collected.deprecated).to.equal('use something else'));
+    it('should detect deprecated packages', () => {
+        return Promise.try(() => {
+            return metadata({}, { name: 'cross-spawn', deprecated: 'use something else' })
+            .then((collected) => expect(collected.deprecated).to.equal('use something else'));
+        })
+        // Test when deprecated is not a string
+        // There's some packages such as oh-flex that have deprecated manually written in the package.json...
+        .then(() => {
+            return metadata({}, { name: 'cross-spawn', deprecated: {} })
+            .then((collected) => expect(collected.deprecated).to.equal(undefined));
+        });
     });
 
     it('should detect repositories with no test script', () => {
