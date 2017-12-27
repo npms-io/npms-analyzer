@@ -40,7 +40,7 @@
     "deep-compact": "^1.1.0",
     "detect-readme-badges": "^1.2.1",
     "detect-repo-changelog": "^1.0.1",
-    "detect-repo-linters": "^2.0.0",
+    "detect-repo-linters": "^3.0.0",
     "detect-repo-test-files": "^1.0.0",
     "elasticsearch": "^13.0.0-beta2",
     "fetch-coverage": "^1.0.3",
