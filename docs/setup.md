@@ -22,7 +22,7 @@ This project uses [config](https://www.npmjs.com/package/config) for configurati
 - Add user `admin` with `admin` as password by executing `curl -X PUT http://localhost:5984/_config/admins/admin -d '"admin"'`. After doing this, operations done in the [web interface](http://localhost:5984/_utils/) require you to login (login is at bottom right corner).
 - Create database named `npms` by executing `curl -X PUT http://admin:admin@localhost:5984/npms`
 - Change default maximum replication retries to infinite by executing `curl -X PUT http://admin:admin@localhost:5984/_config/replicator/max_replication_retry_count -d '"infinity"'`
-- Setup npm replication by executing `curl -X PUT http://admin:admin@localhost:5984/_replicator/npm -d '{ "source": "https://replicate.npmjs.com/registry", "target": "http://admin:admin@localhost:5984/npm", "create_target": true, "continuous": true }'`
+- Setup npm replication by executing `curl -X PUT http://admin:admin@localhost:5984/_replicator/npm -d '{ "source": "https://replicate.npmjs.com/registry", "target": "http://admin:admin@localhost:5984/npms", "create_target": true, "continuous": true }'`
 - Setup the necessary views by creating the document `_design/npms-analyzer` in the `npms` database with the contents of `https://github.com/npms-io/npms-analyzer/blob/master/config/couchdb/npms-analyzer.json5`
 
 
