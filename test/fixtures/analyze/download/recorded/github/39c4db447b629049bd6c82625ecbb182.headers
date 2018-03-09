@@ -1,0 +1,35 @@
+{
+  "statusCode": 302,
+  "headers": {
+    "server": "GitHub.com",
+    "date": "Fri, 09 Mar 2018 17:13:35 GMT",
+    "content-type": "text/html;charset=utf-8",
+    "content-length": "0",
+    "status": "302 Found",
+    "x-ratelimit-limit": "60",
+    "x-ratelimit-remaining": "51",
+    "x-ratelimit-reset": "1520618861",
+    "cache-control": "public, must-revalidate, max-age=0",
+    "expires": "Fri, 09 Mar 2018 17:13:35 GMT",
+    "location": "https://codeload.github.com/moxystudio/babel-preset-moxy/legacy.tar.gz/b77ba80b71d6898970e2541b1f1c34d86ba493f7",
+    "access-control-expose-headers": "ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval",
+    "access-control-allow-origin": "*",
+    "content-security-policy": "default-src 'none'",
+    "strict-transport-security": "max-age=31536000; includeSubdomains; preload",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "x-runtime-rack": "0.016191",
+    "x-github-request-id": "D83A:BE15:ED1B93:292501B:5AA2C0BF"
+  },
+  "url": "https://api.github.com:443/repos/moxystudio/babel-preset-moxy/tarball/b77ba80b71d6898970e2541b1f1c34d86ba493f7",
+  "time": 657,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/vnd.github.v3+json"
+    }
+  }
+}
