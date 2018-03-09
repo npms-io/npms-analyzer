@@ -387,6 +387,28 @@ describe('git', () => {
         .finally(() => betrayed.restore());
     });
 
+    it('should remove the package-lock.json file', () => {
+        const betrayed = mock({
+            checkout: () => {
+                fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ version: '1.0.0' }));
+                fs.writeFileSync(`${tmpDir}/package-lock.json`, JSON.stringify({ version: '1.0.0' }));
+            },
+        });
+
+        const download = git({
+            name: 'babel-preset-moxy',
+            version: '2.3.1',
+            repository: { type: 'git', url: 'git://github.com/moxystudio/babel-preset-moxy' },
+            gitHead: 'b77ba80b71d6898970e2541b1f1c34d86ba493f7',  // This is the ref for 2.3.1
+        });
+
+        return download(tmpDir)
+        .then(() => {
+            expect(fs.existsSync(`${tmpDir}/package-lock.json`)).to.equal(false);
+        })
+        .finally(() => betrayed.restore());
+    });
+
     it('should resolve with the downloaded object', () => {
         const betrayed = mock({
             checkout: () => fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ version: '1.0.0' })),
