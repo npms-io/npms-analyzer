@@ -7,6 +7,18 @@
   },
   "badges": [
     {
+      "info": {
+        "service": "circleci",
+        "type": "build"
+      },
+      "urls": {
+        "content": "https://img.shields.io/circleci/project/github/facebook/jest.json",
+        "original": "https://circleci.com/gh/facebook/jest.svg?style=shield",
+        "service": "https://circleci.com/gh/facebook/jest.svg",
+        "shields": "https://img.shields.io/circleci/project/github/facebook/jest.svg"
+      }
+    },
+    {
       "urls": {
         "original": "https://travis-ci.org/facebook/jest.svg?branch=master",
         "service": "https://api.travis-ci.org/facebook/jest.svg?branch=master",
