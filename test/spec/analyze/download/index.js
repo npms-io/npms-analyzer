@@ -113,6 +113,8 @@ describe('index', () => {
         .finally(() => betrayed.restore());
     });
 
+    it('should create a unique and kebab-cased temporary folder');
+
     it('should delete the temporary folder on failure', () => {
         let tmpDir;
         const betrayed = betray(download.downloaders, 'npm', () => {
