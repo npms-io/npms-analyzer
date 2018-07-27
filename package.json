@@ -33,7 +33,7 @@
     "bignumber.js": "^4.0.0",
     "bluebird": "^3.1.1",
     "camelcase-keys": "^4.0.0",
-    "config": "^1.19.0",
+    "config": "^2.0.0",
     "couchdb-force": "^1.0.1",
     "couchdb-iterator": "^2.0.0",
     "david": "^11.0.0",
