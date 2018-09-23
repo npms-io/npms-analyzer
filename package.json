@@ -44,7 +44,7 @@
     "detect-repo-test-files": "^1.0.0",
     "elasticsearch": "^13.0.0-beta2",
     "fetch-coverage": "^1.0.3",
-    "gh-issues-stats": "^2.0.4",
+    "gh-issues-stats": "^3.0.0",
     "glob": "^7.0.0",
     "got": "^6.2.0",
     "hosted-git-info": "^2.1.4",
