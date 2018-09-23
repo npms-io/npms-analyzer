@@ -43,7 +43,7 @@
     "detect-repo-linters": "^2.0.0",
     "detect-repo-test-files": "^1.0.0",
     "elasticsearch": "^13.0.0-beta2",
-    "fetch-coverage": "^1.0.3",
+    "fetch-coverage": "^2.0.0",
     "gh-issues-stats": "^2.0.4",
     "glob": "^7.0.0",
     "got": "^6.2.0",
