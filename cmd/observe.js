@@ -13,17 +13,17 @@ const log = logger.child({ module: 'cli/observe' });
  * Pushes a package into the queue, retrying several times on error.
  * If all retries are used, there isn't much we can do, therefore the process will gracefully exit.
  *
- * @param {array}  name     The package name
- * @param {number} priority The priority to assign to this package when pushing into the queue
- * @param {Queue}  queue    The analysis queue instance
+ * @param {Array}  name     - The package name.
+ * @param {Number} priority - The priority to assign to this package when pushing into the queue.
+ * @param {Queue}  queue    - The analysis queue instance.
  *
- * @return {Promise} The promise that fulfills once done
+ * @returns {Promise} The promise that fulfills once done.
  */
 function onPackage(name, priority, queue) {
-    return promiseRetry((retry) => {
-        return queue.push(name, priority)
-        .catch(retry);
-    })
+    return promiseRetry((retry) => (
+        queue.push(name, priority)
+        .catch(retry)
+    ))
     .catch((err) => {
         log.fatal({ err, name }, 'Too many failed attempts while trying to push the package into the queue, exiting..');
         process.exit(1);
@@ -49,6 +49,7 @@ Starts the observing process, enqueueing packages that need to be analyzed into 
 
     .check((argv) => {
         assert(argv.defaultSeq >= 0, 'Invalid argument: --default-seq must be a number greater or equal to 0');
+
         return true;
     });
 

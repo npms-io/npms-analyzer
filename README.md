@@ -1,6 +1,6 @@
 # npms-analyzer
 
-[![Build status][travis-image]][travis-url] [![Coverage status][coveralls-image]][coveralls-url] [![Dependency status][david-dm-image]][david-dm-url] [![Dev dependency status][david-dm-dev-image]][david-dm-dev-url]
+[![Build status][travis-image]][travis-url] [![Coverage status][codecov-image]][codecov-url] [![Dependency status][david-dm-image]][david-dm-url] [![Dev dependency status][david-dm-dev-image]][david-dm-dev-url]
 
 The npms-analyzer analyzes the npm ecosystem, collecting info, evaluating and scoring each package.
 
@@ -69,8 +69,8 @@ $ npm test
 $ npm test-cov # to get coverage report
 ```
 
-[coveralls-image]: https://img.shields.io/coveralls/npms-io/npms-analyzer/master.svg
-[coveralls-url]: https://coveralls.io/r/npms-io/npms-analyzer
+[codecov-url]:https://codecov.io/gh/npms-io/npms-analyzer
+[codecov-image]:https://img.shields.io/codecov/c/github/npms-io/npms-analyzer/master.svg
 [david-dm-dev-image]: https://img.shields.io/david/dev/npms-io/npms-analyzer.svg
 [david-dm-dev-url]: https://david-dm.org/npms-io/npms-analyzer#info=devDependencies
 [david-dm-image]: https://img.shields.io/david/npms-io/npms-analyzer.svg

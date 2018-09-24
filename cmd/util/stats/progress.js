@@ -9,8 +9,8 @@ const log = logger.child({ module: 'stats/progress' });
 /**
  * Continuously monitor the analyzer progress, printing information such as the analysis %.
  *
- * @param {Nano} npmNano  The npm nano client instance
- * @param {Nano} npmsNano The npms nano client instance
+ * @param {Nano} npmNano  - The npm nano client instance.
+ * @param {Nano} npmsNano - The npms nano client instance.
  */
 function statProgress(npmNano, npmsNano) {
     // Do nothing if loglevel is higher than info
@@ -23,6 +23,7 @@ function statProgress(npmNano, npmsNano) {
     setInterval(() => {
         if (pending) {
             log.info('Progress stat is still being retrieved..');
+
             return;
         }
 

@@ -9,9 +9,7 @@ const download = require(`${process.cwd()}/lib/analyze/download`);
 
 describe('index', () => {
     it('should use the github downloader, passing in the correct options', () => {
-        const betrayed = betray(download.downloaders, 'github', () => {
-            return () => Promise.resolve({});
-        });
+        const betrayed = betray(download.downloaders, 'github', () => () => Promise.resolve({}));
 
         const options = {
             githubTokens: ['foo', 'bar'],
@@ -39,9 +37,7 @@ describe('index', () => {
     });
 
     it('should use the git downloader, passing in the correct options', () => {
-        const betrayed = betray(download.downloaders, 'git', () => {
-            return () => Promise.resolve({});
-        });
+        const betrayed = betray(download.downloaders, 'git', () => () => Promise.resolve({}));
 
         const options = {
             githubTokens: ['foo', 'bar'],
@@ -66,9 +62,7 @@ describe('index', () => {
     });
 
     it('should use the npm downloader, passing in the correct options', () => {
-        const betrayed = betray(download.downloaders, 'npm', () => {
-            return () => Promise.resolve({});
-        });
+        const betrayed = betray(download.downloaders, 'npm', () => () => Promise.resolve({}));
 
         const options = {
             githubTokens: ['foo', 'bar'],
@@ -94,11 +88,10 @@ describe('index', () => {
 
     it('should call downloader with the temporary folder', () => {
         let tmpDir;
-        const betrayed = betray(download.downloaders, 'npm', () => {
-            return (tmpDir_) => {
-                tmpDir = tmpDir_;
-                return Promise.resolve({});
-            };
+        const betrayed = betray(download.downloaders, 'npm', () => (tmpDir_) => {
+            tmpDir = tmpDir_;
+
+            return Promise.resolve({});
         });
 
         return download({
@@ -117,11 +110,10 @@ describe('index', () => {
 
     it('should delete the temporary folder on failure', () => {
         let tmpDir;
-        const betrayed = betray(download.downloaders, 'npm', () => {
-            return (tmpDir_) => {
-                tmpDir = tmpDir_;
-                return Promise.reject(new Error('foo'));
-            };
+        const betrayed = betray(download.downloaders, 'npm', () => (tmpDir_) => {
+            tmpDir = tmpDir_;
+
+            return Promise.reject(new Error('foo'));
         });
 
         return download({
@@ -144,7 +136,7 @@ describe('index', () => {
         it('should clean old folders from the temporary folder', () => {
             cp.execSync(`mkdir -p ${tmpDir}/foo`);
             cp.execSync(`mkdir -p ${tmpDir}/bar`);
-            fs.utimesSync(`${tmpDir}/bar`, new Date(), new Date(Date.now() - 20 * 24 * 60 * 60 * 1000));
+            fs.utimesSync(`${tmpDir}/bar`, new Date(), new Date(Date.now() - (20 * 24 * 60 * 60 * 1000)));
 
             return download.cleanTmpDir()
             .then(() => fs.readdirSync(tmpDir))

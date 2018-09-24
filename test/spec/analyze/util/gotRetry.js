@@ -1,9 +1,16 @@
 'use strict';
 
 const expect = require('chai').expect;
-const gotRetries = require(`${process.cwd()}/lib/analyze/util/gotRetries`);
+const gotRetry = require(`${process.cwd()}/lib/analyze/util/gotRetry`);
 
-describe('gotRetries', () => {
+const gotRetries = gotRetry.retries;
+
+describe('gotRetry', () => {
+    it('should export an object', () => {
+        expect(gotRetry).to.be.an('object');
+        expect(gotRetry.retries).to.be.an('function');
+    });
+
     it('should stop after attempt 5', () => {
         expect(gotRetries(5 + 1, new Error())).to.equal(0);
         expect(gotRetries(Number.MAX_VALUE, new Error())).to.equal(0);

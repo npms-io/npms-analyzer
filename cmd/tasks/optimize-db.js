@@ -8,9 +8,9 @@ const log = logger.child({ module: 'cli/optimize-db' });
 /**
  * Waits for compaction tasks to end.
  *
- * @param {Nano} nanoCouch A nano instance
+ * @param {Nano} nanoCouch - A nano instance.
  *
- * @return {Promise} The promise that fulfills when done
+ * @returns {Promise} The promise that fulfills when done.
  */
 function waitForCompaction(nanoCouch) {
     let isInflight = false;
@@ -34,6 +34,7 @@ function waitForCompaction(nanoCouch) {
 
                 if (!tasks.length) {
                     clearInterval(interval);
+
                     return resolve();
                 }
 
@@ -52,9 +53,9 @@ function waitForCompaction(nanoCouch) {
 /**
  * Compacts a database.
  *
- * @param {Nano} nanoCouch A nano instance
+ * @param {Nano} nanoCouch - A nano instance.
  *
- * @return {Promise} The promise that fulfills when done
+ * @returns {Promise} The promise that fulfills when done.
  */
 function compactDb(nanoCouch) {
     log.info(`Compacting ${nanoCouch.config.db} database..`);
@@ -66,10 +67,10 @@ function compactDb(nanoCouch) {
 /**
  * Compacts a database design doc.
  *
- * @param {Nano}   nanoCouch A nano instance
- * @param {string} designDoc The design document name
+ * @param {Nano}   nanoCouch - A nano instance.
+ * @param {String} designDoc - The design document name.
  *
- * @return {Promise} The promise that fulfills when done
+ * @returns {Promise} The promise that fulfills when done.
  */
 function compactDesignDoc(nanoCouch, designDoc) {
     log.info(`Compacting ${nanoCouch.config.db}/${designDoc} view..`);
@@ -81,9 +82,9 @@ function compactDesignDoc(nanoCouch, designDoc) {
 /**
  * Cleanups old views from a database.
  *
- * @param {Nano} nanoCouch A nano instance
+ * @param {Nano} nanoCouch - A nano instance.
  *
- * @return {Promise} The promise that fulfills when done
+ * @returns {Promise} The promise that fulfills when done.
  */
 function cleanupViews(nanoCouch) {
     log.info(`Cleaning up ${nanoCouch.config.db} views..`);
@@ -114,9 +115,9 @@ exports.handler = (argv) => {
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms'])
-    .spread((npmNano, npmsNano) => {
+    .spread((npmNano, npmsNano) =>
         // Cleanup old views
-        return Promise.all([
+        Promise.all([
             cleanupViews(npmNano),
             cleanupViews(npmsNano),
         ])
@@ -144,8 +145,8 @@ exports.handler = (argv) => {
                 .then(() => Promise.each(npmsDesignDocs, (designDoc) => compactDesignDoc(npmsNano, designDoc)));
             });
         })
-        .then(() => log.info('Optimization completed successfully!'));
-    })
+        .then(() => log.info('Optimization completed successfully!'))
+    )
     .then(() => process.exit())
     .done();
 };

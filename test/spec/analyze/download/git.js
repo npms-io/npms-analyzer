@@ -399,7 +399,7 @@ describe('git', () => {
             name: 'babel-preset-moxy',
             version: '2.3.1',
             repository: { type: 'git', url: 'git://github.com/moxystudio/babel-preset-moxy' },
-            gitHead: 'b77ba80b71d6898970e2541b1f1c34d86ba493f7',  // This is the ref for 2.3.1
+            gitHead: 'b77ba80b71d6898970e2541b1f1c34d86ba493f7', // This is the ref for 2.3.1
         });
 
         return download(tmpDir)

@@ -9,8 +9,8 @@ const log = logger.child({ module: 'stats/tokens' });
 /**
  * Monitors the API tokens managed by token-dealer of a given group.
  *
- * @param {array}  tokens  The array of tokens
- * @param {string} [group] The token's group (e.g.: github)
+ * @param {Array}  tokens  - The array of tokens.
+ * @param {String} [group] - The token's group (e.g.: Github).
  */
 function statTokens(tokens, group) {
     // Do nothing if loglevel is higher than info
@@ -24,10 +24,12 @@ function statTokens(tokens, group) {
 
         if (usableTokensUsage.length) {
             log.info(`${usableTokensUsage.length} out of ${tokensUsage.length} tokens are usable (${group})`);
+
             return;
         }
         if (tokensUsage.length < 1) {
             log.info(`No tokens (${group})`);
+
             return;
         }
 

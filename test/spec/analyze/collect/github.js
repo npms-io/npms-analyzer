@@ -30,19 +30,19 @@ describe('github', () => {
         });
     });
 
-    it('should skip if there\'s no repository or if it\'s not hosted on github', () => {
-        return Promise.try(() => {
-            return github({ name: 'cross-spawn' }, {})
-            .then((collected) => expect(collected).to.equal(null));
-        })
-        .then(() => {
-            return github({
+    it('should skip if there\'s no repository or if it\'s not hosted on github', () => (
+        Promise.try(() => (
+            github({ name: 'cross-spawn' }, {})
+            .then((collected) => expect(collected).to.equal(null))
+        ))
+        .then(() => (
+            github({
                 name: 'cross-spawn',
                 repository: { type: 'git', url: 'https://foo.com/IndigoUnited/node-cross-spawn.git' },
             }, {})
-            .then((collected) => expect(collected).to.equal(null));
-        });
-    });
+            .then((collected) => expect(collected).to.equal(null))
+        ))
+    ));
 
     it('should detect forks', () => {
         sepia.enable();

@@ -17,12 +17,12 @@ const log = logger.child({ module: 'cli/consume' });
 /**
  * Handles a message.
  *
- * @param {object}  msg      The message
- * @param {Nano}    npmNano  The npm nano instance
- * @param {Nano}    npmsNano The npms nano instance
- * @param {Elastic} esClient The Elasticsearch instance
+ * @param {Object}  msg      - The message.
+ * @param {Nano}    npmNano  - The npm nano instance.
+ * @param {Nano}    npmsNano - The npms nano instance.
+ * @param {Elastic} esClient - The Elasticsearch instance.
  *
- * @return {Promise} A promise that fulfills when consumed
+ * @returns {Promise} A promise that fulfills when consumed.
  */
 function onMessage(msg, npmNano, npmsNano, esClient) {
     const name = msg.data;
@@ -45,6 +45,7 @@ function onMessage(msg, npmNano, npmsNano, esClient) {
     .then((analysis) => {
         if (analysis && Date.parse(analysis.startedAt) >= Date.parse(msg.pushedAt)) {
             log.info(`Skipping analysis of ${name} because it was already analyzed meanwhile`);
+
             return;
         }
 
@@ -59,10 +60,10 @@ function onMessage(msg, npmNano, npmsNano, esClient) {
         .then((analysis) => score(analysis, npmsNano, esClient).catch(() => {}))
         .catch({ code: 'PACKAGE_NOT_FOUND' }, () => score.remove(name, esClient))
         // Ignore unrecoverable errors, so that these are not re-queued
-        .catch({ unrecoverable: true }, (err) => {
-            return onFailedAnalysis(name, err, npmsNano, esClient)
-            .catch(() => {});
-        });
+        .catch({ unrecoverable: true }, (err) => (
+            onFailedAnalysis(name, err, npmsNano, esClient)
+            .catch(() => {})
+        ));
     });
 }
 
@@ -92,6 +93,7 @@ Consumes packages that are queued, triggering the analysis process for each pack
 
     .check((argv) => {
         assert(argv.concurrency > 0, 'Invalid argument: --concurrency must be a number greater than 0');
+
         return true;
     });
 

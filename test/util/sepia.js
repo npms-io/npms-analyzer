@@ -11,19 +11,6 @@ const https = require('https');
 const wrap = require('lodash/wrap');
 const mockRequire = require('mock-require');
 
-function fixNockHttpRequest(http) {
-    // Map abort to end due to a bug in nock, see: https://github.com/nock/nock/issues/867
-    http.request = wrap(http.request, (request, options, callback) => {
-        const req = request(options, callback);
-
-        req.abort = req.end;
-
-        return req;
-    });
-
-    return http;
-}
-
 // Grab original requests
 const originalRequests = { http: http.request, https: https.request };
 

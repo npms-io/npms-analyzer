@@ -27,13 +27,13 @@ exports.handler = (argv) => {
     process.title = 'npms-analyzer-process-package';
     logger.level = argv.logLevel || 'info';
 
-    const name = argv.package.toString();  // package 0 evaluates to number so we must cast to a string
+    const name = argv.package.toString(); // Package 0 evaluates to number so we must cast to a string
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms', 'elasticsearch'])
-    .spread((npmNano, npmsNano, esClient) => {
+    .spread((npmNano, npmsNano, esClient) => (
         // Analyze the package
-        return Promise.try(() => {
+        Promise.try(() => {
             if (!argv.analyze) {
                 return analyze.get(name, npmsNano);
             }
@@ -45,13 +45,13 @@ exports.handler = (argv) => {
         })
         .tap((analysis) => log.info({ analysis }, 'Analyze data'))
         // Score the package
-        .then((analysis) => {
-            return score(analysis, npmsNano, esClient)
+        .then((analysis) => (
+            score(analysis, npmsNano, esClient)
             .tap((score) => log.info({ score }, 'Score data'))
-            .catch({ code: 'SCORE_INDEX_NOT_FOUND' }, () => {});
-        })
-        .catch({ code: 'PACKAGE_NOT_FOUND' }, (err) => score.remove(name, esClient).finally(() => { throw err; }));
-    })
+            .catch({ code: 'SCORE_INDEX_NOT_FOUND' }, () => {})
+        ))
+        .catch({ code: 'PACKAGE_NOT_FOUND' }, (err) => score.remove(name, esClient).finally(() => { throw err; }))
+    ))
     .then(() => process.exit())
     .done();
 };

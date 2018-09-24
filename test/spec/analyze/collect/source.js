@@ -35,17 +35,17 @@ function mockExternal(mocks, dir) {
             },
         },
         {
-            match: (command) => command.indexOf('bin/nsp') !== -1,
+            match: (command) => command.indexOf('bin/snyk') !== -1,
             handle: (command, options, callback) => {
                 let json;
 
                 try {
-                    json = (mocks.nsp && mocks.nsp(command)) || [];
+                    json = (mocks.snyk && mocks.snyk(command)) || { vulnerabilities: [] };
                 } catch (err) {
                     return callback(err, err.stdout || '', err.stderr || '');
                 }
 
-                fs.writeFileSync(`${dir}/.npms-nsp.json`, JSON.stringify(json));
+                fs.writeFileSync(`${dir}/.npms-snyk.json`, JSON.stringify(json));
                 callback(null, '', '');
             },
         },
@@ -123,10 +123,10 @@ describe('source', () => {
             fs.writeFileSync(`${tmpDir}/cross-spawn/test.js`, 'foo');
             fs.writeFileSync(`${tmpDir}/test.js`, 'foobar');
 
-            return Promise.try(() => {
-                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.files.testsSize).to.equal(3));
-            })
+            return Promise.try(() => (
+                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.files.testsSize).to.equal(3))
+            ))
             .then(() => {
                 fs.unlinkSync(`${tmpDir}/cross-spawn/test.js`);
 
@@ -150,10 +150,10 @@ describe('source', () => {
             fs.writeFileSync(`${tmpDir}/cross-spawn/package.json`, JSON.stringify(packageJson));
             fs.writeFileSync(`${tmpDir}/cross-spawn/CHANGELOG.md`, 'foo');
 
-            return Promise.try(() => {
-                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.files.hasChangelog).to.equal(true));
-            })
+            return Promise.try(() => (
+                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.files.hasChangelog).to.equal(true))
+            ))
             .then(() => {
                 fs.unlinkSync(`${tmpDir}/cross-spawn/CHANGELOG.md`);
                 fs.writeFileSync(`${tmpDir}/CHANGELOG.md`, 'foo');
@@ -185,10 +185,10 @@ describe('source', () => {
                 [npm-image]:http://img.shields.io/npm/v/planify.svg
             `);
 
-            return Promise.try(() => {
-                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.badges).to.have.length(6));
-            })
+            return Promise.try(() => (
+                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.badges).to.have.length(6))
+            ))
             .then(() => {
                 delete data.readme;
 
@@ -213,10 +213,10 @@ describe('source', () => {
             fs.writeFileSync(`${tmpDir}/cross-spawn/.editorconfig`, 'foo');
             fs.writeFileSync(`${tmpDir}/.eslintrc.json`, 'foo');
 
-            return Promise.try(() => {
-                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.linters).to.eql(['editorconfig']));
-            })
+            return Promise.try(() => (
+                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.linters).to.eql(['editorconfig']))
+            ))
             .then(() => {
                 fs.unlinkSync(`${tmpDir}/cross-spawn/.editorconfig`);
 
@@ -245,77 +245,6 @@ describe('source', () => {
 
         return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
         .then((collected) => expect(collected.outdatedDependencies).to.equal(false))
-        .finally(() => {
-            sepia.disable();
-            betrayed.restore();
-        });
-    });
-
-    it('should handle broken dependencies when checking vulnerabilities with nsp', () => {
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/ccbuild/data.json`);
-        const packageJson = packageJsonFromData('ccbuild', data);
-
-        fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
-
-        // Test "Debug output: undefined"
-        return Promise.try(() => {
-            sepia.enable();
-            const betrayed = mockExternal({
-                nsp: () => { throw Object.assign(new Error('foo'), { stderr: 'Debug output: undefined\n{}\n' }); },
-            });
-
-            return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
-            .then((collected) => expect(collected.vulnerabilities).to.equal(false))
-            .finally(() => {
-                sepia.disable();
-                betrayed.restore();
-            });
-        })
-        // Test 400 status code
-        .then(() => {
-            sepia.enable();
-            const betrayed = mockExternal({
-                nsp: () => { throw Object.assign(new Error('foo'), { stderr: '"statusCode":400' }); },
-            });
-
-            return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
-            .then((collected) => expect(collected.vulnerabilities).to.equal(false))
-            .finally(() => {
-                sepia.disable();
-                betrayed.restore();
-            });
-        });
-    });
-
-    it('should retry getting vulnerabilities if nsp seems to be unavailable', () => {
-        let counter = 0;
-
-        sepia.enable();
-        const betrayed = mockExternal({
-            nsp: () => {
-                counter += 1;
-
-                if (counter === 1) {
-                    throw Object.assign(new Error('foo'), { stderr: '"statusCode":503' });
-                } else if (counter === 2) {
-                    throw Object.assign(new Error('foo'),
-                        { stderr: '53,48,52,32,71,97,116,101,119,97,121,32,84,105,109,101,45,111,117,116' });
-                } else if (counter === 3) {
-                    throw Object.assign(new Error('foo'),
-                        { stderr: 'Bad Gateway' });
-                } else {
-                    return [{ foo: 'bar' }];
-                }
-            },
-        });
-
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
-        const packageJson = packageJsonFromData('cross-spawn', data);
-
-        fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
-
-        return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
-        .then((collected) => expect(collected.vulnerabilities).to.eql([{ foo: 'bar' }]))
         .finally(() => {
             sepia.disable();
             betrayed.restore();
