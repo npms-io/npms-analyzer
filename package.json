@@ -3,13 +3,18 @@
   "version": "0.1.0",
   "description": "The analyzer behind npms.io",
   "main": "index.js",
+  "bin": {
+    "npms-analyzer": "cli.js"
+  },
   "scripts": {
     "lint": "eslint .",
     "test": "npm run download-test-fixtures && VCR_MODE=cache mocha",
     "test-cov": "npm run download-test-fixtures && VCR_MODE=cache istanbul cover --dir test/coverage _mocha && echo Coverage lies in test/coverage/lcov-report/index.html",
     "test-travis": "npm run download-test-fixtures && VCR_MODE=playback istanbul cover _mocha --report lcovonly",
     "download-test-fixtures": "test/bin/download-fixtures",
-    "clean-test-fixtures": "date=\"$(date -R)\" && VCR_MODE=playback mocha && test/bin/clean-fixtures \"$date\""
+    "clean-test-fixtures": "date=\"$(date -R)\" && VCR_MODE=playback mocha && test/bin/clean-fixtures \"$date\"",
+    "precommit": "lint-staged",
+    "commitmsg": "commitlint -e $GIT_PARAMS"
   },
   "bugs": "https://github.com/npms-io/npms-analyzer/issues/",
   "repository": {
@@ -28,6 +33,22 @@
   ],
   "author": "André Cruz <amdfcruz@gmail.com>",
   "license": "MIT",
+  "standard-version": {
+    "scripts": {
+      "posttag": "git push --follow-tags origin master && npm publish"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "dependencies": {
     "amqplib": "^0.5.0",
     "bluebird": "^3.1.1",
@@ -78,19 +99,20 @@
     "heapdump": "^0.3.7"
   },
   "devDependencies": {
+    "@commitlint/cli": "^7.1.2",
+    "@commitlint/config-conventional": "^7.1.2",
     "betray": "^1.3.0",
     "chai": "^4.1.2",
     "chronokinesis": "^2.0.0",
     "eslint": "^5.6.0",
     "eslint-config-moxy": "^6.1.1",
+    "husky": "^1.0.0-rc.15",
     "istanbul": "^0.4.2",
+    "lint-staged": "^7.3.0",
     "mocha": "^5.2.0",
     "mock-require": "^3.0.2",
     "nock": "^10.0.0",
     "sepia": "^2.0.1"
-  },
-  "bin": {
-    "npms-analyzer": "cli.js"
   },
   "engines": {
     "node": ">=8.6",
