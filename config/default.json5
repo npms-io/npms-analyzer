@@ -11,7 +11,7 @@
     elasticsearch: {
         host: 'http://127.0.0.1:9200',
         requestTimeout: 15000,
-        apiVersion: '2.4',
+        apiVersion: '6.3',
         log: null,
     },
     queue: {
@@ -31,4 +31,7 @@
 
     // Github tokens to be used by token-dealer
     githubTokens: [],
+
+    // Snyk - https://snyk.io/
+    snykToken: 'ade13731-433d-4160-bad0-a888efb15543'
 }

@@ -215,13 +215,13 @@ describe('source', () => {
 
             return Promise.try(() => {
                 return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.linters).to.eql({ general: ['editorconfig'] }));
+                .then((collected) => expect(collected.linters).to.eql(['editorconfig']));
             })
             .then(() => {
                 fs.unlinkSync(`${tmpDir}/cross-spawn/.editorconfig`);
 
                 return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.linters).to.eql({ js: ['eslint'] }));
+                .then((collected) => expect(collected.linters).to.eql(['eslint']));
             })
             .finally(() => {
                 sepia.disable();

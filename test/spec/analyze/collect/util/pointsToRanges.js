@@ -2,7 +2,6 @@
 
 const expect = require('chai').expect;
 const chronokinesis = require('chronokinesis');
-const values = require('lodash/values');
 const pointsToRanges = require(`${process.cwd()}/lib/analyze/collect/util/pointsToRanges`);
 
 describe('pointsToRanges', () => {
@@ -34,7 +33,7 @@ describe('pointsToRanges', () => {
             },
         };
 
-        const ranges = pointsToRanges(values(points), [
+        const ranges = pointsToRanges(Object.values(points), [
             { start: '2016-05-01T00:00:00.000Z', end: '2016-05-11T00:00:00.000Z' },
             { start: '2016-05-11T00:00:00.000Z', end: '2016-05-12T00:00:00.000Z' },
             { start: '2016-05-12T00:00:00.000Z', end: '2016-06-10T00:00:00.000Z' },

@@ -40,6 +40,7 @@ exports.handler = (argv) => {
 
             return analyze(name, npmNano, npmsNano, {
                 githubTokens: config.get('githubTokens'),
+                snykToken: config.get('snykToken'),
             });
         })
         .tap((analysis) => log.info({ analysis }, 'Analyze data'))
@@ -47,7 +48,7 @@ exports.handler = (argv) => {
         .then((analysis) => {
             return score(analysis, npmsNano, esClient)
             .tap((score) => log.info({ score }, 'Score data'))
-            .catch(() => {});
+            .catch({ code: 'SCORE_INDEX_NOT_FOUND' }, () => {});
         })
         .catch({ code: 'PACKAGE_NOT_FOUND' }, (err) => score.remove(name, esClient).finally(() => { throw err; }));
     })

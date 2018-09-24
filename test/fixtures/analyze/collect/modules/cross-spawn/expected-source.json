@@ -4,14 +4,10 @@
     "testsSize": 20813,
     "hasNpmIgnore": true
   },
-  "linters": {
-    "general": [
-      "editorconfig"
-    ],
-    "js": [
-      "jshint"
-    ]
-  },
+  "linters": [
+    "editorconfig",
+    "jshint"
+  ],
   "badges": [
     {
       "urls": {

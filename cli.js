@@ -13,7 +13,7 @@ yargs
 .strict()
 .wrap(Math.min(120, yargs.terminalWidth()))
 .version().alias('version', 'v')
-.help('help').alias('help', 'h')
+.help().alias('help', 'h')
 .usage('npms-analyzer command line, choose one of the available commands.\n\nUsage: $0 <command> .. [options]')
 
 .option('log-level', {

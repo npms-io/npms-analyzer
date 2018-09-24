@@ -11,6 +11,7 @@ const stats = require('./util/stats');
 // See: https://github.com/lorenwest/node-config/issues/223
 const blacklist = JSON.parse(JSON.stringify(config.get('blacklist')));
 const githubTokens = config.get('githubTokens');
+const snykToken = config.get('snykToken');
 const log = logger.child({ module: 'cli/consume' });
 
 /**
@@ -50,6 +51,7 @@ function onMessage(msg, npmNano, npmsNano, esClient) {
         // If not, analyze it! :D
         return analyze(name, npmNano, npmsNano, {
             githubTokens,
+            snykToken,
             waitRateLimit: true,
             rev: analysis && analysis._rev,
         })

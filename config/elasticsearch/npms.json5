@@ -160,10 +160,24 @@
                     ],
                 },
 
-                // The raw analyzer simply does no transformation besides lowercasing
+                // The raw analyzer does very small normalizations
                 "raw": {
                     "tokenizer": "keyword",
                     "filter": [
+                        "asciifolding",
+                        "lowercase",
+                        "trim",
+                    ],
+                },
+            },
+
+            // Custom normalizers
+            "normalizer": {
+                // The raw analyzer does very small normalizations
+                "raw": {
+                    "type": "custom",
+                    "filter": [
+                        "asciifolding",
                         "lowercase",
                         "trim",
                     ],
@@ -187,163 +201,162 @@
                     "type": "object",
                     "properties": {
                         // The `name`, `description` and `keywords` fields all have `norms` disabled because we don't care about the fields length
-                        // Also they have additional fields beyond the `standard` analyzer, such as `package_english`, `package_english_docs` etc
+                        // Also they have additional fields beyond the `standard` analyzer, such as `package_english`, `package_english` etc
                         "name": {
-                            "type": "string",
+                            "type": "text",
                             "fields": {
-                                "english_docs": {
-                                    "type": "string",
-                                    "analyzer": "package_english",
-                                    "index_options": "docs",
+                                "standard": {
+                                    "type": "text",
+                                    "analyzer": "standard",
                                 },
-                                "english_aggressive_docs": {
-                                    "type": "string",
+                                "english": {
+                                    "type": "text",
+                                    "analyzer": "package_english",
+                                },
+                                "english_aggressive": {
+                                    "type": "text",
                                     "analyzer": "package_english_aggressive",
-                                    "index_options": "docs",
                                 },
                                 "edge_ngram": {
-                                    "type": "string",
+                                    "type": "text",
                                     "analyzer": "package_edge_ngram",
                                     "search_analyzer": "package",
                                 },
                                 "autocomplete": {
-                                    "type": "string",
+                                    "type": "text",
                                     "analyzer": "package_autocomplete",
                                     "search_analyzer": "package",
                                 },
                                 "autocomplete_highlight": {
-                                    "type": "string",
+                                    "type": "text",
                                     "analyzer": "package_autocomplete_highlight",
                                     "search_analyzer": "package",
                                     "index_options": "offsets",
                                 },
                                 "autocomplete_keyword": {
-                                    "type": "string",
+                                    "type": "text",
                                     "analyzer": "package_autocomplete_keyword",
                                     "search_analyzer": "package_autocomplete_keyword_search",
                                 },
                                 "raw": {
-                                    "type": "string",
-                                    "analyzer": "raw",
-                                    "index_options": "docs",
+                                    "type": "keyword",
+                                    "normalizer": "raw",
                                 },
                             },
                         },
                         "description": {
-                            "type": "string",
+                            "type": "text",
                             "fields": {
-                                "english_docs": {
-                                    "type": "string",
-                                    "analyzer": "package_english",
-                                    "index_options": "docs",
+                                "standard": {
+                                    "type": "text",
+                                    "analyzer": "standard",
                                 },
-                                "english_aggressive_docs": {
-                                    "type": "string",
+                                "english": {
+                                    "type": "text",
+                                    "analyzer": "package_english",
+                                },
+                                "english_aggressive": {
+                                    "type": "text",
                                     "analyzer": "package_english_aggressive",
-                                    "index_options": "docs",
                                 },
                                 "edge_ngram": {
-                                    "type": "string",
+                                    "type": "text",
                                     "analyzer": "package_edge_ngram",
                                     "search_analyzer": "package",
                                 },
                             },
                         },
                         "keywords": {
-                            "type": "string",
+                            "type": "text",
                             "fields": {
-                                "english_docs": {
-                                    "type": "string",
-                                    "analyzer": "package_english",
-                                    "index_options": "docs",
+                                "standard": {
+                                    "type": "text",
+                                    "analyzer": "standard",
                                 },
-                                "english_aggressive_docs": {
-                                    "type": "string",
+                                "english": {
+                                    "type": "text",
+                                    "analyzer": "package_english",
+                                },
+                                "english_aggressive": {
+                                    "type": "text",
                                     "analyzer": "package_english_aggressive",
-                                    "index_options": "docs",
                                 },
                                 "edge_ngram": {
-                                    "type": "string",
+                                    "type": "text",
                                     "analyzer": "package_edge_ngram",
                                     "search_analyzer": "package",
                                 },
                                 "raw": {
-                                    "type": "string",
+                                    "type": "text",
                                     "analyzer": "raw",
                                 }
                             },
                         },
                         "version": {
-                            "type": "string",
-                            "index": "no",
+                            "type": "text",
+                            "index": false,
                         },
                         "date": {
                             "type": "date",
-                            "index": "no",
+                            "index": false,
                         },
                         "links": {
                             "type": "object",
                             "properties": {
-                                "npm": { "type": "string", "index": "no" },
-                                "homepage": { "type": "string", "index": "no" },
-                                "repository": { "type": "string", "index": "no" },
-                                "bugs": { "type": "string", "index": "no" },
+                                "npm": { "type": "text", "index": false },
+                                "homepage": { "type": "text", "index": false },
+                                "repository": { "type": "text", "index": false },
+                                "bugs": { "type": "text", "index": false },
                             },
                         },
                         "author": {
                             "type": "object",
                             "properties": {
                                 "name": {
-                                    "type": "string",
-                                    "analyzer": "raw",
-                                    "index_options": "docs",
+                                    "type": "keyword",
+                                    "normalizer": "raw",
                                 },
                                 "username": {
-                                    "type": "string",
-                                    "analyzer": "raw",
-                                    "index_options": "docs",
+                                    "type": "keyword",
+                                    "normalizer": "raw",
                                 },
                                 "email": {
-                                    "type": "string",
-                                    "analyzer": "raw",
-                                    "index_options": "docs",
+                                    "type": "keyword",
+                                    "normalizer": "raw",
                                 },
-                                "url": { "type": "string", "index": "no" },
+                                "url": { "type": "text", "index": false },
                             },
                         },
                         "publisher": {
                             "type": "object",
                             "properties": {
-                                "username": { "type": "string", "index": "no" },
-                                "email": { "type": "string", "index": "no" },
+                                "username": { "type": "text", "index": false },
+                                "email": { "type": "text", "index": false },
                             },
                         },
                         "maintainers": {
                             "type": "object",
                             "properties": {
                                 "username": {
-                                    "type": "string",
-                                    "analyzer": "raw",
-                                    "index_options": "docs",
+                                    "type": "keyword",
+                                    "normalizer": "raw",
                                 },
                                 "email": {
-                                    "type": "string",
-                                    "analyzer": "raw",
-                                    "index_options": "docs",
+                                    "type": "keyword",
+                                    "normalizer": "raw",
                                 },
                             },
                         },
                         "scope": {
-                            "type": "string",
-                            "analyzer": "raw",
-                            "index_options": "docs",
+                            "type": "keyword",
+                            "normalizer": "raw",
                         },
                     },
                 },
                 "flags": {
                     "type": "object",
                     "properties": {
-                        "deprecated": { "type": "string", "index": "not_analyzed" },
+                        "deprecated": { "type": "text", "index": false },
                         "insecure": { "type": "integer" },
                         "unstable": { "type": "boolean" },
                     },
@@ -354,28 +367,28 @@
                         "quality": {
                             "type": "object",
                             "properties": {
-                                "carefulness": { "type": "double", "index": "no" },
-                                "tests": { "type": "double", "index": "no" },
-                                "health": { "type": "double", "index": "no" },
-                                "branding": { "type": "double", "index": "no" },
+                                "carefulness": { "type": "double", "index": false },
+                                "tests": { "type": "double", "index": false },
+                                "health": { "type": "double", "index": false },
+                                "branding": { "type": "double", "index": false },
                             },
                         },
                         "popularity": {
                             "type": "object",
                             "properties": {
-                                "communityInterest": { "type": "double", "index": "no" },
-                                "downloadsCount": { "type": "double", "index": "no" },
-                                "downloadsAcceleration": { "type": "double", "index": "no" },
-                                "dependentsCount": { "type": "double", "index": "no" },
+                                "communityInterest": { "type": "double", "index": false },
+                                "downloadsCount": { "type": "double", "index": false },
+                                "downloadsAcceleration": { "type": "double", "index": false },
+                                "dependentsCount": { "type": "double", "index": false },
                             },
                         },
                         "maintenance": {
                             "type": "object",
                             "properties": {
-                                "releasesFrequency": { "type": "double", "index": "no" },
-                                "commitsFrequency": { "type": "double", "index": "no" },
-                                "openIssues": { "type": "double", "index": "no" },
-                                "issuesDistribution": { "type": "double", "index": "no" },
+                                "releasesFrequency": { "type": "double", "index": false },
+                                "commitsFrequency": { "type": "double", "index": false },
+                                "openIssues": { "type": "double", "index": false },
+                                "issuesDistribution": { "type": "double", "index": false },
                             },
                         },
                     },

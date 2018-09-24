@@ -8,7 +8,21 @@
 const glob = require('glob');
 const http = require('http');
 const https = require('https');
+const wrap = require('lodash/wrap');
 const mockRequire = require('mock-require');
+
+function fixNockHttpRequest(http) {
+    // Map abort to end due to a bug in nock, see: https://github.com/nock/nock/issues/867
+    http.request = wrap(http.request, (request, options, callback) => {
+        const req = request(options, callback);
+
+        req.abort = req.end;
+
+        return req;
+    });
+
+    return http;
+}
 
 // Grab original requests
 const originalRequests = { http: http.request, https: https.request };
@@ -26,9 +40,22 @@ glob.sync('**/*.js', { cwd: `${process.cwd()}/node_modules/nock/lib` }).forEach(
     delete require.cache[require.resolve(`nock/lib/${file}`)];
 });
 const disabledNock = require('nock');
+
+// Map abort to end due to a bug in nock, see: https://github.com/nock/nock/issues/867
+http.request = wrap(http.request, (request, options, callback) => {
+    const req = request(options, callback);
+
+    return Object.assign(req, { abort: req.end });
+});
+https.request = wrap(https.request, (request, options, callback) => {
+    const req = request(options, callback);
+
+    return Object.assign(req, { abort: req.end });
+});
+
 const nockedRequests = { http: http.request, https: https.request };
 
-// Mock the timed-out module used by got() to avoid timeouts being triggered:  the socket 'connect' event
+// Mock the timed-out module used by got() to avoid timeouts being triggered: the socket 'connect' event
 // is never fired when using sepia/nock
 // See: https://github.com/floatdrop/timed-out/blob/bdc812346570a0ed4e6d7d5fdc668e2feb72f239/index.js#L21
 mockRequire('timed-out', (req) => req);
@@ -47,5 +74,6 @@ function disable() {
 
 sepia.enable = enable;
 sepia.disable = disable;
+sepia.nock = disabledNock;
 
 module.exports = sepia;

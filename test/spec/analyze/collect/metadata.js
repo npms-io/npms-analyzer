@@ -233,7 +233,7 @@ describe('metadata', () => {
                     name: 'cross-spawn',
                     license: 'GPL',
                 })
-                .then((collected) => expect(collected.license).to.equal('GPL-3.0'));
+                .then((collected) => expect(collected.license).to.equal('GPL-3.0-or-later'));
             })
             // Test invalid license
             .then(() => {

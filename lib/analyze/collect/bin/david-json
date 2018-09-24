@@ -18,7 +18,7 @@ const david = Promise.promisifyAll(require('david'));
 const argv = yargs
 .strict()
 .wrap(Math.min(120, yargs.terminalWidth()))
-.help('help').alias('help', 'h')
+.help().alias('help', 'h')
 .usage('Usage: $0 --registry [registry-url]')
 .option('registry', {
     type: 'string',

@@ -2,7 +2,6 @@
 
 const pino = require('pino');
 const tokenDealer = require('token-dealer');
-const values = require('lodash/values');
 const minBy = require('lodash/minBy');
 
 const log = logger.child({ module: 'stats/tokens' });
@@ -20,7 +19,7 @@ function statTokens(tokens, group) {
     }
 
     setInterval(() => {
-        const tokensUsage = values(tokenDealer.getTokensUsage(tokens, { group }));
+        const tokensUsage = Object.values(tokenDealer.getTokensUsage(tokens, { group }));
         const usableTokensUsage = tokensUsage.filter((entry) => !entry.exhausted);
 
         if (usableTokensUsage.length) {
