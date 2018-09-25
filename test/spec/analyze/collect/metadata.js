@@ -207,6 +207,14 @@ describe('metadata', () => {
                 })
                 .then((collected) => expect(collected.license).to.equal(undefined))
             ))
+            // String with spaces (e.g.: webjs-cli)
+            .then(() => (
+                metadata({}, {
+                    name: 'cross-spawn',
+                    license: { type: ' ', url: 'https://opensource.org/licenses/MIT' },
+                })
+                .then((collected) => expect(collected.license).to.equal(undefined))
+            ))
             // Nullish
             .then(() => (
                 metadata({}, {
