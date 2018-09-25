@@ -71,9 +71,10 @@ describe('source', () => {
         it(`should collect \`${entry.name}\` correctly`, () => {
             sepia.enable();
 
-            const data = loadJsonFile.sync(`${fixturesDir}/modules/${entry.name}/data.json`);
+            const escapedName = entry.name.replace('/', '%2f');
+            const data = loadJsonFile.sync(`${fixturesDir}/modules/${escapedName}/data.json`);
             const packageJson = packageJsonFromData(entry.name, data);
-            const expected = loadJsonFile.sync(`${fixturesDir}/modules/${entry.name}/expected-source.json`);
+            const expected = loadJsonFile.sync(`${fixturesDir}/modules/${escapedName}/expected-source.json`);
 
             return entry.downloader(packageJson)(tmpDir)
             .then((downloaded) => {
@@ -228,6 +229,8 @@ describe('source', () => {
                 betrayed.restore();
             });
         });
+
+        it('should ignore malformed downloaded package.json when detecting linters');
     });
 
     it('should work around NPM_TOKEN env var, e.g.: `babbel`');

@@ -146,6 +146,10 @@ describe('github', () => {
         })
     ));
 
+    it('should handle unavailable repositories');
+
+    it('should handle malformed URLs');
+
     it('should prefer the passed package.json over the downloaded one', () => {
         sepia.enable();
 

@@ -270,45 +270,57 @@ describe('git', () => {
     });
 
     it('should deal with permission errors', () => {
-        const betrayed = mock({
-            clone: () => {
-                throw Object.assign(new Error('foo'),
-                    { stderr: '\nline\nfatal: Authentication failed for `url`.\nline\nline' });
-            },
-        });
+        const stderrArray = [
+            'not found',
+            '\nline\nfatal: Authentication failed for `url`.\nline\nline',
+        ];
 
-        const download = git({
-            name: 'cool-module',
-            repository: { type: 'git', url: 'git://github.com/some-org/repo-private.git' },
-        });
+        return Promise.map(stderrArray, (stderr) => {
+            const betrayed = mock({
+                clone: () => {
+                    throw Object.assign(new Error('foo'), { stderr });
+                },
+            });
 
-        return download(tmpDir)
-        .then(() => {
-            expect(betrayed.invoked).to.be.greaterThan(1);
-            expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
-        })
-        .finally(() => betrayed.restore());
+            const download = git({
+                name: 'cool-module',
+                repository: { type: 'git', url: 'git://github.com/some-org/repo-private.git' },
+            });
+
+            return download(tmpDir)
+            .then(() => {
+                expect(betrayed.invoked).to.be.greaterThan(1);
+                expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
+            })
+            .finally(() => betrayed.restore());
+        });
     });
 
     it('should deal with invalid repositories', () => {
-        const betrayed = mock({
-            clone: () => {
-                throw Object.assign(new Error('foo'),
-                    { stderr: '\nline\nfatal: unable to access url: The requested URL returned error: `code`' });
-            },
-        });
+        const stderrArray = [
+            '\nline\nfatal: unable to access url: The requested URL returned error: `code`',
+            'is this a git repository',
+        ];
 
-        const download = git({
-            name: 'cool-module',
-            repository: { type: 'git', url: 'git://github.com/some-org/foo%25bar.git' },
-        });
+        return Promise.map(stderrArray, (stderr) => {
+            const betrayed = mock({
+                clone: () => {
+                    throw Object.assign(new Error('foo'), { stderr });
+                },
+            });
 
-        return download(tmpDir)
-        .then(() => {
-            expect(betrayed.invoked).to.be.greaterThan(1);
-            expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
-        })
-        .finally(() => betrayed.restore());
+            const download = git({
+                name: 'cool-module',
+                repository: { type: 'git', url: 'git://github.com/some-org/foo%25bar.git' },
+            });
+
+            return download(tmpDir)
+            .then(() => {
+                expect(betrayed.invoked).to.be.greaterThan(1);
+                expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
+            })
+            .finally(() => betrayed.restore());
+        });
     });
 
     it('should abort if it\'s taking too much time');

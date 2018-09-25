@@ -16,12 +16,13 @@ describe('metadata', () => {
     });
     after(() => chronokinesis.reset());
 
-    ['cross-spawn', '@bcoe%2fexpress-oauth-server'].forEach((name) => {
+    ['cross-spawn', '@bcoe/express-oauth-server'].forEach((name) => {
         it(`should collect \`${name}\` correctly`, () => {
-            const data = loadJsonFile.sync(`${fixturesDir}/modules/${name}/data.json`);
-            const expected = loadJsonFile.sync(`${fixturesDir}/modules/${name}/expected-metadata.json`);
+            const escapedName = name.replace('/', '%2f');
+            const data = loadJsonFile.sync(`${fixturesDir}/modules/${escapedName}/data.json`);
+            const expected = loadJsonFile.sync(`${fixturesDir}/modules/${escapedName}/expected-metadata.json`);
 
-            return metadata(data, packageJsonFromData(name.replace('%2f', '/'), data))
+            return metadata(data, packageJsonFromData(name, data))
             .then((collected) => expect(collected).to.eql(expected));
         });
     });
