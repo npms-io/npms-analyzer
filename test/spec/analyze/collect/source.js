@@ -241,8 +241,8 @@ describe('source', () => {
             david: () => { throw Object.assign(new Error('foo'), { stderr: 'failed to get versions' }); },
         });
 
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/ccbuild/data.json`);
-        const packageJson = packageJsonFromData('ccbuild', data);
+        const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
+        const packageJson = packageJsonFromData('cross-spawn', data);
 
         fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
 
@@ -253,6 +253,46 @@ describe('source', () => {
             betrayed.restore();
         });
     });
+
+    it('should handle broken package data when checking outdated with david', () => {
+        sepia.enable();
+        const betrayed = mockExternal({
+            david: () => { throw Object.assign(new Error('foo'), { stderr: 'data[currentVersion].versions.sort is not a function' }); },
+        });
+
+        const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
+        const packageJson = packageJsonFromData('cross-spawn', data);
+
+        fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
+
+        return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
+        .then((collected) => expect(collected.outdatedDependencies).to.equal(false))
+        .finally(() => {
+            sepia.disable();
+            betrayed.restore();
+        });
+    });
+
+    it('should handle broken package name when checking outdated with david', () => {
+        sepia.enable();
+        const betrayed = mockExternal({
+            david: () => { throw Object.assign(new Error('foo'), { stderr: 'AssertionError [ERR_ASSERTION]' }); },
+        });
+
+        const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
+        const packageJson = packageJsonFromData('cross-spawn', data);
+
+        fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
+
+        return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
+        .then((collected) => expect(collected.outdatedDependencies).to.equal(false))
+        .finally(() => {
+            sepia.disable();
+            betrayed.restore();
+        });
+    });
+
+    it('should signal as unrecoverable if there\'s a .npmrc pointing to a private registry');
 
     it('should retry on network errors');
 });
