@@ -423,7 +423,7 @@ describe('git', () => {
 
     it('should resolve with the downloaded object', () => {
         const betrayed = mock({
-            checkout: () => fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ version: '1.0.0' })),
+            checkout: () => fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ name: 'cross-spawn', version: '1.0.0' })),
         });
 
         const download = git({
@@ -437,7 +437,7 @@ describe('git', () => {
         .then((downloaded) => {
             expect(downloaded.dir).to.equal(tmpDir);
             expect(downloaded.packageDir).to.equal(tmpDir);
-            expect(downloaded.packageJson.name).to.equal('');
+            expect(downloaded.packageJson.name).to.equal('cross-spawn');
             expect(downloaded.packageJson.version).to.equal('1.0.0');
         })
         .finally(() => betrayed.restore());

@@ -27,6 +27,15 @@ describe('normalizePackageJson', () => {
         }
     });
 
+    it('should throw an unrecoverable error if there\'s no name', () => {
+        try {
+            normalizePackageJson({});
+        } catch (err) {
+            expect(err.message).to.match(/missing name/i);
+            expect(err.unrecoverable).to.equal(true);
+        }
+    });
+
     it('should normalize repository trailing slashes', () => {
         const packageJson = normalizePackageJson({
             name: 'foo',
