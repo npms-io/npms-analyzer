@@ -113,10 +113,12 @@ exports.handler = (argv) => {
         // Clean old packages from the download directory
         return analyze.cleanTmpDir()
         // Start consuming
-        .then(() => queue.consume((message) => onMessage(message, npmNano, npmsNano, esClient), {
-            concurrency: argv.concurrency,
-            onRetriesExceeded: (message, err) => onFailedAnalysis(message.data, err, npmsNano, esClient),
-        }));
+        .then(() => (
+            queue.consume((message) => onMessage(message, npmNano, npmsNano, esClient), {
+                concurrency: argv.concurrency,
+                onRetriesExceeded: (message, err) => onFailedAnalysis(message.data, err, npmsNano, esClient),
+            })
+        ));
     })
     .done();
 };
