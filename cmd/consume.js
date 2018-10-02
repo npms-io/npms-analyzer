@@ -99,7 +99,7 @@ Consumes packages that are queued, triggering the analysis process for each pack
 
 exports.handler = (argv) => {
     process.title = 'npms-analyzer-consume';
-    logger.level = argv.logLevel || 'warn';
+    logger.level = argv.logLevel || 'error';
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms', 'queue', 'elasticsearch'], { wait: true })

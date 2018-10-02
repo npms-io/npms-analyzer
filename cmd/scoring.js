@@ -110,7 +110,7 @@ exports.handler = (argv) => {
     Promise.config({ longStackTraces: false });
 
     process.title = 'npms-analyzer-scoring';
-    logger.level = argv.logLevel || 'warn';
+    logger.level = argv.logLevel || 'error';
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpms', 'elasticsearch'], { wait: true })

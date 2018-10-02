@@ -55,7 +55,7 @@ Starts the observing process, enqueueing packages that need to be analyzed into 
 
 exports.handler = (argv) => {
     process.title = 'npms-analyzer-observe';
-    logger.level = argv.logLevel || 'warn';
+    logger.level = argv.logLevel || 'error';
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms', 'queue'], { wait: true })
