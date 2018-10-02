@@ -30,7 +30,10 @@ exports.handler = (argv) => {
             },
         })
         .then(() => valid.push(token))
-        .catch({ statusCode: 401 }, () => invalid.push(token))
+        .catch((err) => err.statusCode === 401 || err.statusCode === 403, (err) => {
+            log.debug({ err }, `Token ${token} seems invalid`);
+            invalid.push(token);
+        })
     ), { concurrency: 5 })
     .then(() => {
         log.info({ valid }, `${valid.length} valid tokens`);
