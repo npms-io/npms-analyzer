@@ -13,6 +13,7 @@ const source = require(`${process.cwd()}/lib/analyze/collect/source`);
 
 const tmpDir = `${process.cwd()}/test/tmp`;
 const fixturesDir = `${process.cwd()}/test/fixtures/analyze/collect`;
+const snykToken = '2bc256d1-1287-414f-8961-54e1b244f2b9'; // Token used in tests
 
 function mockExternal(mocks, dir) {
     mocks = Object.assign({ clone: () => {}, checkout: () => {} }, mocks);
@@ -31,21 +32,6 @@ function mockExternal(mocks, dir) {
                 }
 
                 fs.writeFileSync(`${dir}/.npms-david.json`, JSON.stringify(json));
-                callback(null, '', '');
-            },
-        },
-        {
-            match: (command) => command.indexOf('bin/snyk') !== -1,
-            handle: (command, options, callback) => {
-                let json;
-
-                try {
-                    json = (mocks.snyk && mocks.snyk(command)) || { vulnerabilities: [] };
-                } catch (err) {
-                    return callback(err, err.stdout || '', err.stderr || '');
-                }
-
-                fs.writeFileSync(`${dir}/.npms-snyk.json`, JSON.stringify(json));
                 callback(null, '', '');
             },
         },
@@ -80,7 +66,7 @@ describe('source', () => {
             .then((downloaded) => {
                 const betrayed = mockExternal();
 
-                return source(data, packageJson, downloaded)
+                return source(data, packageJson, downloaded, { snykToken })
                 .then((collected) => expect(collected).to.eql(expected))
                 .finally(() => betrayed.restore());
             })
@@ -104,7 +90,7 @@ describe('source', () => {
                 .then((downloaded) => {
                     const betrayed = mockExternal(null, downloaded.packageDir);
 
-                    return source(data, packageJson, downloaded)
+                    return source(data, packageJson, downloaded, { snykToken })
                     .then((collected) => expect(collected).to.eql(expected))
                     .finally(() => betrayed.restore());
                 })
@@ -125,13 +111,13 @@ describe('source', () => {
             fs.writeFileSync(`${tmpDir}/test.js`, 'foobar');
 
             return Promise.try(() => (
-                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` }, { snykToken })
                 .then((collected) => expect(collected.files.testsSize).to.equal(3))
             ))
             .then(() => {
                 fs.unlinkSync(`${tmpDir}/cross-spawn/test.js`);
 
-                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` }, { snykToken })
                 .then((collected) => expect(collected.files.testsSize).to.equal(6));
             })
             .finally(() => {
@@ -152,14 +138,14 @@ describe('source', () => {
             fs.writeFileSync(`${tmpDir}/cross-spawn/CHANGELOG.md`, 'foo');
 
             return Promise.try(() => (
-                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` }, { snykToken })
                 .then((collected) => expect(collected.files.hasChangelog).to.equal(true))
             ))
             .then(() => {
                 fs.unlinkSync(`${tmpDir}/cross-spawn/CHANGELOG.md`);
                 fs.writeFileSync(`${tmpDir}/CHANGELOG.md`, 'foo');
 
-                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` }, { snykToken })
                 .then((collected) => expect(collected.files.hasChangelog).to.equal(true));
             })
             .finally(() => {
@@ -187,13 +173,13 @@ describe('source', () => {
             `);
 
             return Promise.try(() => (
-                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` }, { snykToken })
                 .then((collected) => expect(collected.badges).to.have.length(6))
             ))
             .then(() => {
                 delete data.readme;
 
-                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` }, { snykToken })
                 .then((collected) => expect(collected.badges).to.have.length(1));
             })
             .finally(() => {
@@ -215,13 +201,13 @@ describe('source', () => {
             fs.writeFileSync(`${tmpDir}/.eslintrc.json`, 'foo');
 
             return Promise.try(() => (
-                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` }, { snykToken })
                 .then((collected) => expect(collected.linters).to.eql(['editorconfig']))
             ))
             .then(() => {
                 fs.unlinkSync(`${tmpDir}/cross-spawn/.editorconfig`);
 
-                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` }, { snykToken })
                 .then((collected) => expect(collected.linters).to.eql(['eslint']));
             })
             .finally(() => {
@@ -246,7 +232,7 @@ describe('source', () => {
 
         fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
 
-        return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
+        return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir }, { snykToken })
         .then((collected) => expect(collected.outdatedDependencies).to.equal(false))
         .finally(() => {
             sepia.disable();
@@ -265,7 +251,7 @@ describe('source', () => {
 
         fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
 
-        return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
+        return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir }, { snykToken })
         .then((collected) => expect(collected.outdatedDependencies).to.equal(false))
         .finally(() => {
             sepia.disable();
@@ -284,7 +270,7 @@ describe('source', () => {
 
         fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
 
-        return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
+        return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir }, { snykToken })
         .then((collected) => expect(collected.outdatedDependencies).to.equal(false))
         .finally(() => {
             sepia.disable();

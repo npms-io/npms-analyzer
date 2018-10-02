@@ -1,0 +1,35 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "content-security-policy": "base-uri 'none'; script-src 'self' https: 'nonce-CsG6bd0Y70wq2vPviyDWHQ==' 'unsafe-inline' 'unsafe-eval' 'strict-dynamic'; img-src https: data:; object-src 'none'; report-uri https://snyk.report-uri.com/r/d/csp/enforce;",
+    "x-snyk-version": "undefined",
+    "x-frame-options": "deny, deny",
+    "snyk-request-id": "5675360f-f430-4827-b541-2a3146b6b5e9",
+    "content-type": "application/json; charset=utf-8",
+    "etag": "W/\"1c50-4Y7+4OYiWHX2ewxLtr4hUZeblfc\"",
+    "content-encoding": "gzip",
+    "date": "Tue, 02 Oct 2018 20:16:36 GMT",
+    "content-length": "1161",
+    "connection": "keep-alive",
+    "vary": "Accept-Encoding",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "1; mode=block",
+    "strict-transport-security": "max-age=31536000; preload",
+    "access-control-max-age": "86400",
+    "access-control-allow-credentials": "false",
+    "access-control-allow-headers": "*",
+    "access-control-allow-methods": "GET",
+    "access-control-allow-origin": "*"
+  },
+  "url": "http://snyk.io:443/api/v1/vuln/npm/hapi%4013.4.0",
+  "time": 589,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/9.2.2 (https://github.com/sindresorhus/got)",
+      "authorization": "token 2bc256d1-1287-414f-8961-54e1b244f2b9",
+      "accept": "application/json",
+      "accept-encoding": "gzip, deflate"
+    }
+  }
+}
