@@ -4,68 +4,6 @@
     "testsSize": 959339,
     "hasShrinkwrap": true
   },
-  "vulnerabilities": [
-    {
-      "createdAt": "2018-07-10T07:33:37.875000Z",
-      "cvssScore": 5.3,
-      "description": "## Overview\n[cryptiles](https://www.npmjs.com/package/cryptiles) is a package for general crypto utilities.\n\nAffected versions of this package are vulnerable to Insecure Randomness. The `randomDigits()` method is supposed to return a cryptographically strong pseudo-random data string, but it was biased to certain digits. An attacker could be able to guess the created digits.\n\n## Remediation\nUpgrade to version 4.1.2 and higher.\n\n## References\n- [GitHub Issue](https://github.com/hapijs/cryptiles/issues/34)\n- [GitHub Commit](https://github.com/hapijs/cryptiles/commit/9332d4263a32b84e76bf538d7470d01ea63fa047)",
-      "package": "cryptiles",
-      "path": [
-        "hapi@13.4.0",
-        "cryptiles@3.1.2"
-      ],
-      "publishedAt": "2018-07-19T14:10:10.299000Z",
-      "severity": "medium",
-      "title": "Insecure Randomness",
-      "updatedAt": "2018-09-03T13:22:49.011742Z"
-    },
-    {
-      "createdAt": "2018-07-10T07:33:37.875000Z",
-      "cvssScore": 5.3,
-      "description": "## Overview\n[cryptiles](https://www.npmjs.com/package/cryptiles) is a package for general crypto utilities.\n\nAffected versions of this package are vulnerable to Insecure Randomness. The `randomDigits()` method is supposed to return a cryptographically strong pseudo-random data string, but it was biased to certain digits. An attacker could be able to guess the created digits.\n\n## Remediation\nUpgrade to version 4.1.2 and higher.\n\n## References\n- [GitHub Issue](https://github.com/hapijs/cryptiles/issues/34)\n- [GitHub Commit](https://github.com/hapijs/cryptiles/commit/9332d4263a32b84e76bf538d7470d01ea63fa047)",
-      "package": "cryptiles",
-      "path": [
-        "hapi@13.4.0",
-        "iron@4.0.5",
-        "cryptiles@3.1.2"
-      ],
-      "publishedAt": "2018-07-19T14:10:10.299000Z",
-      "severity": "medium",
-      "title": "Insecure Randomness",
-      "updatedAt": "2018-09-03T13:22:49.011742Z"
-    },
-    {
-      "createdAt": "2018-07-10T07:33:37.875000Z",
-      "cvssScore": 5.3,
-      "description": "## Overview\n[cryptiles](https://www.npmjs.com/package/cryptiles) is a package for general crypto utilities.\n\nAffected versions of this package are vulnerable to Insecure Randomness. The `randomDigits()` method is supposed to return a cryptographically strong pseudo-random data string, but it was biased to certain digits. An attacker could be able to guess the created digits.\n\n## Remediation\nUpgrade to version 4.1.2 and higher.\n\n## References\n- [GitHub Issue](https://github.com/hapijs/cryptiles/issues/34)\n- [GitHub Commit](https://github.com/hapijs/cryptiles/commit/9332d4263a32b84e76bf538d7470d01ea63fa047)",
-      "package": "cryptiles",
-      "path": [
-        "hapi@13.4.0",
-        "statehood@4.1.0",
-        "cryptiles@3.1.2"
-      ],
-      "publishedAt": "2018-07-19T14:10:10.299000Z",
-      "severity": "medium",
-      "title": "Insecure Randomness",
-      "updatedAt": "2018-09-03T13:22:49.011742Z"
-    },
-    {
-      "createdAt": "2018-07-10T07:33:37.875000Z",
-      "cvssScore": 5.3,
-      "description": "## Overview\n[cryptiles](https://www.npmjs.com/package/cryptiles) is a package for general crypto utilities.\n\nAffected versions of this package are vulnerable to Insecure Randomness. The `randomDigits()` method is supposed to return a cryptographically strong pseudo-random data string, but it was biased to certain digits. An attacker could be able to guess the created digits.\n\n## Remediation\nUpgrade to version 4.1.2 and higher.\n\n## References\n- [GitHub Issue](https://github.com/hapijs/cryptiles/issues/34)\n- [GitHub Commit](https://github.com/hapijs/cryptiles/commit/9332d4263a32b84e76bf538d7470d01ea63fa047)",
-      "package": "cryptiles",
-      "path": [
-        "hapi@13.4.0",
-        "statehood@4.1.0",
-        "iron@4.0.5",
-        "cryptiles@3.1.2"
-      ],
-      "publishedAt": "2018-07-19T14:10:10.299000Z",
-      "severity": "medium",
-      "title": "Insecure Randomness",
-      "updatedAt": "2018-09-03T13:22:49.011742Z"
-    }
-  ],
   "badges": [
     {
       "urls": {

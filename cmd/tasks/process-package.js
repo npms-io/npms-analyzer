@@ -40,7 +40,6 @@ exports.handler = (argv) => {
 
             return analyze(name, npmNano, npmsNano, {
                 githubTokens: config.get('githubTokens'),
-                snykToken: config.get('snykToken'),
             });
         })
         .tap((analysis) => log.info({ analysis }, 'Analyze data'))

@@ -24,6 +24,13 @@ This project uses [config](https://www.npmjs.com/package/config) for configurati
 - Setup npm replication from `https://replicate.npmjs.com/registry` to `npm` database in `continuous` mode.
 - Setup the necessary views by creating the document `_design/npms-analyzer` in the `npms` database with the contents of `https://github.com/npms-io/npms-analyzer/blob/master/config/couchdb/npms-analyzer.json`
 
+Note: for the replication to work, you might need to [tweak](https://github.com/apache/couchdb/issues/1550#issuecomment-411751809) `auth-plugins` in the CouchDB config:
+
+```
+[replicator]
+auth_plugins = couch_replicator_auth_noop
+```
+
 
 ## RabbitMQ
 

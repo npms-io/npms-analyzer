@@ -22,7 +22,7 @@ describe('index', () => {
         const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
         const packageJson = packageJsonFromData('cross-spawn', data);
         const downloaded = { downloader: 'github', dir: tmpDir, packageJson, gitRef: packageJson.gitHead };
-        const options = { githubTokens: ['foo', 'bar'], snykToken: 'baz', waitRateLimit: true };
+        const options = { githubTokens: ['foo', 'bar'], waitRateLimit: true };
 
         const betrayedMetadata = betray(collect.collectors, 'metadata', () => Promise.resolve('metadata'));
         const betrayedNpm = betray(collect.collectors, 'npm', () => Promise.resolve('npm'));
@@ -46,7 +46,6 @@ describe('index', () => {
             expect(betrayedSource.invoked).to.equal(1);
             expect(betrayedSource.invocations[0]).to.eql([data, packageJson, downloaded, {
                 npmRegistry: `${npmNano.config.url}/${npmNano.config.db}`,
-                snykToken: options.snykToken,
             }]);
 
             expect(collected).to.eql({ metadata: 'metadata', npm: 'npm', github: 'github', source: 'source' });

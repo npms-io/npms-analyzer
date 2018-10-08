@@ -32,7 +32,4 @@
 
     // Github tokens to be used by token-dealer
     githubTokens: [],
-
-    // Snyk - https://snyk.io/
-    snykToken: 'ade13731-433d-4160-bad0-a888efb15543'
 }
