@@ -356,7 +356,7 @@
                 "flags": {
                     "type": "object",
                     "properties": {
-                        "deprecated": { "type": "text", "index": false },
+                        "deprecated": { "type": "text", "index_options": "docs" },
                         "insecure": { "type": "integer" },
                         "unstable": { "type": "boolean" },
                     },
