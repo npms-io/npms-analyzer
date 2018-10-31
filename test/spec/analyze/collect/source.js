@@ -35,21 +35,6 @@ function mockExternal(mocks, dir) {
             },
         },
         {
-            match: (command) => command.indexOf('bin/nsp') !== -1,
-            handle: (command, options, callback) => {
-                let json;
-
-                try {
-                    json = (mocks.nsp && mocks.nsp(command)) || [];
-                } catch (err) {
-                    return callback(err, err.stdout || '', err.stderr || '');
-                }
-
-                fs.writeFileSync(`${dir}/.npms-nsp.json`, JSON.stringify(json));
-                callback(null, '', '');
-            },
-        },
-        {
             match: () => true,
             handle: () => { throw new Error('Not mocked'); },
         },
@@ -71,9 +56,10 @@ describe('source', () => {
         it(`should collect \`${entry.name}\` correctly`, () => {
             sepia.enable();
 
-            const data = loadJsonFile.sync(`${fixturesDir}/modules/${entry.name}/data.json`);
+            const escapedName = entry.name.replace('/', '%2f');
+            const data = loadJsonFile.sync(`${fixturesDir}/modules/${escapedName}/data.json`);
             const packageJson = packageJsonFromData(entry.name, data);
-            const expected = loadJsonFile.sync(`${fixturesDir}/modules/${entry.name}/expected-source.json`);
+            const expected = loadJsonFile.sync(`${fixturesDir}/modules/${escapedName}/expected-source.json`);
 
             return entry.downloader(packageJson)(tmpDir)
             .then((downloaded) => {
@@ -123,10 +109,10 @@ describe('source', () => {
             fs.writeFileSync(`${tmpDir}/cross-spawn/test.js`, 'foo');
             fs.writeFileSync(`${tmpDir}/test.js`, 'foobar');
 
-            return Promise.try(() => {
-                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.files.testsSize).to.equal(3));
-            })
+            return Promise.try(() => (
+                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.files.testsSize).to.equal(3))
+            ))
             .then(() => {
                 fs.unlinkSync(`${tmpDir}/cross-spawn/test.js`);
 
@@ -150,10 +136,10 @@ describe('source', () => {
             fs.writeFileSync(`${tmpDir}/cross-spawn/package.json`, JSON.stringify(packageJson));
             fs.writeFileSync(`${tmpDir}/cross-spawn/CHANGELOG.md`, 'foo');
 
-            return Promise.try(() => {
-                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.files.hasChangelog).to.equal(true));
-            })
+            return Promise.try(() => (
+                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.files.hasChangelog).to.equal(true))
+            ))
             .then(() => {
                 fs.unlinkSync(`${tmpDir}/cross-spawn/CHANGELOG.md`);
                 fs.writeFileSync(`${tmpDir}/CHANGELOG.md`, 'foo');
@@ -185,10 +171,10 @@ describe('source', () => {
                 [npm-image]:http://img.shields.io/npm/v/planify.svg
             `);
 
-            return Promise.try(() => {
-                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.badges).to.have.length(6));
-            })
+            return Promise.try(() => (
+                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.badges).to.have.length(6))
+            ))
             .then(() => {
                 delete data.readme;
 
@@ -213,21 +199,23 @@ describe('source', () => {
             fs.writeFileSync(`${tmpDir}/cross-spawn/.editorconfig`, 'foo');
             fs.writeFileSync(`${tmpDir}/.eslintrc.json`, 'foo');
 
-            return Promise.try(() => {
-                return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.linters).to.eql({ general: ['editorconfig'] }));
-            })
+            return Promise.try(() => (
+                source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
+                .then((collected) => expect(collected.linters).to.eql(['editorconfig']))
+            ))
             .then(() => {
                 fs.unlinkSync(`${tmpDir}/cross-spawn/.editorconfig`);
 
                 return source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.linters).to.eql({ js: ['eslint'] }));
+                .then((collected) => expect(collected.linters).to.eql(['eslint']));
             })
             .finally(() => {
                 sepia.disable();
                 betrayed.restore();
             });
         });
+
+        it('should ignore malformed downloaded package.json when detecting linters');
     });
 
     it('should work around NPM_TOKEN env var, e.g.: `babbel`');
@@ -238,8 +226,8 @@ describe('source', () => {
             david: () => { throw Object.assign(new Error('foo'), { stderr: 'failed to get versions' }); },
         });
 
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/ccbuild/data.json`);
-        const packageJson = packageJsonFromData('ccbuild', data);
+        const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
+        const packageJson = packageJsonFromData('cross-spawn', data);
 
         fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
 
@@ -251,62 +239,10 @@ describe('source', () => {
         });
     });
 
-    it('should handle broken dependencies when checking vulnerabilities with nsp', () => {
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/ccbuild/data.json`);
-        const packageJson = packageJsonFromData('ccbuild', data);
-
-        fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
-
-        // Test "Debug output: undefined"
-        return Promise.try(() => {
-            sepia.enable();
-            const betrayed = mockExternal({
-                nsp: () => { throw Object.assign(new Error('foo'), { stderr: 'Debug output: undefined\n{}\n' }); },
-            });
-
-            return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
-            .then((collected) => expect(collected.vulnerabilities).to.equal(false))
-            .finally(() => {
-                sepia.disable();
-                betrayed.restore();
-            });
-        })
-        // Test 400 status code
-        .then(() => {
-            sepia.enable();
-            const betrayed = mockExternal({
-                nsp: () => { throw Object.assign(new Error('foo'), { stderr: '"statusCode":400' }); },
-            });
-
-            return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
-            .then((collected) => expect(collected.vulnerabilities).to.equal(false))
-            .finally(() => {
-                sepia.disable();
-                betrayed.restore();
-            });
-        });
-    });
-
-    it('should retry getting vulnerabilities if nsp seems to be unavailable', () => {
-        let counter = 0;
-
+    it('should handle broken package data when checking outdated with david', () => {
         sepia.enable();
         const betrayed = mockExternal({
-            nsp: () => {
-                counter += 1;
-
-                if (counter === 1) {
-                    throw Object.assign(new Error('foo'), { stderr: '"statusCode":503' });
-                } else if (counter === 2) {
-                    throw Object.assign(new Error('foo'),
-                        { stderr: '53,48,52,32,71,97,116,101,119,97,121,32,84,105,109,101,45,111,117,116' });
-                } else if (counter === 3) {
-                    throw Object.assign(new Error('foo'),
-                        { stderr: 'Bad Gateway' });
-                } else {
-                    return [{ foo: 'bar' }];
-                }
-            },
+            david: () => { throw Object.assign(new Error('foo'), { stderr: 'data[currentVersion].versions.sort is not a function' }); },
         });
 
         const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
@@ -315,12 +251,33 @@ describe('source', () => {
         fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
 
         return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
-        .then((collected) => expect(collected.vulnerabilities).to.eql([{ foo: 'bar' }]))
+        .then((collected) => expect(collected.outdatedDependencies).to.equal(false))
         .finally(() => {
             sepia.disable();
             betrayed.restore();
         });
     });
+
+    it('should handle broken package name when checking outdated with david', () => {
+        sepia.enable();
+        const betrayed = mockExternal({
+            david: () => { throw Object.assign(new Error('foo'), { stderr: 'AssertionError [ERR_ASSERTION]' }); },
+        });
+
+        const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
+        const packageJson = packageJsonFromData('cross-spawn', data);
+
+        fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify(packageJson));
+
+        return source(data, packageJson, { dir: tmpDir, packageDir: tmpDir })
+        .then((collected) => expect(collected.outdatedDependencies).to.equal(false))
+        .finally(() => {
+            sepia.disable();
+            betrayed.restore();
+        });
+    });
+
+    it('should signal as unrecoverable if there\'s a .npmrc pointing to a private registry');
 
     it('should retry on network errors');
 });

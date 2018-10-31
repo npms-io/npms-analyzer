@@ -46,10 +46,9 @@
       }
     }
   ],
-  "linters": {
-    "js": [
-      "eslint"
-    ]
-  },
+  "linters": [
+    "eslint",
+    "prettier"
+  ],
   "coverage": 0.64
 }

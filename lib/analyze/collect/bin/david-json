@@ -7,8 +7,9 @@ global.Promise = require('bluebird');
 // Some packages have a .npmrc to integrate with CI systems which require NPM_TOKEN env var to be defined
 // See: https://github.com/alanshaw/david/issues/109
 process.env.NPM_TOKEN = '';
+process.env.AUTH_TOKEN = '';
 process.env.NPM_AUTH_TOKEN = '';
-process.env.SOCIALTABLES_NPM_TOKEN = '';  // https://github.com/socialtables/react-table-sorter/blob/master/.npmrc
+process.env.SOCIALTABLES_NPM_TOKEN = ''; // https://github.com/socialtables/react-table-sorter/blob/master/.npmrc
 
 const path = require('path');
 const yargs = require('yargs');
@@ -18,7 +19,8 @@ const david = Promise.promisifyAll(require('david'));
 const argv = yargs
 .strict()
 .wrap(Math.min(120, yargs.terminalWidth()))
-.help('help').alias('help', 'h')
+.help()
+.alias('help', 'h')
 .usage('Usage: $0 --registry [registry-url]')
 .option('registry', {
     type: 'string',
@@ -33,16 +35,16 @@ const argv = yargs
 const packageJsonPath = path.join(process.cwd(), 'package.json');
 
 loadJsonFile(packageJsonPath)
-.then((packageJson) => {
-    return david.getUpdatedDependenciesAsync(packageJson, {
+.then((packageJson) => (
+    david.getUpdatedDependenciesAsync(packageJson, {
         npm: {
-            'fetch-retries': 0,       // No need for retries, the registry is local
+            'fetch-retries': 0, // No need for retries, the registry is local
             registry: argv.registry,
         },
         loose: true, // Enable loose semver, there's some really strange versions that got into the registry somehow
         stable: true,
-    });
-})
+    })
+))
 .then((deps) => {
     process.stdout.write(JSON.stringify(deps, null, 2));
     process.stdout.write('\n');

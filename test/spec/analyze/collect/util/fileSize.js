@@ -26,12 +26,12 @@ describe('fileSize', () => {
         .then((size) => expect(size).to.equal(7));
     });
 
-    it('should return 0 if the path does not exist', () => {
-        return fileSize(`${tmpDir}/foo`)
+    it('should return 0 if the path does not exist', () => (
+        fileSize(`${tmpDir}/foo`)
         .then((size) => expect(size).to.equal(0))
         .then(() => fileSize([`${tmpDir}/foo`, `${tmpDir}/bar`]))
-        .then((size) => expect(size).to.equal(0));
-    });
+        .then((size) => expect(size).to.equal(0))
+    ));
 
     it('should return 0 on recursive symlinks', () => {
         fs.symlinkSync(`${tmpDir}/foo`, `${tmpDir}/bar`);
@@ -51,11 +51,11 @@ describe('fileSize', () => {
     describe('dir', () => {
         it('should recursively sum the size of all files in a directory', () => {
             fs.writeFileSync(`${tmpDir}/foo`, 'foo');
-            fs.writeFileSync(`${tmpDir}/.foo`, '.foo');      // Test hidden files
+            fs.writeFileSync(`${tmpDir}/.foo`, '.foo'); // Test hidden files
 
             fs.mkdirSync(`${tmpDir}/dir`);
             fs.writeFileSync(`${tmpDir}/dir/bar`, 'bar');
-            fs.writeFileSync(`${tmpDir}/dir/.bar`, '.bar');  // Test hidden files
+            fs.writeFileSync(`${tmpDir}/dir/.bar`, '.bar'); // Test hidden files
 
             return fileSize.dir(`${tmpDir}`)
             .then((size) => expect(size).to.equal(14));

@@ -102,7 +102,7 @@ describe('github', () => {
             expect(err.message).to.match(/too large/i);
             expect(err.unrecoverable).to.equal(true);
         })
-        .then(() => Promise.delay(2500))  // Wait some time because request.abort() might take a while
+        .then(() => Promise.delay(2500)) // Wait some time because request.abort() might take a while
         .finally(() => sepia.nock.cleanAll());
     });
 
@@ -113,7 +113,7 @@ describe('github', () => {
             name: 'cross-spawn',
             version: '0.1.0',
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
-            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad',  // This is the ref for 1.0.0
+            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad', // This is the ref for 1.0.0
         }, { maxFiles: 1 });
 
         return download(tmpDir)
@@ -126,8 +126,8 @@ describe('github', () => {
         .finally(() => sepia.disable());
     });
 
-    it('should handle some 4xx errors', () => {
-        return Promise.each([404, 403, 400], (code) => {
+    it('should handle some 4xx errors', () => (
+        Promise.each([404, 403, 400], (code) => {
             sepia.nock('https://api.github.com')
             .get(`/repos/some-org/repo-${code}/tarball/`)
             .reply(code);
@@ -143,8 +143,12 @@ describe('github', () => {
                 expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
             })
             .finally(() => sepia.nock.cleanAll());
-        });
-    });
+        })
+    ));
+
+    it('should handle unavailable repositories');
+
+    it('should handle malformed URLs');
 
     it('should prefer the passed package.json over the downloaded one', () => {
         sepia.enable();
@@ -153,7 +157,7 @@ describe('github', () => {
             name: 'cool-module',
             version: '0.1.0',
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
-            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad',  // This is the ref for 1.0.0
+            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad', // This is the ref for 1.0.0
         };
 
         const download = github(npmPackageJson);
@@ -180,7 +184,7 @@ describe('github', () => {
             name: 'babel-preset-moxy',
             version: '2.3.1',
             repository: { type: 'git', url: 'git://github.com/moxystudio/babel-preset-moxy' },
-            gitHead: 'b77ba80b71d6898970e2541b1f1c34d86ba493f7',  // This is the ref for 2.3.1
+            gitHead: 'b77ba80b71d6898970e2541b1f1c34d86ba493f7', // This is the ref for 2.3.1
         });
 
         return download(tmpDir)
@@ -197,7 +201,7 @@ describe('github', () => {
             name: 'cool-module',
             version: '0.1.0',
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
-            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad',  // This is the ref for 1.0.0
+            gitHead: 'b5239f25c0274feba89242b77d8f0ce57dce83ad', // This is the ref for 1.0.0
         });
 
         return download(tmpDir)
@@ -217,7 +221,7 @@ describe('github', () => {
             name: 'babel-cli',
             version: '6.23.0',
             repository: { type: 'git', url: 'git://github.com/babel/babel.git' },
-            gitHead: '48573f1fb4e632add2c000bec3f95d88ebea4440',  // This is the ref for 6.23.0
+            gitHead: '48573f1fb4e632add2c000bec3f95d88ebea4440', // This is the ref for 6.23.0
         });
 
         return download(tmpDir)
