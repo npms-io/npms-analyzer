@@ -33,7 +33,7 @@
         production: {
             user: 'analyzer',
             host: '212.47.252.55',
-            ref: 'origin/upgrade',
+            ref: 'origin/master',
             repo: 'https://github.com/npms-io/npms-analyzer.git',
             path: '/home/analyzer/npms-analyzer',
             'post-deploy': '\

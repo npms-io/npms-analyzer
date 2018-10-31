@@ -1,10 +1,10 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sepia = require(`${process.cwd()}/test/util/sepia`);
 const betray = require('betray');
 const chronokinesis = require('chronokinesis');
 const loadJsonFile = require('load-json-file');
+const sepia = require(`${process.cwd()}/test/util/sepia`);
 const packageJsonFromData = require(`${process.cwd()}/lib/analyze/util/packageJsonFromData`);
 const github = require(`${process.cwd()}/lib/analyze/collect/github`);
 

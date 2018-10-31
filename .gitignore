@@ -2,9 +2,7 @@ node_modules
 npm-debug.*
 
 /config/local.*
-
 /test/coverage
 /test/tmp
 /test/fixtures/**/downloaded
-
 /dev

@@ -1,20 +1,10 @@
 {
   "name": "npms-analyzer",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "The analyzer behind npms.io",
   "main": "index.js",
   "bin": {
     "npms-analyzer": "cli.js"
-  },
-  "scripts": {
-    "lint": "eslint .",
-    "test": "npm run download-test-fixtures && VCR_MODE=cache mocha",
-    "test-cov": "npm run download-test-fixtures && VCR_MODE=cache istanbul cover --dir test/coverage _mocha && echo Coverage lies in test/coverage/lcov-report/index.html",
-    "test-travis": "npm run download-test-fixtures && VCR_MODE=playback istanbul cover _mocha --report lcovonly",
-    "download-test-fixtures": "test/bin/download-fixtures",
-    "clean-test-fixtures": "date=\"$(date -R)\" && VCR_MODE=playback mocha && test/bin/clean-fixtures \"$date\"",
-    "precommit": "lint-staged",
-    "commitmsg": "commitlint -e $GIT_PARAMS"
   },
   "bugs": "https://github.com/npms-io/npms-analyzer/issues/",
   "repository": {
@@ -33,26 +23,18 @@
   ],
   "author": "André Cruz <amdfcruz@gmail.com>",
   "license": "MIT",
-  "standard-version": {
-    "scripts": {
-      "posttag": "git push --follow-tags origin master && npm publish"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+  "scripts": {
+    "lint": "eslint --ignore-path .gitignore .",
+    "test": "npm run download-test-fixtures && VCR_MODE=cache mocha",
+    "test-cov": "npm run download-test-fixtures && VCR_MODE=cache istanbul cover --dir test/coverage _mocha && echo Coverage lies in test/coverage/lcov-report/index.html",
+    "test-travis": "npm run download-test-fixtures && VCR_MODE=playback istanbul cover _mocha --report lcovonly",
+    "download-test-fixtures": "test/bin/download-fixtures",
+    "clean-test-fixtures": "date=\"$(date -R)\" && VCR_MODE=playback mocha && test/bin/clean-fixtures \"$date\""
   },
   "dependencies": {
     "amqplib": "^0.5.0",
     "bluebird": "^3.1.1",
-    "camelcase-keys": "^4.0.0",
+    "camelcase-keys": "^5.0.0",
     "config": "^2.0.1",
     "couchdb-force": "^1.0.1",
     "couchdb-iterator": "^2.0.0",
@@ -66,7 +48,7 @@
     "fetch-coverage": "^2.0.1",
     "gh-issues-stats": "^3.0.0",
     "globby": "^8.0.1",
-    "got": "^9.2.2",
+    "got": "^9.3.0",
     "hosted-git-info": "^2.1.4",
     "humanize-duration": "^3.6.1",
     "is-link-working": "^2.1.0",
@@ -86,7 +68,7 @@
     "promise-retry": "^1.0.1",
     "require-directory": "^2.1.1",
     "semver": "^5.1.0",
-    "serialize-error": "^2.0.0",
+    "serialize-error": "^3.0.0",
     "spdx": "^0.5.0",
     "spdx-correct": "^3.0.0",
     "token-dealer": "^3.0.0",
@@ -105,13 +87,30 @@
     "chronokinesis": "^2.0.0",
     "eslint": "^5.6.0",
     "eslint-config-moxy": "^6.1.1",
-    "husky": "^1.0.0-rc.15",
+    "husky": "^1.0.0",
     "istanbul": "^0.4.2",
-    "lint-staged": "^7.3.0",
+    "lint-staged": "^8.0.4",
     "mocha": "^5.2.0",
     "mock-require": "^3.0.2",
     "nock": "^10.0.0",
     "sepia": "^2.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "engines": {
     "node": ">=8.6",

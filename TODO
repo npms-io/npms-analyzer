@@ -1,0 +1,5 @@
+update npms-io to point to snyk
+use severity when evaluating
+hide username & password in logs, e.g.: when calling david
+fetch analysis of unknown package is giving 500
+logs nao estao a ser comprimidos
