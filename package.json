@@ -55,7 +55,7 @@
     "is-regular-file": "^1.0.1",
     "json5": "^2.0.0",
     "load-json-file": "^5.1.0",
-    "lodash": "^4.0.0",
+    "lodash": "^4.17.11",
     "moment": "^2.21.0",
     "nano": "^7.1.0",
     "normalize-package-data": "^2.3.6",
