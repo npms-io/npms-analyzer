@@ -9,10 +9,10 @@ const log = logger.child({ module: 'cli/enqueue-view' });
 /**
  * Fetches packages of a view.
  *
- * @param {string} view    The view in the form of design-doc/view-name
- * @param {Nano}   npmNano The npm nano instance
+ * @param {String} view    - The view in the form of design-doc/view-name.
+ * @param {Nano}   npmNano - The npm nano instance.
  *
- * @return {Promise} The promise that fulfills when done
+ * @returns {Promise} The promise that fulfills when done.
  */
 function fetchView(view, npmNano) {
     log.info(`Fetching view ${view}`);
@@ -20,21 +20,20 @@ function fetchView(view, npmNano) {
     const split = view.split('/');
 
     return npmNano.viewAsync(split[0], split[1])
-    .then((response) => {
-        return response.rows
-        .map((row) => row.key.replace(/^package!/, ''));
-    });
+    .then((response) => (
+        response.rows
+        .map((row) => row.key.replace(/^package!/, ''))
+    ));
 }
-
 
 /**
  * Enqueues packages to be analyzed.
  *
- * @param {array}   packages The package names to be enqueued
- * @param {Queue}   queue    The analysis queue instance
- * @param {boolean} dryRun   True to do a dry-run, false otherwise
+ * @param {Array}   packages - The package names to be enqueued.
+ * @param {Queue}   queue    - The analysis queue instance.
+ * @param {Boolean} dryRun   - True to do a dry-run, false otherwise.
  *
- * @return {Promise} The promise that fulfills when done
+ * @returns {Promise} The promise that fulfills when done.
  */
 function enqueueViewPackages(packages, queue, dryRun) {
     log.info(`There's a total of ${packages.length} packages in the view`);
@@ -46,6 +45,7 @@ function enqueueViewPackages(packages, queue, dryRun) {
 
     if (dryRun) {
         log.info('This is a dry-run, skipping..');
+
         return;
     }
 
@@ -54,6 +54,7 @@ function enqueueViewPackages(packages, queue, dryRun) {
     return Promise.map(packages, (name) => {
         count += 1;
         count % 5000 === 0 && log.info(`Enqueued ${count} packages`);
+
         return queue.push(name);
     }, { concurrency: 15 })
     .then(() => log.info('View packages were enqueued!'));
@@ -80,6 +81,7 @@ name (may be prefixed with `package!`)')
 
     .check((argv) => {
         assert(/^[a-z0-9_-]+\/[a-z0-9_-]+$/.test(argv.view), 'The view argument must match the following format: <design-doc/view-name>');
+
         return true;
     });
 

@@ -7,7 +7,7 @@ const log = logger.child({ module: 'stats/queue' });
 /**
  * Continuously monitor the queue, printing information such as the number of enqueued messages.
  *
- * @param {Queue} queue The queue instance
+ * @param {Queue} queue - The queue instance.
  */
 function statQueue(queue) {
     // Do nothing if loglevel is higher than info
@@ -20,6 +20,7 @@ function statQueue(queue) {
     setInterval(() => {
         if (pending) {
             log.info('Queue stat is still being retrieved..');
+
             return;
         }
 

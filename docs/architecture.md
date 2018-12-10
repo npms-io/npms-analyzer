@@ -38,7 +38,7 @@ The analyze is a simple pipeline that produces an analysis result:
 
 1. Fetches the package data
 2. Downloads the source code
-3. Runs the Collectors
+3. Runs the collectors
 4. Runs the evaluators
 5. Stores the result in CouchDB and Elasticsearch
 

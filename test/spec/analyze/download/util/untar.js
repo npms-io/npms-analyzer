@@ -6,7 +6,9 @@ const which = require('which');
 const expect = require('chai').expect;
 const untar = require(`${process.cwd()}/lib/analyze/download/util/untar`);
 
+/* eslint-disable max-statements-per-line */
 const hasBsdTar = (() => { try { return !!which.sync('gtar'); } catch (err) { return false; } })();
+/* eslint-enable max-statements-per-line */
 const tmpDir = `${process.cwd()}/test/tmp`;
 const fixturesDir = `${process.cwd()}/test/fixtures/analyze/download`;
 
@@ -32,15 +34,15 @@ describe('untar', () => {
         return untar(`${tmpDir}/test.tgz`)
         .then(() => {
             const stat = fs.statSync(`${tmpDir}/index.js`);
-            const permStr = `0${(stat.mode & parseInt('777', 8)).toString(8)}`;  // eslint-disable-line no-bitwise
+            const permStr = `0${(stat.mode & 0o777).toString(8)}`; // eslint-disable-line no-bitwise
 
             expect(permStr).to.equal('0777');
         });
     });
 
-    it('should deal with malformed archives', () => {
+    it('should deal with malformed archives', () => (
         // Test malformed archive
-        return Promise.try(() => {
+        Promise.try(() => {
             fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/mocked/broken-archive.tgz`));
 
             return untar(`${tmpDir}/test.tgz`)
@@ -60,8 +62,8 @@ describe('untar', () => {
             }, (err) => {
                 expect(err.message).to.contain('malformed');
             });
-        });
-    });
+        })
+    ));
 
     it('should deal with archives that have extended/unknown headers', () => {
         fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/downloaded/pickles2-contents-editor-2.0.0-alpha.1.tgz`));
@@ -93,18 +95,18 @@ describe('untar', () => {
         });
     });
 
-    it('should fail if extraction fails', () => {
-        return untar(`${tmpDir}/archive-that-will-never-exist.tgz`)
+    it('should fail if extraction fails', () => (
+        untar(`${tmpDir}/archive-that-will-never-exist.tgz`)
         .then(() => {
             throw new Error('Expected to fail');
         }, (err) => {
             expect(err.stderr).to.match(/(error opening|no such file)/i);
-        });
-    });
+        })
+    ));
 
-    it('should delete the archive file if successful', () => {
+    it('should delete the archive file if successful', () => (
         // Good tar
-        return Promise.try(() => {
+        Promise.try(() => {
             fs.writeFileSync(`${tmpDir}/test.tgz`, fs.readFileSync(`${fixturesDir}/downloaded/couchdb-iterator-2.0.2.tgz`));
 
             return untar(`${tmpDir}/test.tgz`)
@@ -119,6 +121,6 @@ describe('untar', () => {
             return untar(`${tmpDir}/test.tgz`)
             .catch(() => {})
             .then(() => fs.accessSync(`${tmpDir}/test.tgz`));
-        });
-    });
+        })
+    ));
 });

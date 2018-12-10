@@ -14,10 +14,10 @@ const log = logger.child({ module: 'cli/scoring' });
 /**
  * Waits the time needed before running the first cycle.
  *
- * @param {Number}  delay    The delay between each cycle
- * @param {Elastic} esClient The Elasticsearch instance
+ * @param {Number}  delay    - The delay between each cycle.
+ * @param {Elastic} esClient - The Elasticsearch instance.
  *
- * @return {Promise} The promise to be waited
+ * @returns {Promise} The promise to be waited.
  */
 function waitRemaining(delay, esClient) {
     // Need to use Promise.resolve() because Elasticsearch doesn't use the global promise
@@ -39,9 +39,9 @@ function waitRemaining(delay, esClient) {
  * Runs a scoring cycle.
  * When it finishes, another cycle will be automatically run after a certain delay.
  *
- * @param {Number}  delay    The delay between each cycle
- * @param {Nano}    npmsNano The npm nano instance
- * @param {Elastic} esClient The Elasticsearch instance
+ * @param {Number}  delay    - The delay between each cycle.
+ * @param {Nano}    npmsNano - The npm nano instance.
+ * @param {Elastic} esClient - The Elasticsearch instance.
  */
 function cycle(delay, npmsNano, esClient) {
     const startedAt = Date.now();
@@ -51,10 +51,10 @@ function cycle(delay, npmsNano, esClient) {
     // Prepare
     prepare(esClient)
     // Aggregate + score all packages
-    .tap(() => {
-        return aggregate(npmsNano)
-        .then((aggregation) => aggregation && score.all(aggregation, npmsNano, esClient));  // If aggregation is null, there were no evaluations
-    })
+    .tap(() => (
+        aggregate(npmsNano)
+        .then((aggregation) => aggregation && score.all(aggregation, npmsNano, esClient)) // If aggregation is null, there were no evaluations
+    ))
     // Finalize
     .then((esInfo) => finalize(esInfo, esClient))
     // We are done!
@@ -62,9 +62,11 @@ function cycle(delay, npmsNano, esClient) {
         const durationStr = humanizeDuration(Math.round((Date.now() - startedAt) / 1000) * 1000, { largest: 2 });
 
         log.info(`Scoring cycle successful, took ${durationStr}`);
+
         return delay;
     }, (err) => {
         log.fatal({ err }, 'Scoring cycle failed');
+
         return 10 * 60 * 1000;
     })
     // Start all over again after a short delay
@@ -91,13 +93,14 @@ Continuously iterate over the analyzed packages, scoring them.')
 
     .option('cycle-delay', {
         type: 'number',
-        default: 3 * 60 * 60 * 1000,  // 3 hours
+        default: 3 * 60 * 60 * 1000, // 3 hours
         alias: 'd',
         describe: 'The time to wait between each scoring cycle (in ms)',
     })
 
     .check((argv) => {
         assert(argv.cycleDelay >= 0, 'Invalid argument: --cycle-delay must be a number greater or equal to 0');
+
         return true;
     });
 
@@ -107,7 +110,7 @@ exports.handler = (argv) => {
     Promise.config({ longStackTraces: false });
 
     process.title = 'npms-analyzer-scoring';
-    logger.level = argv.logLevel || 'warn';
+    logger.level = argv.logLevel || 'error';
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpms', 'elasticsearch'], { wait: true })

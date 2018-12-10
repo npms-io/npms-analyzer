@@ -1,10 +1,10 @@
 'use strict';
 
 const expect = require('chai').expect;
-const sepia = require(`${process.cwd()}/test/util/sepia`);
 const betray = require('betray');
 const chronokinesis = require('chronokinesis');
 const loadJsonFile = require('load-json-file');
+const sepia = require(`${process.cwd()}/test/util/sepia`);
 const packageJsonFromData = require(`${process.cwd()}/lib/analyze/util/packageJsonFromData`);
 const github = require(`${process.cwd()}/lib/analyze/collect/github`);
 
@@ -30,19 +30,19 @@ describe('github', () => {
         });
     });
 
-    it('should skip if there\'s no repository or if it\'s not hosted on github', () => {
-        return Promise.try(() => {
-            return github({ name: 'cross-spawn' }, {})
-            .then((collected) => expect(collected).to.equal(null));
-        })
-        .then(() => {
-            return github({
+    it('should skip if there\'s no repository or if it\'s not hosted on github', () => (
+        Promise.try(() => (
+            github({ name: 'cross-spawn' }, {})
+            .then((collected) => expect(collected).to.equal(null))
+        ))
+        .then(() => (
+            github({
                 name: 'cross-spawn',
                 repository: { type: 'git', url: 'https://foo.com/IndigoUnited/node-cross-spawn.git' },
             }, {})
-            .then((collected) => expect(collected).to.equal(null));
-        });
-    });
+            .then((collected) => expect(collected).to.equal(null))
+        ))
+    ));
 
     it('should detect forks', () => {
         sepia.enable();

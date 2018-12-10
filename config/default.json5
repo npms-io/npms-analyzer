@@ -11,7 +11,7 @@
     elasticsearch: {
         host: 'http://127.0.0.1:9200',
         requestTimeout: 15000,
-        apiVersion: '2.4',
+        apiVersion: '6.3',
         log: null,
     },
     queue: {
@@ -27,6 +27,7 @@
         'zachtestproject2': 'Test project that makes registry return 500 internal',
         'zachtestproject3': 'Test project that makes registry return 500 internal',
         'zachtestproject4': 'Test project that makes registry return 500 internal',
+        'broken-package-truncated-tar-header': 'Broken tarball',
     },
 
     // Github tokens to be used by token-dealer
