@@ -270,45 +270,57 @@ describe('git', () => {
     });
 
     it('should deal with permission errors', () => {
-        const betrayed = mock({
-            clone: () => {
-                throw Object.assign(new Error('foo'),
-                    { stderr: '\nline\nfatal: Authentication failed for `url`.\nline\nline' });
-            },
-        });
+        const stderrArray = [
+            'not found',
+            '\nline\nfatal: Authentication failed for `url`.\nline\nline',
+        ];
 
-        const download = git({
-            name: 'cool-module',
-            repository: { type: 'git', url: 'git://github.com/some-org/repo-private.git' },
-        });
+        return Promise.map(stderrArray, (stderr) => {
+            const betrayed = mock({
+                clone: () => {
+                    throw Object.assign(new Error('foo'), { stderr });
+                },
+            });
 
-        return download(tmpDir)
-        .then(() => {
-            expect(betrayed.invoked).to.be.greaterThan(1);
-            expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
-        })
-        .finally(() => betrayed.restore());
+            const download = git({
+                name: 'cool-module',
+                repository: { type: 'git', url: 'git://github.com/some-org/repo-private.git' },
+            });
+
+            return download(tmpDir)
+            .then(() => {
+                expect(betrayed.invoked).to.be.greaterThan(1);
+                expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
+            })
+            .finally(() => betrayed.restore());
+        });
     });
 
     it('should deal with invalid repositories', () => {
-        const betrayed = mock({
-            clone: () => {
-                throw Object.assign(new Error('foo'),
-                    { stderr: '\nline\nfatal: unable to access url: The requested URL returned error: `code`' });
-            },
-        });
+        const stderrArray = [
+            '\nline\nfatal: unable to access url: The requested URL returned error: `code`',
+            'is this a git repository',
+        ];
 
-        const download = git({
-            name: 'cool-module',
-            repository: { type: 'git', url: 'git://github.com/some-org/foo%25bar.git' },
-        });
+        return Promise.map(stderrArray, (stderr) => {
+            const betrayed = mock({
+                clone: () => {
+                    throw Object.assign(new Error('foo'), { stderr });
+                },
+            });
 
-        return download(tmpDir)
-        .then(() => {
-            expect(betrayed.invoked).to.be.greaterThan(1);
-            expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
-        })
-        .finally(() => betrayed.restore());
+            const download = git({
+                name: 'cool-module',
+                repository: { type: 'git', url: 'git://github.com/some-org/foo%25bar.git' },
+            });
+
+            return download(tmpDir)
+            .then(() => {
+                expect(betrayed.invoked).to.be.greaterThan(1);
+                expect(fs.readdirSync(tmpDir)).to.eql(['package.json']);
+            })
+            .finally(() => betrayed.restore());
+        });
     });
 
     it('should abort if it\'s taking too much time');
@@ -387,9 +399,31 @@ describe('git', () => {
         .finally(() => betrayed.restore());
     });
 
+    it('should remove the package-lock.json file', () => {
+        const betrayed = mock({
+            checkout: () => {
+                fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ version: '1.0.0' }));
+                fs.writeFileSync(`${tmpDir}/package-lock.json`, JSON.stringify({ version: '1.0.0' }));
+            },
+        });
+
+        const download = git({
+            name: 'babel-preset-moxy',
+            version: '2.3.1',
+            repository: { type: 'git', url: 'git://github.com/moxystudio/babel-preset-moxy' },
+            gitHead: 'b77ba80b71d6898970e2541b1f1c34d86ba493f7', // This is the ref for 2.3.1
+        });
+
+        return download(tmpDir)
+        .then(() => {
+            expect(fs.existsSync(`${tmpDir}/package-lock.json`)).to.equal(false);
+        })
+        .finally(() => betrayed.restore());
+    });
+
     it('should resolve with the downloaded object', () => {
         const betrayed = mock({
-            checkout: () => fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ version: '1.0.0' })),
+            checkout: () => fs.writeFileSync(`${tmpDir}/package.json`, JSON.stringify({ name: 'cross-spawn', version: '1.0.0' })),
         });
 
         const download = git({
@@ -403,7 +437,7 @@ describe('git', () => {
         .then((downloaded) => {
             expect(downloaded.dir).to.equal(tmpDir);
             expect(downloaded.packageDir).to.equal(tmpDir);
-            expect(downloaded.packageJson.name).to.equal('');
+            expect(downloaded.packageJson.name).to.equal('cross-spawn');
             expect(downloaded.packageJson.version).to.equal('1.0.0');
         })
         .finally(() => betrayed.restore());

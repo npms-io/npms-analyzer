@@ -64,7 +64,6 @@ describe('mergePackageJson', () => {
         });
     });
 
-
     it('should deal with broken downloaded package.json files', () => {
         fs.writeFileSync(`${tmpDir}/package.json`, 'brokenjson');
 

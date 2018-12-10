@@ -16,12 +16,12 @@ const log = logger.child({ module: 'cli/consume' });
 /**
  * Handles a message.
  *
- * @param {object}  msg      The message
- * @param {Nano}    npmNano  The npm nano instance
- * @param {Nano}    npmsNano The npms nano instance
- * @param {Elastic} esClient The Elasticsearch instance
+ * @param {Object}  msg      - The message.
+ * @param {Nano}    npmNano  - The npm nano instance.
+ * @param {Nano}    npmsNano - The npms nano instance.
+ * @param {Elastic} esClient - The Elasticsearch instance.
  *
- * @return {Promise} A promise that fulfills when consumed
+ * @returns {Promise} A promise that fulfills when consumed.
  */
 function onMessage(msg, npmNano, npmsNano, esClient) {
     const name = msg.data;
@@ -44,6 +44,7 @@ function onMessage(msg, npmNano, npmsNano, esClient) {
     .then((analysis) => {
         if (analysis && Date.parse(analysis.startedAt) >= Date.parse(msg.pushedAt)) {
             log.info(`Skipping analysis of ${name} because it was already analyzed meanwhile`);
+
             return;
         }
 
@@ -57,10 +58,10 @@ function onMessage(msg, npmNano, npmsNano, esClient) {
         .then((analysis) => score(analysis, npmsNano, esClient).catch(() => {}))
         .catch({ code: 'PACKAGE_NOT_FOUND' }, () => score.remove(name, esClient))
         // Ignore unrecoverable errors, so that these are not re-queued
-        .catch({ unrecoverable: true }, (err) => {
-            return onFailedAnalysis(name, err, npmsNano, esClient)
-            .catch(() => {});
-        });
+        .catch({ unrecoverable: true }, (err) => (
+            onFailedAnalysis(name, err, npmsNano, esClient)
+            .catch(() => {})
+        ));
     });
 }
 
@@ -90,12 +91,13 @@ Consumes packages that are queued, triggering the analysis process for each pack
 
     .check((argv) => {
         assert(argv.concurrency > 0, 'Invalid argument: --concurrency must be a number greater than 0');
+
         return true;
     });
 
 exports.handler = (argv) => {
     process.title = 'npms-analyzer-consume';
-    logger.level = argv.logLevel || 'warn';
+    logger.level = argv.logLevel || 'error';
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms', 'queue', 'elasticsearch'], { wait: true })
@@ -109,10 +111,12 @@ exports.handler = (argv) => {
         // Clean old packages from the download directory
         return analyze.cleanTmpDir()
         // Start consuming
-        .then(() => queue.consume((message) => onMessage(message, npmNano, npmsNano, esClient), {
-            concurrency: argv.concurrency,
-            onRetriesExceeded: (message, err) => onFailedAnalysis(message.data, err, npmsNano, esClient),
-        }));
+        .then(() => (
+            queue.consume((message) => onMessage(message, npmNano, npmsNano, esClient), {
+                concurrency: argv.concurrency,
+                onRetriesExceeded: (message, err) => onFailedAnalysis(message.data, err, npmsNano, esClient),
+            })
+        ));
     })
     .done();
 };

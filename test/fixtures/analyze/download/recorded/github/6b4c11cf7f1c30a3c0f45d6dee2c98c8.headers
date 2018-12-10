@@ -1,0 +1,29 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "transfer-encoding": "chunked",
+    "access-control-allow-origin": "https://render.githubusercontent.com",
+    "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+    "strict-transport-security": "max-age=31536000",
+    "vary": "Authorization,Accept-Encoding",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "deny",
+    "x-xss-protection": "1; mode=block",
+    "etag": "\"b77ba80b71d6898970e2541b1f1c34d86ba493f7\"",
+    "content-type": "application/x-gzip",
+    "content-disposition": "attachment; filename=moxystudio-babel-preset-moxy-v2.3.1-0-gb77ba80.tar.gz",
+    "x-geo-block-list": "",
+    "date": "Fri, 09 Mar 2018 17:13:36 GMT",
+    "x-github-request-id": "D843:7CA8:E679E:17FAA8:5AA2C0BF"
+  },
+  "url": "https://codeload.github.com:443/moxystudio/babel-preset-moxy/legacy.tar.gz/b77ba80b71d6898970e2541b1f1c34d86ba493f7",
+  "time": 1037,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/6.7.1 (https://github.com/sindresorhus/got)",
+      "accept-encoding": "gzip,deflate",
+      "accept": "application/vnd.github.v3+json"
+    }
+  }
+}

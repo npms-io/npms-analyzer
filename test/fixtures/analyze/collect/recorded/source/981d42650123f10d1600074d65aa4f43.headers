@@ -1,0 +1,27 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "date": "Mon, 08 Oct 2018 17:20:17 GMT",
+    "content-type": "application/json",
+    "transfer-encoding": "chunked",
+    "connection": "keep-alive",
+    "set-cookie": [
+      "__cfduid=d48668196819527ef3d4e374375d710ad1539019216; expires=Tue, 08-Oct-19 17:20:16 GMT; path=/; domain=.registry.npmjs.org; HttpOnly"
+    ],
+    "content-encoding": "gzip",
+    "cf-ray": "466a46f65bb96224-LIS",
+    "expect-ct": "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
+    "vary": "Accept-Encoding",
+    "server": "cloudflare"
+  },
+  "url": "http://registry.npmjs.org:443/-/npm/v1/security/advisories/search?module=planify&version=1.2.0",
+  "time": 962,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/9.2.2 (https://github.com/sindresorhus/got)",
+      "accept": "application/json",
+      "accept-encoding": "gzip, deflate"
+    }
+  }
+}

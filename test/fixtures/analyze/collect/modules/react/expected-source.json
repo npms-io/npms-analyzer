@@ -50,13 +50,9 @@
       }
     }
   ],
-  "linters": {
-    "general": [
-      "editorconfig"
-    ],
-    "js": [
-      "eslint"
-    ]
-  },
+  "linters": [
+    "editorconfig",
+    "eslint"
+  ],
   "coverage": 0.82
 }

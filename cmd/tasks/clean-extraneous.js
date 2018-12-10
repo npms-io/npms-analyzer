@@ -9,62 +9,58 @@ const log = logger.child({ module: 'cli/clean-extraneous' });
 /**
  * Fetches the npm packages.
  *
- * @param {Nano} npmNano The npm nano instance
+ * @param {Nano} npmNano - The npm nano instance.
  *
- * @return {Promise} The promise that fulfills when done
+ * @returns {Promise} The promise that fulfills when done.
  */
 function fetchNpmPackages(npmNano) {
     log.info('Fetching npm packages, this might take a while..');
 
     return npmNano.listAsync()
-    .then((response) => {
-        return response.rows
+    .then((response) => (
+        response.rows
         .map((row) => row.id)
-        .filter((id) => id.indexOf('_design/') !== 0);
-    });
+        .filter((id) => id.indexOf('_design/') !== 0)
+    ));
 }
 
 /**
  * Fetches the npms packages.
  *
- * @param {Nano} npmsNano The npms nano instance
+ * @param {Nano} npmsNano - The npms nano instance.
  *
- * @return {Promise} The promise that fulfills when done
+ * @returns {Promise} The promise that fulfills when done.
  */
 function fetchNpmsPackages(npmsNano) {
     log.info('Fetching npms packages, this might take a while..');
 
     return npmsNano.listAsync({ startkey: 'package!', endkey: 'package!\ufff0' })
-    .then((response) => {
-        return response.rows.map((row) => row.id.split('!')[1]);
-    });
+    .then((response) => response.rows.map((row) => row.id.split('!')[1]));
 }
 
 /**
  * Fetches the npms packages.
  *
- * @param {Nano} npmsNano The npms nano instance
+ * @param {Nano} npmsNano - The npms nano instance.
  *
- * @return {Promise} The promise that fulfills when done
+ * @returns {Promise} The promise that fulfills when done.
  */
 function fetchNpmsObservedPackages(npmsNano) {
     log.info('Fetching npms observed packages, this might take a while..');
 
     return npmsNano.listAsync({ startkey: 'observer!package!', endkey: 'observer!package!\ufff0' })
-    .then((response) => {
-        return response.rows.map((row) => row.id.split('!')[2]);
-    });
+    .then((response) => response.rows.map((row) => row.id.split('!')[2]));
 }
 
 /**
  * Calculates which npms packages are considered extraneous and removes them.
  *
- * @param {array}   npmPackages  All npm packages
- * @param {array}   npmsPackages All npms packages
- * @param {Nano}    npmsNano     The npms nano instance
- * @param {boolean} dryRun       True to do a dry-run, false otherwise
+ * @param {Array}   npmPackages  - All npm packages.
+ * @param {Array}   npmsPackages - All npms packages.
+ * @param {Nano}    npmsNano     - The npms nano instance.
+ * @param {Boolean} dryRun       - True to do a dry-run, false otherwise.
  *
- * @return {Promise} The promise that fulfills when done
+ * @returns {Promise} The promise that fulfills when done.
  */
 function cleanExtraneousNpmsPackages(npmPackages, npmsPackages, npmsNano, dryRun) {
     const extraneousPackages = difference(npmsPackages, npmPackages);
@@ -78,6 +74,7 @@ function cleanExtraneousNpmsPackages(npmPackages, npmsPackages, npmsNano, dryRun
 
     if (dryRun) {
         log.info('This is a dry-run, skipping..');
+
         return;
     }
 
@@ -98,12 +95,12 @@ function cleanExtraneousNpmsPackages(npmPackages, npmsPackages, npmsNano, dryRun
 /**
  * Calculates which npms observed packages are considered extraneous and removes them.
  *
- * @param {array}   npmPackages          All npm packages
- * @param {array}   npmsObservedPackages All npms observed packages
- * @param {Nano}    npmsNano             The npms nano instance
- * @param {boolean} dryRun               True to do a dry-run, false otherwise
+ * @param {Array}   npmPackages          - All npm packages.
+ * @param {Array}   npmsObservedPackages - All npms observed packages.
+ * @param {Nano}    npmsNano             - The npms nano instance.
+ * @param {Boolean} dryRun               - True to do a dry-run, false otherwise.
  *
- * @return {Promise} The promise that fulfills when done
+ * @returns {Promise} The promise that fulfills when done.
  */
 function cleanExtraneousNpmsObservedPackages(npmPackages, npmsObservedPackages, npmsNano, dryRun) {
     const extraneousPackages = difference(npmsObservedPackages, npmPackages);
@@ -113,6 +110,7 @@ function cleanExtraneousNpmsObservedPackages(npmPackages, npmsObservedPackages, 
 
     if (!extraneousPackages.length || dryRun) {
         log.info('This is a dry-run, skipping..');
+
         return;
     }
 
@@ -163,15 +161,15 @@ exports.handler = (argv) => {
         // Fetch npm packages
         return fetchNpmPackages(npmNano)
         // Fetch npms packages & clean extraneous
-        .tap((npmPackages) => {
-            return fetchNpmsPackages(npmsNano)
-            .then((npmsPackages) => cleanExtraneousNpmsPackages(npmPackages, npmsPackages, npmsNano, argv.dryRun));
-        })
+        .tap((npmPackages) => (
+            fetchNpmsPackages(npmsNano)
+            .then((npmsPackages) => cleanExtraneousNpmsPackages(npmPackages, npmsPackages, npmsNano, argv.dryRun))
+        ))
         // Fetch npms observed packages & clean extraneous
-        .then((npmPackages) => {
-            return fetchNpmsObservedPackages(npmsNano)
-            .then((npmsObservedPackages) => cleanExtraneousNpmsObservedPackages(npmPackages, npmsObservedPackages, npmsNano, argv.dryRun));
-        });
+        .then((npmPackages) => (
+            fetchNpmsObservedPackages(npmsNano)
+            .then((npmsObservedPackages) => cleanExtraneousNpmsObservedPackages(npmPackages, npmsObservedPackages, npmsNano, argv.dryRun))
+        ));
     })
     .then(() => process.exit())
     .done();

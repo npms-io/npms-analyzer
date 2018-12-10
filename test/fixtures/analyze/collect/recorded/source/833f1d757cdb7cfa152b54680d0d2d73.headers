@@ -1,0 +1,27 @@
+{
+  "statusCode": 200,
+  "headers": {
+    "date": "Mon, 08 Oct 2018 17:20:18 GMT",
+    "content-type": "application/json",
+    "transfer-encoding": "chunked",
+    "connection": "keep-alive",
+    "set-cookie": [
+      "__cfduid=dfedc7409d369580f77705d82fccde3121539019217; expires=Tue, 08-Oct-19 17:20:17 GMT; path=/; domain=.registry.npmjs.org; HttpOnly"
+    ],
+    "content-encoding": "gzip",
+    "cf-ray": "466a46fd8dae622a-LIS",
+    "expect-ct": "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
+    "vary": "Accept-Encoding",
+    "server": "cloudflare"
+  },
+  "url": "https://registry.npmjs.org:443/-/npm/v1/security/advisories/search?module=hapi&version=13.4.0",
+  "time": 979,
+  "request": {
+    "method": "GET",
+    "headers": {
+      "user-agent": "got/9.2.2 (https://github.com/sindresorhus/got)",
+      "accept": "application/json",
+      "accept-encoding": "gzip, deflate"
+    }
+  }
+}

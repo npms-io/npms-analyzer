@@ -4,11 +4,9 @@
     "testsSize": 27463,
     "hasChangelog": true
   },
-  "linters": {
-    "js": [
-      "jshint"
-    ]
-  },
+  "linters": [
+    "jshint"
+  ],
   "badges": [
     {
       "urls": {
