@@ -25,7 +25,7 @@ Processes a single package, analyzing and scoring it.')
 
 exports.handler = (argv) => {
     process.title = 'npms-analyzer-process-package';
-    logger.level = argv.logLevel || 'info';
+    logger.level = argv.logLevel;
 
     const name = argv.package.toString(); // Package 0 evaluates to number so we must cast to a string
 

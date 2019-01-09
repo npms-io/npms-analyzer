@@ -20,7 +20,6 @@ yargs
 
 .option('log-level', {
     type: 'string',
-    default: 'warn',
     alias: 'll',
     choices: ['fatal', 'error', 'warn', 'info', 'debug', 'trace'],
     describe: 'The log level to use',

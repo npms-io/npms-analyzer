@@ -95,7 +95,7 @@ errors, e.g.: internet connection was lot or GitHub was down.')
 
 exports.handler = (argv) => {
     process.title = 'npms-analyzer-enqueue-missing';
-    logger.level = argv.logLevel || 'info';
+    logger.level = argv.logLevel;
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms', 'queue'])

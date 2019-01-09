@@ -82,6 +82,8 @@ exports.builder = (yargs) =>
     .usage('Usage: $0 consume [options]\n\n\
 Consumes packages that are queued, triggering the analysis process for each package.')
 
+    .default('log-level', 'error')
+
     .option('concurrency', {
         type: 'number',
         default: 5,
