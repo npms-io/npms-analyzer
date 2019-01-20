@@ -33,7 +33,7 @@ function statProgress(npmNano, npmsNano) {
             npmDocsCount: npmNano.infoAsync().then((res) => res.doc_count),
             npmDesignDocsCount: npmNano.listAsync({ startkey: '_design/', endkey: '_design0' }).then((res) => res.rows.length),
             npmsPackagesCount: npmsNano.viewAsync('npms-analyzer', 'packages-evaluation', { reduce: true })
-            .then((res) => res.rows[0] ? res.rows[0] : 0),
+            .then((res) => res.rows[0] ? res.rows[0].value : 0),
         })
         .finally(() => { pending = false; })
         .then((result) => {
