@@ -294,54 +294,72 @@
                         },
                         "dependents": {
                             "type": "text",
-                            "fields": {
-                                "standard": {
+                            "properties": {
+                                "name": {
                                     "type": "text",
-                                    "analyzer": "standard",
+                                    "fields": {
+                                        "standard": {
+                                            "type": "text",
+                                            "analyzer": "standard",
+                                        },
+                                        "english": {
+                                            "type": "text",
+                                            "analyzer": "package_english",
+                                        },
+                                        "english_aggressive": {
+                                            "type": "text",
+                                            "analyzer": "package_english_aggressive",
+                                        },
+                                        "edge_ngram": {
+                                            "type": "text",
+                                            "analyzer": "package_edge_ngram",
+                                            "search_analyzer": "package",
+                                        },
+                                        "raw": {
+                                            "type": "text",
+                                            "analyzer": "raw",
+                                        }
+                                    },
                                 },
-                                "english": {
-                                    "type": "text",
-                                    "analyzer": "package_english",
+                                "version": {
+                                  "type": "text",
+                                  "index": false
                                 },
-                                "english_aggressive": {
-                                    "type": "text",
-                                    "analyzer": "package_english_aggressive",
-                                },
-                                "edge_ngram": {
-                                    "type": "text",
-                                    "analyzer": "package_edge_ngram",
-                                    "search_analyzer": "package",
-                                },
-                                "raw": {
-                                    "type": "text",
-                                    "analyzer": "raw",
-                                }
                             },
                         },
                         "dependencies": {
                             "type": "text",
-                            "fields": {
-                                "standard": {
+                            "properties": {
+                                "name": {
                                     "type": "text",
-                                    "analyzer": "standard",
+                                    "fields": {
+                                        "standard": {
+                                            "type": "text",
+                                            "analyzer": "standard",
+                                        },
+                                        "english": {
+                                            "type": "text",
+                                            "analyzer": "package_english",
+                                        },
+                                        "english_aggressive": {
+                                            "type": "text",
+                                            "analyzer": "package_english_aggressive",
+                                        },
+                                        "edge_ngram": {
+                                            "type": "text",
+                                            "analyzer": "package_edge_ngram",
+                                            "search_analyzer": "package",
+                                        },
+                                        "raw": {
+                                            "type": "text",
+                                            "analyzer": "raw",
+                                        }
+                                    },
                                 },
-                                "english": {
-                                    "type": "text",
-                                    "analyzer": "package_english",
+                                "version": {
+                                  "type": "text",
+                                  "index": false
                                 },
-                                "english_aggressive": {
-                                    "type": "text",
-                                    "analyzer": "package_english_aggressive",
-                                },
-                                "edge_ngram": {
-                                    "type": "text",
-                                    "analyzer": "package_edge_ngram",
-                                    "search_analyzer": "package",
-                                },
-                                "raw": {
-                                    "type": "text",
-                                    "analyzer": "raw",
-                                }
                             },
                         },
                         "version": {
