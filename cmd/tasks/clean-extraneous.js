@@ -148,7 +148,7 @@ errors, e.g.: RabbitMQ or CouchDB were down or unstable.')
 
 exports.handler = (argv) => {
     process.title = 'npms-analyzer-clean-extraneous';
-    logger.level = argv.logLevel || 'info';
+    logger.level = argv.logLevel;
 
     bootstrap(['couchdbNpm', 'couchdbNpms'])
     .spread((npmNano, npmsNano) => {

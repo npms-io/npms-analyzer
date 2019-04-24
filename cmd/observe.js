@@ -40,6 +40,8 @@ exports.builder = (yargs) =>
     .usage('Usage: $0 observe [options]\n\n\
 Starts the observing process, enqueueing packages that need to be analyzed into the queue.')
 
+    .default('log-level', 'error')
+
     .option('default-seq', {
         type: 'number',
         default: 0,

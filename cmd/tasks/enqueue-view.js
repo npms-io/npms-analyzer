@@ -87,7 +87,7 @@ name (may be prefixed with `package!`)')
 
 exports.handler = (argv) => {
     process.title = 'npms-analyzer-enqueue-view';
-    logger.level = argv.logLevel || 'info';
+    logger.level = argv.logLevel;
 
     const view = argv.view;
 

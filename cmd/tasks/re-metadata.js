@@ -20,7 +20,7 @@ metadata collector. Note that the packages score won\'t be updated.');
 
 exports.handler = (argv) => {
     process.title = 'npms-analyzer-re-metadata';
-    logger.level = argv.logLevel || 'info';
+    logger.level = argv.logLevel;
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms'])
