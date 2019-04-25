@@ -5,4 +5,5 @@ npm-debug.*
 /test/coverage
 /test/tmp
 /test/fixtures/**/downloaded
+/test/fixtures/**/source
 /dev

@@ -25,7 +25,7 @@ Run the latest migration.');
 
 exports.handler = (argv) => {
     process.title = 'npms-analyzer-migrate';
-    logger.level = argv.logLevel || 'info';
+    logger.level = argv.logLevel;
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpm', 'couchdbNpms'])

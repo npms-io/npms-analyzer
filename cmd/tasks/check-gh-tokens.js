@@ -16,7 +16,7 @@ Checks the status of each GitHub token.');
 
 exports.handler = (argv) => {
     process.title = 'npms-analyzer-check-gh-tokens';
-    logger.level = argv.logLevel || 'info';
+    logger.level = argv.logLevel;
 
     const valid = [];
     const invalid = [];

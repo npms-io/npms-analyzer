@@ -91,6 +91,8 @@ exports.builder = (yargs) =>
     .usage('Usage: $0 scoring [options]\n\n\
 Continuously iterate over the analyzed packages, scoring them.')
 
+    .default('log-level', 'error')
+
     .option('cycle-delay', {
         type: 'number',
         default: 3 * 60 * 60 * 1000, // 3 hours

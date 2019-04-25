@@ -19,7 +19,7 @@ the evaluation needs to be re-calculated for all packages. Note that the package
 
 exports.handler = (argv) => {
     process.title = 'npms-analyzer-re-evaluate';
-    logger.level = argv.logLevel || 'info';
+    logger.level = argv.logLevel;
 
     // Bootstrap dependencies on external services
     bootstrap(['couchdbNpms'])
