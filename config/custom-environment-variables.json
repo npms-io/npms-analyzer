@@ -1,0 +1,21 @@
+{
+  "couchdbNpm": {
+    "url": "COUCH_URL_NPM"
+  },
+  "githubTokens": {
+    "__name": "GITHUB_TOKENS",
+    "__format": "json"
+  },
+  "couchdbNpms": {
+    "url": "COUCH_URL_NPMS"
+  },
+  "elasticsearch": {
+    "host": "ELASTICSEARCH_URL"
+  },
+  "queue": {
+    "addr": "RABBIT_URL"
+  },
+  "analysisLimits": {
+    "maxFiles": "EXTRACTION_MAX_FILES"
+  }
+}
