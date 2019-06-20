@@ -1,6 +1,6 @@
 app = "{{npms_app}}"
 description =  "rank packages based on several metrics"
-processes = 1
+processes = {{ processes | default(1) }}
 start =  "node ./cli.js {{npms_command}}"
 
 [environment]
