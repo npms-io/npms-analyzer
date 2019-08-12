@@ -45,7 +45,7 @@
     "detect-repo-linters": "^3.1.1",
     "detect-repo-test-files": "^1.2.2",
     "elasticsearch": "^15.1.1",
-    "fetch-coverage": "^2.0.1",
+    "@npm/fetch-coverage": "^2.0.3",
     "gh-issues-stats": "^3.0.0",
     "globby": "^8.0.1",
     "got": "^9.3.0",
