@@ -46,6 +46,17 @@ describe('npm', () => {
         .get((path) => path.indexOf('/downloads/range/') === 0)
         .reply(404, { error: 'package cross-spawn not found' });
 
+        sepia.nock('http://127.0.0.1:5984')
+        .get('/npm/_design/app/_view/dependedUpon')
+        .query({
+            startkey: '["cross-spawn"]',
+            endkey: '["cross-spawn","￰"]',
+            limit: '1',
+            reduce: 'true',
+            stale: 'update_after',
+        })
+        .reply(200, { rows: [] });
+
         const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
 
         return npm(data, packageJsonFromData('cross-spawn', data), npmNano)
