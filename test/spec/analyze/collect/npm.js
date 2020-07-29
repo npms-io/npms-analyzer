@@ -10,7 +10,7 @@ const packageJsonFromData = require(`${process.cwd()}/lib/analyze/util/packageJs
 const npm = require(`${process.cwd()}/lib/analyze/collect/npm`);
 
 const fixturesDir = `${process.cwd()}/test/fixtures/analyze/collect`;
-const npmNano = Promise.promisifyAll(nano('https://skimdb.npmjs.com/registry'));
+const npmNano = Promise.promisifyAll(nano('http://127.0.0.1:5984/npm'));
 
 describe('npm', () => {
     before(() => {
