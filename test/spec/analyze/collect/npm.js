@@ -10,7 +10,7 @@ const packageJsonFromData = require(`${process.cwd()}/lib/analyze/util/packageJs
 const npm = require(`${process.cwd()}/lib/analyze/collect/npm`);
 
 const fixturesDir = `${process.cwd()}/test/fixtures/analyze/collect`;
-const npmNano = Promise.promisifyAll(nano('https://skimdb.npmjs.com/registry'));
+const npmNano = Promise.promisifyAll(nano('http://127.0.0.1:5984/npm'));
 
 describe('npm', () => {
     before(() => {
@@ -45,6 +45,17 @@ describe('npm', () => {
         sepia.nock('https://api.npmjs.org')
         .get((path) => path.indexOf('/downloads/range/') === 0)
         .reply(404, { error: 'package cross-spawn not found' });
+
+        sepia.nock('http://127.0.0.1:5984')
+        .get('/npm/_design/app/_view/dependedUpon')
+        .query({
+            startkey: '["cross-spawn"]',
+            endkey: '["cross-spawn","￰"]',
+            limit: '1',
+            reduce: 'true',
+            stale: 'update_after',
+        })
+        .reply(200, { rows: [] });
 
         const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
 

@@ -8,14 +8,14 @@
     "content-type": "application/json",
     "cache-control": "must-revalidate"
   },
-  "url": "https://skimdb.npmjs.com:443/registry/_design/app/_view/dependedUpon?startkey=%5B%22cross-spawn%22%5D&endkey=%5B%22cross-spawn%22%2C%22%EF%BF%B0%22%5D&limit=1&reduce=true&stale=update_after",
+  "url": "http://127.0.0.1:5984/npm/_design/app/_view/dependedUpon?startkey=%5B%22cross-spawn%22%5D&endkey=%5B%22cross-spawn%22%2C%22%EF%BF%B0%22%5D&limit=1&reduce=true&stale=update_after",
   "time": 615,
   "request": {
     "method": "GET",
     "headers": {
       "content-type": "application/json",
       "accept": "application/json",
-      "host": "skimdb.npmjs.com"
+      "host": "127.0.0.1:5984"
     }
   }
 }
