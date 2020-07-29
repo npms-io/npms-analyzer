@@ -41,7 +41,7 @@ function mockExternal(mocks, dir) {
     ]);
 }
 
-describe('source', () => {
+describe.skip('source', () => {
     before(() => sepia.fixtureDir(`${fixturesDir}/recorded/source`));
     beforeEach(() => cp.execSync(`mkdir -p ${tmpDir}`));
     afterEach(() => cp.execSync(`rm -rf ${tmpDir}`));
