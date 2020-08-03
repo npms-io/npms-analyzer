@@ -21,7 +21,10 @@ describe('index', () => {
             repository: { type: 'git', url: 'git://github.com/IndigoUnited/node-cross-spawn.git' },
         }, options)
         .then((downloaded) => {
-            expect(betrayed.invoked).to.equal(1);
+            // All downloads will be handled by npm
+            expect(betrayed.invoked).to.equal(0);
+
+            return;
 
             const invocation = betrayed.invocations[0];
 
@@ -49,7 +52,10 @@ describe('index', () => {
             repository: { type: 'git', url: 'git@gitlab.com:codium/angular-ui-select.git' },
         }, options)
         .then((downloaded) => {
-            expect(betrayed.invoked).to.equal(1);
+            // All downloads will be handled by npm
+            expect(betrayed.invoked).to.equal(0);
+
+            return;
 
             const invocation = betrayed.invocations[0];
 

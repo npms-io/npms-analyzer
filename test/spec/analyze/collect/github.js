@@ -10,7 +10,7 @@ const github = require(`${process.cwd()}/lib/analyze/collect/github`);
 
 const fixturesDir = `${process.cwd()}/test/fixtures/analyze/collect`;
 
-describe('github', () => {
+describe.skip('github', () => {
     before(() => {
         sepia.fixtureDir(`${fixturesDir}/recorded/github`);
         chronokinesis.travel('2016-05-09T18:00:00.000Z');
