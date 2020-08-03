@@ -1,0 +1,24 @@
+name: deploy
+on:
+  push:
+    branches:
+      - deploy-**
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: create a deployment
+      uses: npm/action-deploy@v2
+      with:
+        type: create
+        token: ${{github.token}}
+        logs: https://github.slack.com/archives/C02UYAZ5P
+        environment_url: https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#Instances:search=elasticsearch-indexer;sort=desc:launchTime
+        job_status: ${{job.status}} # keep that to track status of the current job, when deployment is completed
+
+    # change to actual deployment steps
+    - name: placeholder for actual deployment
+      run: sleep 10s
