@@ -19,10 +19,15 @@ This project uses [config](https://www.npmjs.com/package/config) for configurati
 
 ## CouchDB
 
-- Install [CouchDB](http://couchdb.apache.org/) and run it (tested with `v2.2`).
+- Install [CouchDB](http://couchdb.apache.org/) (on macOS - `brew install couchdb`) and run it (tested with `v2.2`).
 - Create database named `npms` by executing `curl -X PUT http://admin:admin@localhost:5984/npms`
-- Setup npm replication from `https://replicate.npmjs.com/registry` to `npm` database in `continuous` mode.
-- Setup the necessary views by creating the document `_design/npms-analyzer` in the `npms` database with the contents of `https://github.com/npms-io/npms-analyzer/blob/master/config/couchdb/npms-analyzer.json`
+- [Setup npm replication](https://guide.couchdb.org/draft/replication.html#:~:text=Start%20CouchDB%20and%20open%20your,an%20interface%20to%20start%20replication.) from `https://replicate.npmjs.com/registry` to `npm` database in `continuous` mode. 
+  or with bash (since the UI just times out on that):
+```sh
+curl -X POST http://127.0.0.1:5984/_replicate  -d '{"source":"https://replicate.npmjs.com/registry", "target":"http://admin:mysecretpassword@127.0.0.1:5984/npm", "create_target": true}' -H "Content-Type: application/json"
+```
+
+- Setup the necessary views by creating the document `_design/npms-analyzer` in the `npms` database with the contents of [this file](../config/couchdb/npms-analyzer.json)
 
 Note: for the replication to work, you might need to [tweak](https://github.com/apache/couchdb/issues/1550#issuecomment-411751809) `auth-plugins` in the CouchDB config:
 
@@ -36,7 +41,7 @@ auth_plugins = couch_replicator_auth_noop
 
 **NOTE**: You may put `RabbitMQ standalone` into the gitignored `dev` folder while developing!
 
-- Install [RabbitMQ](https://www.rabbitmq.com/download.html) and run it (tested with `v3.6.1`).
+- Install [RabbitMQ](https://www.rabbitmq.com/download.html) (on macOS - `brew install rabbitmq`) and run it (tested with `v3.6.1`).
 - Install the [management](https://www.rabbitmq.com/management.html) plugin which is very useful by running `rabbitmq-plugins enable rabbitmq_management`
 - Head to `http://localhost:15672` and login with `guest/guest` and see if everything is ok.
 
@@ -45,8 +50,8 @@ auth_plugins = couch_replicator_auth_noop
 
 **NOTE**: You may put the `Elasticsearch` app into the gitignored `dev` folder while developing!
 
-- Install [Elasticsearch](https://www.elastic.co/downloads/elasticsearch) (tested with `v6.4`)
-- Install the [head](https://github.com/mobz/elasticsearch-head) to perform various manual operations in a web GUI
+- Install [Elasticsearch](https://www.elastic.co/downloads/elasticsearch) (on macOS - `brew install elasticsearch`) and run it (tested with `v6.4`)
+- Install the [ES-head](https://github.com/mobz/elasticsearch-head) or [any other GUI](https://github.com/appbaseio/dejavu#3-comparison-with-other-data-browsers) to perform various manual operations in a web GUI
 - Add these configurations to the `elasticsearch.yml`:
   - `action.auto_create_index: -npms-current,-npms-new,+*`
 

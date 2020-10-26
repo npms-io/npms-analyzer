@@ -1,11 +1,12 @@
 name: deploy
 on:
   push:
-    branches:
-      - deploy-**
+    branches: [ deploy-staging, deploy-production ]
 
 jobs:
   deploy:
+    if: github.ref == 'refs/heads/deploy-staging' || github.ref == 'refs/heads/deploy-production'
+
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -18,6 +19,8 @@ jobs:
         logs: https://github.slack.com/archives/C02UYAZ5P
         environment_url: https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#Instances:search=elasticsearch-indexer;sort=desc:launchTime
         job_status: ${{job.status}} # keep that to track status of the current job, when deployment is completed
+        slack_token: ${{secrets.NPM_ROBOT_SLACK_TOKEN}}
+        slack_channel: npm-ops
 
     # change to actual deployment steps
     - name: placeholder for actual deployment

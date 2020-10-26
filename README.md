@@ -9,6 +9,14 @@ The npms-analyzer analyzes the npm ecosystem, collecting info, evaluating and sc
 
 This project offers all its functionality through a CLI.
 
+```sh
+./cli.js consume --log-level trace
+```
+
+```sh
+./cli.js observe --log-level trace
+```
+
 ![Demo](https://i.imgur.com/nz9CzVR.gif)
 *(output might be outdated)*
 
