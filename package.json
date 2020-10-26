@@ -32,6 +32,7 @@
     "clean-test-fixtures": "date=\"$(date -R)\" && VCR_MODE=playback mocha && test/bin/clean-fixtures \"$date\""
   },
   "dependencies": {
+    "@npm/fetch-coverage": "^2.0.3",
     "amqplib": "^0.5.0",
     "bluebird": "^3.1.1",
     "camelcase-keys": "^5.0.0",
@@ -45,7 +46,6 @@
     "detect-repo-linters": "^3.1.1",
     "detect-repo-test-files": "^1.2.2",
     "elasticsearch": "^15.1.1",
-    "@npm/fetch-coverage": "^2.0.3",
     "gh-issues-stats": "^3.0.0",
     "globby": "^8.0.1",
     "got": "^9.3.0",
@@ -65,7 +65,7 @@
     "obj-unflatten": "^1.0.0",
     "paper": "^0.11.5",
     "php-escape-shell": "^1.0.0",
-    "pino": "^5.6.1",
+    "pino": "^6.7.0",
     "promise-retry": "^1.0.1",
     "require-directory": "^2.1.1",
     "semver": "^5.1.0",
