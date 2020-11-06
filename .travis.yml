@@ -5,7 +5,7 @@ node_js:
 script: "npm run test-travis"
 before_install:
   - sudo apt-get install -y bsdtar
-  - npx makeshift -s @npm -r https://registry.internal.npmjs.com
+  - npx makeshift -s @npm -r https://npm.pkg.github.com -t ${GH_PACKAGES_TOKEN}
 after_success:
   - "npm i codecov"
   - "node_modules/.bin/codecov"

@@ -32,7 +32,7 @@
     "clean-test-fixtures": "date=\"$(date -R)\" && VCR_MODE=playback mocha && test/bin/clean-fixtures \"$date\""
   },
   "dependencies": {
-    "@npm/fetch-coverage": "^2.0.3",
+    "fetch-coverage": "^2.0.2",
     "amqplib": "^0.5.0",
     "bluebird": "^3.1.1",
     "camelcase-keys": "^5.0.0",
