@@ -1,6 +1,7 @@
 'use strict';
 
 const assert = require('assert');
+const config = require('config');
 const promiseRetry = require('promise-retry');
 const realtime = require('../lib/observers/realtime');
 const stale = require('../lib/observers/stale');
@@ -67,8 +68,10 @@ exports.handler = (argv) => {
         stats.queue(queue);
 
         // Start observing..
-        realtime(npmNano, npmsNano, { defaultSeq: argv.defaultSeq }, (name) => onPackage(name, 1, queue));
-        stale(npmsNano, (name) => onPackage(name, 0, queue));
+        config.observers.realtime &&
+            realtime(npmNano, npmsNano, { defaultSeq: argv.defaultSeq }, (name) => onPackage(name, 1, queue));
+        config.observers.stale &&
+            stale(npmsNano, (name) => onPackage(name, 0, queue));
     })
     .done();
 };

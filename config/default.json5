@@ -32,4 +32,10 @@
 
     // Github tokens to be used by token-dealer
     githubTokens: [],
+
+    // Enabled observers.
+    observers: {
+        realtime: true,
+        stale: false,
+    }
 }
