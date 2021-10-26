@@ -8,6 +8,9 @@
         },
         "packages-stale": {
             "map": "function (doc) {\n    if (doc._id.indexOf('package!') === 0) {\n        if (doc.error) {\n            if (!doc.error.unrecoverable) {\n                emit(['failed', Date.parse(doc.error.caughtAt), doc._id.split('!')[1]]);\n            }\n        } else {\n            emit(['normal', Date.parse(doc.finishedAt), doc._id.split('!')[1]]);\n        }\n    }\n}"
+        },
+        "packages-version": {
+            "map": "function (doc) {\n    if (doc._id.indexOf('package!') === 0) {\n        emit(doc._id.split('!')[1], doc.collected.metadata.version);\n    }\n}"
         }
     }
 }

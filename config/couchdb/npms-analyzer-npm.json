@@ -1,0 +1,9 @@
+{
+    "_id": "_design/npms-analyzer",
+    "language": "javascript",
+    "views": {
+        "packages-version": {
+            "map": "function (doc) {\n    if (doc['dist-tags'] && doc['dist-tags'].latest) {\n        emit(doc._id, doc['dist-tags'].latest);\n    }\n}"
+        }
+    }
+}

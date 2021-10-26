@@ -1,10 +1,9 @@
 'use strict';
 
-const difference = require('lodash/difference');
 const bootstrap = require('../util/bootstrap');
 const stats = require('../util/stats');
 
-const log = logger.child({ module: 'cli/enqueue-missing' });
+const log = logger.child({ module: 'cli/enqueue-outdated' });
 
 /**
  * Fetches the npm packages.
@@ -16,11 +15,10 @@ const log = logger.child({ module: 'cli/enqueue-missing' });
 function fetchNpmPackages(npmNano) {
     log.info('Fetching npm packages, this might take a while..');
 
-    return npmNano.listAsync()
+    return npmNano.viewAsync('npms-analyzer', 'packages-version')
     .then((response) => (
         response.rows
-        .map((row) => row.id)
-        .filter((id) => id.indexOf('_design/') !== 0)
+        .map((row) => ({ name: row.key, version: row.value }))
     ));
 }
 
@@ -34,12 +32,15 @@ function fetchNpmPackages(npmNano) {
 function fetchNpmsPackages(npmsNano) {
     log.info('Fetching npms packages, this might take a while..');
 
-    return npmsNano.listAsync({ startkey: 'package!', endkey: 'package!\ufff0' })
-    .then((response) => response.rows.map((row) => row.id.split('!')[1]));
+    return npmsNano.viewAsync('npms-analyzer', 'packages-version')
+    .then((response) => (
+        response.rows
+        .map((row) => ({ name: row.key, version: row.value }))
+    ));
 }
 
 /**
- * Calculates which packages are missing and enqueues them.
+ * Calculates which packages are outdated (missing or version mismatch) and enqueues them.
  *
  * @param {Array}   npmPackages  - All npm packages.
  * @param {Array}   npmsPackages - All npms packages.
@@ -48,13 +49,19 @@ function fetchNpmsPackages(npmsNano) {
  *
  * @returns {Promise} The promise that fulfills when done.
  */
-function enqueueMissingPackages(npmPackages, npmsPackages, queue, dryRun) {
-    const missingPackages = difference(npmPackages, npmsPackages);
+function enqueueOutdated(npmPackages, npmsPackages, queue, dryRun) {
+    log.info(
+        { npmPackagesCount: npmPackages.length, npmsPackagesCount: npmsPackages.length },
+        'Calculating outdated packages, this might take a while..'
+    );
 
-    log.info(`There's a total of ${missingPackages.length} missing packages`);
-    missingPackages.forEach((name) => log.debug(name));
+    const npmsPackagesMap = npmsPackages.reduce((npmsPackagesMap, pkg) => npmsPackagesMap.set(pkg.name, pkg.version), new Map());
+    const outdatedPackages = npmPackages.filter((pkg) => npmsPackagesMap.get(pkg.name) !== pkg.version);
 
-    if (!missingPackages.length) {
+    log.info(`There's a total of ${outdatedPackages.length} outdated packages`);
+    outdatedPackages.forEach((pkg) => log.debug(pkg.name));
+
+    if (!outdatedPackages.length) {
         return;
     }
 
@@ -66,24 +73,24 @@ function enqueueMissingPackages(npmPackages, npmsPackages, queue, dryRun) {
 
     let count = 0;
 
-    return Promise.map(missingPackages, (name) => {
+    return Promise.map(outdatedPackages, (pkg) => {
         count += 1;
         count % 1000 === 0 && log.info(`Enqueued ${count} packages`);
 
-        return queue.push(name);
+        return queue.push(pkg.name);
     }, { concurrency: 15 })
-    .then(() => log.info('Missing packages were enqueued!'));
+    .then(() => log.info('Outdated packages were enqueued!'));
 }
 
 // --------------------------------------------------
 
-exports.command = 'enqueue-missing [options]';
-exports.describe = 'Finds packages that were not analyzed and enqueues them';
+exports.command = 'enqueue-outdated [options]';
+exports.describe = 'Finds packages that are outdated and enqueues them';
 
 exports.builder = (yargs) =>
     yargs
-    .usage('Usage: $0 tasks enqueue-missing [options]\n\n\
-Finds packages that were not analyzed and enqueues them.\nThis command is useful if packages were lost due to repeated transient \
+    .usage('Usage: $0 tasks enqueue-outdated [options]\n\n\
+Finds packages that are outdated and enqueues them.\nThis command is useful if packages were lost due to repeated transient \
 errors, e.g.: internet connection was lot or GitHub was down.')
 
     .option('dry-run', {
@@ -94,7 +101,7 @@ errors, e.g.: internet connection was lot or GitHub was down.')
     });
 
 exports.handler = (argv) => {
-    process.title = 'npms-analyzer-enqueue-missing';
+    process.title = 'npms-analyzer-enqueue-outdated';
     logger.level = argv.logLevel;
 
     // Bootstrap dependencies on external services
@@ -110,7 +117,7 @@ exports.handler = (argv) => {
             fetchNpmPackages(npmNano),
             fetchNpmsPackages(npmsNano),
         ])
-        .spread((npmPackages, npmsPackages) => enqueueMissingPackages(npmPackages, npmsPackages, queue, argv.dryRun));
+        .spread((npmPackages, npmsPackages) => enqueueOutdated(npmPackages, npmsPackages, queue, argv.dryRun));
     })
     .then(() => process.exit())
     .done();

@@ -1,6 +1,5 @@
-#!/usr/bin/env node
-
-/* eslint no-unused-expressions:0 */
+#!/bin/sh
+':' //; exec "$(command -v node)" --max-old-space-size=4192  "$0" "$@"
 
 'use strict';
 

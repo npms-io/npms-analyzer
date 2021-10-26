@@ -1,6 +1,5 @@
 'use strict';
 
-const difference = require('lodash/difference');
 const stats = require('../util/stats');
 const bootstrap = require('../util/bootstrap');
 
@@ -63,7 +62,13 @@ function fetchNpmsObservedPackages(npmsNano) {
  * @returns {Promise} The promise that fulfills when done.
  */
 function cleanExtraneousNpmsPackages(npmPackages, npmsPackages, npmsNano, dryRun) {
-    const extraneousPackages = difference(npmsPackages, npmPackages);
+    log.info(
+        { npmPackagesCount: npmPackages.length, npmsPackagesCount: npmsPackages.length },
+        'Calculating extraneous packages, this might take a while..'
+    );
+
+    const npmPackagesSet = new Set(npmPackages);
+    const extraneousPackages = npmsPackages.filter((name) => !npmPackagesSet.has(name));
 
     log.info(`There's a total of ${extraneousPackages.length} extraneous packages`);
     extraneousPackages.forEach((name) => log.debug(name));
@@ -103,7 +108,13 @@ function cleanExtraneousNpmsPackages(npmPackages, npmsPackages, npmsNano, dryRun
  * @returns {Promise} The promise that fulfills when done.
  */
 function cleanExtraneousNpmsObservedPackages(npmPackages, npmsObservedPackages, npmsNano, dryRun) {
-    const extraneousPackages = difference(npmsObservedPackages, npmPackages);
+    log.info(
+        { npmPackagesCount: npmPackages.length, npmsObservedPackagesCount: npmsObservedPackages.length },
+        'Calculating extraneous observed packages, this might take a while..'
+    );
+
+    const npmPackagesSet = new Set(npmPackages);
+    const extraneousPackages = npmsObservedPackages.filter((name) => !npmPackagesSet.has(name));
 
     log.info(`There's a total of ${extraneousPackages.length} extraneous observed packages`);
     extraneousPackages.forEach((name) => log.debug(name));

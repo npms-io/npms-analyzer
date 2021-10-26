@@ -22,7 +22,8 @@ This project uses [config](https://www.npmjs.com/package/config) for configurati
 - Install [CouchDB](http://couchdb.apache.org/) and run it (tested with `v2.2`).
 - Create database named `npms` by executing `curl -X PUT http://admin:admin@localhost:5984/npms`
 - Setup npm replication from `https://replicate.npmjs.com/registry` to `npm` database in `continuous` mode.
-- Setup the necessary views by creating the document `_design/npms-analyzer` in the `npms` database with the contents of `https://github.com/npms-io/npms-analyzer/blob/master/config/couchdb/npms-analyzer.json`
+- Setup the necessary views by creating the document `_design/npms-analyzer-npm` in the `npm` database with the contents of `https://github.com/npms-io/npms-analyzer/blob/master/config/couchdb/npm-analyzer.json`
+- Setup the necessary views by creating the document `_design/npms-analyzer-npms` in the `npms` database with the contents of `https://github.com/npms-io/npms-analyzer/blob/master/config/couchdb/npms-analyzer.json`
 
 Note: for the replication to work, you might need to [tweak](https://github.com/apache/couchdb/issues/1550#issuecomment-411751809) `auth-plugins` in the CouchDB config:
 
