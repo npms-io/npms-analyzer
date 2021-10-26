@@ -34,7 +34,13 @@ function fetchNpmsPackages(npmsNano) {
     log.info('Fetching npms packages, this might take a while..');
 
     return npmsNano.listAsync({ startkey: 'package!', endkey: 'package!\ufff0' })
-    .then((response) => response.rows.map((row) => row.id.split('!')[1]));
+    .then((response) =>
+        response.rows.map((row) =>
+            row.id
+            .split('!')
+            .slice(1)
+            .join('!')
+        ));
 }
 
 /**
@@ -48,7 +54,13 @@ function fetchNpmsObservedPackages(npmsNano) {
     log.info('Fetching npms observed packages, this might take a while..');
 
     return npmsNano.listAsync({ startkey: 'observer!package!', endkey: 'observer!package!\ufff0' })
-    .then((response) => response.rows.map((row) => row.id.split('!')[2]));
+    .then((response) =>
+        response.rows.map((row) =>
+            row.id
+            .split('!')
+            .slice(2)
+            .join('!')
+        ));
 }
 
 /**

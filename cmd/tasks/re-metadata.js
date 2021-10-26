@@ -38,7 +38,10 @@ exports.handler = (argv) => {
                 return;
             }
 
-            const name = row.id.split('!')[1];
+            const name = row.id
+            .split('!')
+            .slice(1)
+            .join('!');
 
             // Grab package data
             return npmNano.getAsync(name)
