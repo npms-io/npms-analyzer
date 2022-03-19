@@ -2,7 +2,6 @@
 
 const expect = require('chai').expect;
 const sepia = require(`${process.cwd()}/test/util/sepia`);
-const betray = require('betray');
 const chronokinesis = require('chronokinesis');
 const nano = require('nano');
 const loadJsonFile = require('load-json-file');
@@ -32,14 +31,16 @@ describe('npm', () => {
         });
     });
 
-    it('should handle no results when querying `app/dependedUpon` view', () => {
-        const betrayed = betray(npmNano, 'viewAsync', () => Promise.resolve({ rows: [] }));
-        const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
+    it('should handle no results when querying `app/dependedUpon` view');
 
-        return npm(data, packageJsonFromData('cross-spawn', data), npmNano)
-        .then((collected) => expect(collected.dependentsCount).to.equal(0))
-        .finally(() => betrayed.restore());
-    });
+    // it('should handle no results when querying `app/dependedUpon` view', () => {
+    //     const betrayed = betray(npmNano, 'viewAsync', () => Promise.resolve({ rows: [] }));
+    //     const data = loadJsonFile.sync(`${fixturesDir}/modules/cross-spawn/data.json`);
+
+    //     return npm(data, packageJsonFromData('cross-spawn', data), npmNano)
+    //     .then((collected) => expect(collected.dependentsCount).to.equal(0))
+    //     .finally(() => betrayed.restore());
+    // });
 
     it('should handle no stats yet error from api.npmjs.org (404)', () => {
         sepia.nock('https://api.npmjs.org')
