@@ -50,20 +50,6 @@
     },
     {
       "urls": {
-        "original": "https://img.shields.io/npm/v/react-router.svg?style=flat-square",
-        "shields": "https://img.shields.io/npm/v/react-router.svg",
-        "content": "https://img.shields.io/npm/v/react-router.json"
-      },
-      "info": {
-        "service": "npm",
-        "type": "version",
-        "modifiers": {
-          "type": "v"
-        }
-      }
-    },
-    {
-      "urls": {
         "original": "https://img.shields.io/npm/v/react-router-dom.svg?style=flat-square",
         "shields": "https://img.shields.io/npm/v/react-router-dom.svg",
         "content": "https://img.shields.io/npm/v/react-router-dom.json"

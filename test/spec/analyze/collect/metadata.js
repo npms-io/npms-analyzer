@@ -90,11 +90,6 @@ describe('metadata', () => {
         .then((collected) => expect(collected.name).to.equal('cross-spawn'))
     ));
 
-    it('should delete README if it is `No README data`', () => (
-        metadata({ readme: 'No README data' }, { name: 'cross-spawn' })
-        .then((collected) => expect(collected).to.not.have.property('readme'))
-    ));
-
     it('should handle strange README\'s', () => (
         // In old modules the README is an object, e.g.: `flatsite`
         metadata({ readme: {} }, { name: 'flatsite' })
