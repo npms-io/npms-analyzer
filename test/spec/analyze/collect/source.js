@@ -153,7 +153,7 @@ describe('source', () => {
             });
         });
 
-        it('should detect readme badges on the package readme and fallback to root', () => {
+        it('should detect readme badges on the package dir and root', () => {
             sepia.enable();
             const betrayed = mockExternal(null, `${tmpDir}/cross-spawn`);
 
@@ -173,7 +173,7 @@ describe('source', () => {
 
             return Promise.try(() => (
                 source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.badges).to.have.length(6))
+                .then((collected) => expect(collected.badges).to.have.length(7))
             ))
             .then(() => {
                 delete data.readme;
@@ -187,7 +187,7 @@ describe('source', () => {
             });
         });
 
-        it('should detect linters on the package dir and fallback to root', () => {
+        it('should detect linters on the package dir and root', () => {
             sepia.enable();
             const betrayed = mockExternal(null, `${tmpDir}/cross-spawn`);
 
@@ -201,7 +201,7 @@ describe('source', () => {
 
             return Promise.try(() => (
                 source(data, packageJson, { dir: tmpDir, packageDir: `${tmpDir}/cross-spawn` })
-                .then((collected) => expect(collected.linters).to.eql(['editorconfig']))
+                .then((collected) => expect(collected.linters).to.eql(['editorconfig', 'eslint']))
             ))
             .then(() => {
                 fs.unlinkSync(`${tmpDir}/cross-spawn/.editorconfig`);
