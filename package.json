@@ -89,7 +89,7 @@
     "eslint-config-moxy": "^6.1.1",
     "husky": "^1.0.0",
     "istanbul": "^0.4.2",
-    "lint-staged": "^8.0.4",
+    "lint-staged": "^13.1.0",
     "mocha": "^5.2.0",
     "mock-require": "^3.0.2",
     "nock": "^10.0.0",
