@@ -56,7 +56,7 @@
     "json5": "^2.0.0",
     "load-json-file": "^5.1.0",
     "lodash": "^4.17.11",
-    "moment": "^2.21.0",
+    "moment": "^2.29.2",
     "nano": "^7.1.0",
     "normalize-package-data": "^2.3.6",
     "normalize-value": "~1.0.0",
